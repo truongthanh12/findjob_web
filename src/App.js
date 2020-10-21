@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import About from "./components/About";
+import DescriptionJob from "./components/DescriptionJob";
+import JobList from "./components/JobList";
+import JobListPage from "./components/JobListPage";
+import PostJobForm from "./components/Form/PostJobForm";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LoginForm from "./components/Form/LoginForm";
+import Register from "./components/Form/Register";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="site-wrap">
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/" exact component={JobList} />
+          <Route path="/about" exact component={About} />
+          <Route path="/job-listing" exact component={JobListPage} />
+          <Route path="/post-a-job" exact component={PostJobForm} />
+          <Route path="/job-detail" exact component={DescriptionJob} />
+          <Route path="/login" exact component={LoginForm} />
+          <Route path="/register" exact component={Register} />
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 }
