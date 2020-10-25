@@ -103,7 +103,7 @@ const About = () => {
                   alt="Image"
                   className="img-fluid mb-4 rounded"
                 />
-                <h3>Drew Anderson</h3>
+                <h3>Tuan Kiet</h3>
                 <p className="text-muted">Creative Director</p>
                 <p>
                   Soluta quasi cum delectus eum facilis recusandae nesciunt
@@ -113,7 +113,7 @@ const About = () => {
                   possimus consectetur neque rem molestiae eligendi velit?.
                 </p>
                 <div className="social mt-4">
-                  <a href="#">
+                  <a href="https://www.facebook.com/profile.php?id=100009668899108" target="_blank">
                     <span className="icon-facebook" />
                   </a>
                   <a href="#">

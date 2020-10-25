@@ -10,6 +10,9 @@ import PostJobForm from "./components/Form/PostJobForm";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginForm from "./components/Form/LoginForm";
 import Register from "./components/Form/Register";
+import NotFound from "./components/NotFound";
+import HomeChoose from "./components/HomeChoose";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -17,13 +20,17 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route path="/" exact component={JobList} />
-          <Route path="/about" exact component={About} />
-          <Route path="/job-listing" exact component={JobListPage} />
-          <Route path="/post-a-job" exact component={PostJobForm} />
-          <Route path="/job-detail" exact component={DescriptionJob} />
-          <Route path="/login" exact component={LoginForm} />
-          <Route path="/register" exact component={Register} />
+          <Route path="/" exact component={() => <HomeChoose />} />
+          <Route path="/home" component={() => <JobList />} />
+          <Route path="/about" component={() => <About />} />
+          <Route path="/job-listing" component={() => <JobListPage />} />
+          <Route path="/post-a-job" component={() => <PostJobForm />} />
+          <Route path="/job-detail/:id" component={() => <DescriptionJob />} />
+          <Route path="/login" component={() => <LoginForm />} />
+          <Route path="/register" component={() => <Register />} />
+          <Route path="/profile" component={() => <Profile />} />
+
+          <Route component={() => <NotFound />} />
         </Switch>
         <Footer />
       </Router>

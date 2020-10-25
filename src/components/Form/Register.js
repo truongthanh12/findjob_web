@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import swal from "sweetalert";
+import axios from "axios";
 
 const Register = () => {
+  const [cityName, setCityName] = useState([]);
   const [registerForm, setRegisterForm] = useState({
     accountID: "",
     password: "",
@@ -12,7 +14,7 @@ const Register = () => {
     address: "",
     companyDescription: "",
   });
-const history = useHistory();
+  const history = useHistory();
   const [dataRegister, setDataRegister] = useState([]);
 
   const handleChange = (e) => {
@@ -31,26 +33,40 @@ const history = useHistory();
       address: registerForm.address,
       companyDescription: registerForm.companyDescription,
     };
-  
-    fetch("https://webjobfinder.azurewebsites.net/api/Account/Create", {
-      method: "POST",
-      body: JSON.stringify(register),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => {
-      if (res && res.status === 200) {
-        setDataRegister(register);
-        swal({
-          title: "Success",
-          text: "Post your job!",
-          button: "OK",
-          icon: "success",
-          timer: 1200,
-        });
-        history.push("/");
-      } else {
+
+    axios
+      .post(
+        `https://webjobfinder.azurewebsites.net/api/Account/Create`,
+        register,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.success) {
+          setDataRegister(register);
+          swal({
+            title: "Success",
+            text: "Logged success!",
+            button: "OK",
+            icon: "success",
+            timer: 1200,
+          });
+          console.log(res);
+          history.push("/home");
+        } else {
+          swal({
+            title: "Fail",
+            text: "Failed!",
+            button: "OK",
+            icon: "warning",
+            timer: 1200,
+          });
+        }
+      })
+      .catch((error) => {
         swal({
           title: "Fail",
           text: "Failed!",
@@ -58,10 +74,49 @@ const history = useHistory();
           icon: "warning",
           timer: 1200,
         });
-      }
-    });
-  }
+      });
 
+    // fetch("https://webjobfinder.azurewebsites.net/api/Account/Create", {
+    //   method: "POST",
+    //   body: JSON.stringify(register),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //   },
+    // }).then((res) => {
+    //   if (res && res.status === 200) {
+    //     setDataRegister(register);
+    //     swal({
+    //       title: "Success",
+    //       text: "Post your job!",
+    //       button: "OK",
+    //       icon: "success",
+    //       timer: 1200,
+    //     });
+    //     console.log(res)
+    //     history.push("/home");
+    //   } else {
+    //     swal({
+    //       title: "Fail",
+    //       text: "Failed!",
+    //       button: "OK",
+    //       icon: "warning",
+    //       timer: 1200,
+    //     });
+    //   }
+    // });
+  };
+
+  // get api select
+  useEffect(() => {
+    const fetchCity = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/City/Get-list-city`
+      );
+      setCityName(result.data.data);
+    };
+    fetchCity();
+  }, []);
   return (
     <div className="login-form">
       <div id="login">
@@ -120,7 +175,30 @@ const history = useHistory();
                       onChange={(value) => handleChange(value)}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-info" htmlFor="city">
+                        City
+                      </label>
+                      <select
+                        name="cityName"
+                        className="form-control"
+                        required
+                        value={dataRegister.accountID}
+                        onChange={(value) => handleChange(value)}
+                      >
+                        <option selected disabled hidden>
+                          Choose city
+                        </option>
+                        {cityName.map((value, index) => (
+                          <option value={value} key={index}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  {/* <div className="form-group">
                     <label htmlFor="cityName" className="text-info">
                       cityName
                     </label>
@@ -133,7 +211,7 @@ const history = useHistory();
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
                     />
-                  </div>
+                  </div> */}
                   <div className="form-group">
                     <label htmlFor="companyName" className="text-info">
                       companyName

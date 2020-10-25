@@ -1,42 +1,56 @@
 import React, { useState, useEffect } from "react";
-import FindJobSignup from "./FindJobSignup";
 import Member from "./Member";
 import Partner from "./Partner";
 import axios from "axios";
 import HomeSection from "./HomeSection";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import swal from "sweetalert";
 
 const JobList = () => {
-  // const history = useHistory();
-
-  // const getDataJob = useHistory();
   const [jobList, setJobList] = useState([]);
 
   useEffect(() => {
+    const { employerID } = JSON.parse(
+      localStorage.getItem("dataLogged") || "{}"
+    );
+    console.log(employerID);
+   
     const fetchJobList = async () => {
       const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=0&page=3`
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}`
       );
       setJobList(result.data.data);
-      console.log(result.data);
+      console.log(result.data);  
+
     };
     fetchJobList();
   }, []);
 
-  // const getDataJob = useHistory();
-  const [jobList2, setJobList2] = useState([]);
-
-  useEffect(() => {
-    const fetchJobList2 = async () => {
-      const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Employers/Get-employer-by-id?EmployerID=0`
+  const onDelete = () => {
+    swal({
+      title: "Are you sure?",
+      text:
+        "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      const { jobID } = JSON.parse(
+        localStorage.getItem("dataLogged") || "{}"
       );
-      setJobList2(result.data.data);
-      console.log(result.data);
-    };
-    fetchJobList2();
-  }, []);
-
+      if (willDelete) {
+        axios.delete(
+          `https://webjobfinder.azurewebsites.net/api/Job/Delete-job?jobID=${jobID}`
+        );
+        swal("Poof! Your imaginary file has been deleted!", {
+          timer: 1500,
+          icon: "success",
+        });
+      } else {
+        swal("Your imaginary file is safe!", {timer: 1500});
+      }
+    });
+  };
   return (
     <div>
       <HomeSection />
@@ -44,65 +58,68 @@ const JobList = () => {
         <div className="container">
           <div className="row mb-5 justify-content-center">
             <div className="col-md-7 text-center">
-              <h2 className="section-title mb-2">12214124 job list</h2>
+              <h2 className="section-title mb-2">job list</h2>
             </div>
           </div>
           {(jobList || []).map((item, index) => {
-
             return (
-              <div className="mb-5">
+              <div className="mb-5" key={index}>
                 <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
                   <div className="col-md-2">
-                    <img src={item.image} alt="Image" className="img-fluid" />
+                    <img
+                      src="https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png"
+                      alt="Image"
+                      className="img-fluid"
+                    />
                   </div>
                   <div className="col-md-4">
                     <span className="badge badge-primary px-2 py-1 mb-3">
-                      {item.jobName || ""}
+                      {item.companyName || ""}
                     </span>
                     <h2>
-                      <a href="job-single.html">
-                        {/* {getDataJob.location.state.postJob?.jobCategoryName} */}
-                      </a>
+                      <NavLink to={`/job-detail/${item.jobID}`}>
+                        <span className="icon-briefcase mr-2" />{" "}
+                        {item.jobName || ""}
+                      </NavLink>
+                    </h2>
+                    <h2 className="my-2">
+                      <NavLink to={`/job-detail/${item.jobID}`}>
+                        <span className="icon-room pr-2" /> {item.city || ""}
+                      </NavLink>
                     </h2>
                     <p className="meta">
-                      Required:{" "}
-                      <strong className="pr-2">
-                        {/* {getDataJob.location.state.postJob?.titleName} */}
+                      <strong>
+                        Post: {item.postDate || ""}
                       </strong>
-                      <div>
-                        <strong>
-                          From: {item.postDate || ""} - To:{" "}
-                          {item.requireDate || ""}
-                          {/* {getDataJob.location.state.postJob?.requireDate} */}
-                        </strong>
-                      </div>
+                      <br />
+                      <strong>
+                        Due Date: {item.requireDate || ""}
+                      </strong>
                     </p>
                   </div>
-                  <div className="col-md-3 text-left">
-                    {/* <h3>{getDataJob.location.state.postJob?.cityName}</h3> */}
-                    <span className="meta">Australia</span>
+                  <div className="col-md-3 p-4">
+                    Experience: {item.experience || ""}
                     <p>
                       <strong className="text-black">
-                        {/* {getDataJob.location.state.postJob?.salary} */}
+                        {item.salary || ""}
                       </strong>
                     </p>
                   </div>
-                  <div className="col-md-3 text-md-right">
+                  <div className="col-md-3 text-md-right mt-3">
                     <p>
-                      <a href="job-single.html">
-                        <NavLink to="/job-detail">
-                          <button className="btn-apply btn--info">
-                            Detail Job
-                          </button>
-                        </NavLink>
-                      </a>
+                      <NavLink to={`/job-detail/${item.jobID}`}>
+                        <button className="btn-apply btn--info">
+                          Detail Job
+                        </button>
+                      </NavLink>
                     </p>
                     <button
                       className="btn-apply btn--apply"
                       data-toggle="modal"
-                      data-target="#AcceptModal"
+                      data-target="#DeleteModal"
+                      onClick={onDelete}
                     >
-                      accept
+                      Delete
                     </button>
                   </div>
                 </div>
@@ -131,9 +148,57 @@ const JobList = () => {
           </div>
         </div>
       </section>
-      <Partner />
+
+      <section className="site-section py-4 mb-5 border-top">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-12 text-center mt-4 mb-5">
+              <div className="row justify-content-center">
+                <div className="col-md-7">
+                  <h2 className="section-title mb-2">
+                    Our Candidates Work In Company
+                  </h2>
+                  <p className="lead">
+                    Porro error reiciendis commodi beatae omnis similique
+                    voluptate rerum ipsam fugit mollitia ipsum facilis expedita
+                    tempora suscipit iste
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_mailchimp.svg"
+                alt="Image"
+                className="img-fluid logo-1"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_paypal.svg"
+                alt="Image"
+                className="img-fluid logo-2"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_stripe.svg"
+                alt="Image"
+                className="img-fluid logo-3"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_visa.svg"
+                alt="Image"
+                className="img-fluid logo-4"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* <Partner /> */}
       <Member />
-      <FindJobSignup />
     </div>
   );
 };

@@ -1,9 +1,6 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import swal from 'sweetalert';
-
-import Success from "./Success";
-import Failed from "./Failed";
+import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 
 const PostJobForm = () => {
@@ -22,12 +19,13 @@ const PostJobForm = () => {
     cityName: "",
     titleName: "",
     requireDate: "",
-    logo: "",
-    jobTitle:"",
-    jobRequire: ""
+    // logo: "",
+    // jobTitle: "",
+    jobRequire: "",
+    employerID: "",
   });
 
-  const history = useHistory()
+  const history = useHistory();
 
   const [postJob, setPostJob] = useState([]);
   const [dataFormAddEmail, setDataFormAddEmail] = useState({
@@ -48,15 +46,12 @@ const PostJobForm = () => {
     });
   };
 
-  const onTEST =()=>{
-    history.push("/", {postJob: {title: "Senior", name: "Thanh"}})
-  }
-
   // post job
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const { employerID, token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+    console.log(employerID)
     const post_job = {
       jobName: dataForm.jobName,
       jobDescription: [dataForm.jobDescription],
@@ -64,7 +59,7 @@ const PostJobForm = () => {
       salary: dataForm.salary,
       requireDate: dataForm.requireDate,
       experience: dataForm.experience,
-      employerID: 0,
+      employerID: employerID,
       titleName: dataForm.titleName,
       jobCategoryName: dataForm.jobCategoryName,
       jobTypeName: dataForm.jobTypeName,
@@ -79,7 +74,7 @@ const PostJobForm = () => {
       body: JSON.stringify(post_job),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
       if (res && res.status === 200) {
@@ -87,34 +82,33 @@ const PostJobForm = () => {
         swal({
           title: "Success",
           text: "Post your job!",
-          button: "OK", 
-          icon: "success", 
-          timer: 1500, 
+          button: "OK",
+          icon: "success",
+          timer: 1500,
         });
-        history.push("/", 
-        {postJob: post_job});
+        history.push("/", { postJob: post_job });
       } else {
         swal({
           title: "Fail",
           text: "Failed!",
-          button: "OK", 
-          icon: "warning", 
+          button: "OK",
+          icon: "warning",
           timer: 1500,
         });
       }
     });
     // console.log(dataFormAddEmail);
-    fetch("https://webjobfinder.azurewebsites.net/api/Employers/Upload-Img", {
-      method: "PUT",
-      body: JSON.stringify(post_job),
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => {
-      if (res) {
-        setLogoCompany(post_job);
-      }
-    });
+    // fetch("https://webjobfinder.azurewebsites.net/api/Employers/Upload-Img", {
+    //   method: "PUT",
+    //   body: JSON.stringify(post_job),
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // }).then((res) => {
+    //   if (res) {
+    //     setLogoCompany(post_job);
+    //   }
+    // });
 
     // fetch("https://webjobfinder.azurewebsites.net/api/Employers/Create", {
     //   method: "POST",
@@ -202,7 +196,6 @@ const PostJobForm = () => {
       <section className="site-section" id="next-section">
         <div className="container">
           <form method="post">
-            <button onClick={onTEST}>TEST</button>
             <div className="row">
               <div className="col-lg-6 mb-5 mb-lg-0">
                 <div className="row form-group">
@@ -249,7 +242,6 @@ const PostJobForm = () => {
                       Company Name
                     </label>
                     <input
-                      
                       type="text"
                       name="lname"
                       className="form-control"
@@ -265,7 +257,6 @@ const PostJobForm = () => {
                       Job Name
                     </label>
                     <input
-                      
                       type="text"
                       name="jobName"
                       className="form-control"
@@ -282,7 +273,6 @@ const PostJobForm = () => {
                     <select
                       className="form-control"
                       name="titleName"
-                      
                       value={postJob.titleName}
                       onChange={(value) => handleChangeValue(value)}
                     >
@@ -302,7 +292,6 @@ const PostJobForm = () => {
                     <select
                       className="form-control"
                       name="jobCategoryName"
-                      
                       value={postJob.jobCategoryName}
                       onChange={(value) => handleChangeValue(value)}
                     >
@@ -328,7 +317,6 @@ const PostJobForm = () => {
                       cols={30}
                       rows={8}
                       className="form-control"
-                      
                       placeholder="Write your description here..."
                       value={postJob.jobRequire}
                       onChange={(value) => handleChangeValue(value)}
@@ -373,7 +361,6 @@ const PostJobForm = () => {
                       Experience
                     </label>
                     <input
-                      
                       type="subject"
                       name="experience"
                       className="form-control"
