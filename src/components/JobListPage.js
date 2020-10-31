@@ -1,82 +1,87 @@
 import React, { useState, useEffect } from "react";
-import FindJobSignup from "./FindJobSignup";
 import Member from "./Member";
-import Partner from "./Partner";
 import axios from "axios";
-import HomeSection from "./HomeSection";
-import { NavLink, useHistory, useParams } from "react-router-dom";
-import swal from "sweetalert";
+import { NavLink } from "react-router-dom";
 
 const JobList = () => {
-  const { id } = useParams();
-  // console.log(id)
-  // const history = useHistory();
-
-  // const getDataJob = useHistory();
   const [jobList, setJobList] = useState([]);
+  const [totalJob, setTotalJob] = useState([]);
+
+  // pagination load more
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    const { employerID } = JSON.parse(
-      localStorage.getItem("dataLogged") || "{}"
-    );
-    console.log(employerID);
     const fetchJobList = async () => {
       const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=1`
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-all_jobs?page=${page}`
       );
       setJobList(result.data.data);
+      // setPage(result.data);
+      setTotalJob(result.data);
       console.log(result.data);
+      setTotalPages(result.data);
     };
     fetchJobList();
   }, []);
 
-  // set Page
-  // const [listData, setListData] = useState([]);
+  const onClickPage = () => {
+    setPage(page + 1);
+    const fetchNewPage = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-all_jobs?page=${page}`
+      );
 
-  // const [page, setPage] = useState(1);
-  // const fetchData = () => {
-  //   axios
-  //     .post(
-  //       `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}page=1`,
-  //       {
-  //         page: page,
-  //         size: 5,
-  //         id: 0,
-  //         type: "dfsd",
-  //         keyword: "stdsfsring",
-  //       }
-  //     )
-  //     .then((res) => {
-  //       setListData(listData.concat(res.data.data.data));
-  //       setPage(page + 1);
-  //     });
-  // };
+      const cursorCurrent = window.pageYOffset;
 
-  const onDelete = () => {
-    swal({
-      title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-       const { employerID } = JSON.parse(
-         localStorage.getItem("dataLogged") || "{}"
-       );
-      if (willDelete) {
-        axios.delete(
-          `https://webjobfinder.azurewebsites.net/api/Job/Delete-job?jobID=${employerID}`
-        );
-        swal("Poof! Your imaginary file has been deleted!", {
-          timer: 1500,
-          icon: "success",
-        });
-      } else {
-        swal("Your imaginary file is safe!", { timer: 1500 });
-      }
-    });
+      setJobList([...jobList, ...result.data.data]);
+      window.scrollTo(0, cursorCurrent);
+    };
+    fetchNewPage();
   };
+
+  // getImage
+  const { accountName } = JSON.parse(
+    localStorage.getItem("dataLogged") || "{}"
+  );
+
+  const { accountID } = JSON.parse(
+    localStorage.getItem("dataRegisted") || "{}"
+  );
+  console.log(accountID);
+  const [avatarCompany, setAvatarCompany] = useState({
+    File: null,
+    accountID: accountName,
+  });
+
+  // get api file imgae
+  const [getFile, setGetFile] = useState([]);
+  useEffect(() => {
+    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+
+    const fetchJobApplied = async () => {
+      axios
+        .get(
+          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${accountID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setGetFile(res.data.data);
+          }
+        })
+        .catch((error) => {})
+        .then(function () {
+          // always executed
+        });
+    };
+    fetchJobApplied();
+  }, [accountID]);
+
   return (
     <div>
       <section
@@ -88,22 +93,25 @@ const JobList = () => {
           <div className="row align-items-center justify-content-center">
             <div className="col-md-12">
               <div className="mb-5 text-center">
-                <h1 className="text-white font-weight-bold">
-                  Job Listings
-                </h1>
-                <p>
-                  Find your dream jobs in our powerful career website template.
-                </p>
+                <h1 className="text-white font-weight-bold">JobList</h1>
+                <p>You want to have partners to accompany you?</p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <section className="site-section">
         <div className="container">
           <div className="row mb-5 justify-content-center">
             <div className="col-md-7 text-center">
-              <h2 className="section-title mb-2">12214124 job list</h2>
+              <h2 className="section-title mb-2">
+                {jobList.length === 0 ? (
+                  "No job yet! Add now"
+                ) : (
+                  <div>{totalJob.totalRecord} career opportunities </div>
+                )}
+              </h2>
             </div>
           </div>
           {(jobList || []).map((item, index) => {
@@ -112,52 +120,45 @@ const JobList = () => {
                 <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
                   <div className="col-md-2">
                     <img
-                      src="https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png"
+                      src={
+                        getFile.image ||
+                        "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                      }
                       alt="Image"
                       className="img-fluid"
                     />
                   </div>
+
                   <div className="col-md-4">
                     <span className="badge badge-primary px-2 py-1 mb-3">
                       {item.companyName || ""}
                     </span>
                     <h2>
-                      <NavLink exact={true} to="/job-detail">
-                        {/* {getDataJob.location.state.postJob?.jobCategoryName} */}
+                      <NavLink to={`/job-detail/${item.jobID}`}>
                         <span className="icon-briefcase mr-2" />{" "}
                         {item.jobName || ""}
                       </NavLink>
                     </h2>
                     <h2 className="my-2">
-                      <NavLink exact={true} to="/job-detail">
-                        {/* {getDataJob.location.state.postJob?.jobCategoryName} */}
+                      <NavLink to={`/job-detail/${item.jobID}`}>
                         <span className="icon-room pr-2" /> {item.city || ""}
                       </NavLink>
                     </h2>
                     <p className="meta">
-                      Date:{" "}
-                      <strong className="pr-2">
-                        {/* {getDataJob.location.state.postJob?.titleName} */}
-                      </strong>
-                      <strong>
-                        From: {item.postDate || ""} - To:{" "}
-                        {item.requireDate || ""}
-                        {/* {getDataJob.location.state.postJob?.requireDate} */}
-                      </strong>
+                      <strong>Post: {item.postDate || ""}</strong>
+                      <br />
+                      <strong>Due Date: {item.requireDate || ""}</strong>
                     </p>
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-3 p-4">
                     Experience: {item.experience || ""}
-                    {/* <h3>{getDataJob.location.state.postJob?.cityName}</h3> */}
-                    {/* <span className="meta">Australia</span> */}
                     <p>
                       <strong className="text-black">
-                        {/* {getDataJob.location.state.postJob?.salary} */}
                         {item.salary || ""}
                       </strong>
                     </p>
                   </div>
-                  <div className="col-md-3 text-md-right">
+                  <div className="col-md-3 text-md-right mt-3">
                     <p>
                       <NavLink to={`/job-detail/${item.jobID}`}>
                         <button className="btn-apply btn--info">
@@ -165,42 +166,80 @@ const JobList = () => {
                         </button>
                       </NavLink>
                     </p>
-                    <button
-                      className="btn-apply btn--apply"
-                      data-toggle="modal"
-                      data-target="#DeleteModal"
-                      onClick={onDelete}
-                    >
-                      Delete
-                    </button>
+                    <p>
+                      <NavLink to={`/job-applied/${item.jobID}`}>
+                        <button className="btn-apply btn--apply">
+                          Aplied list
+                        </button>
+                      </NavLink>
+                    </p>
                   </div>
                 </div>
               </div>
             );
           })}
           <div className="row pagination-wrap">
-            <div className="col-md-6 text-center text-md-left">
+            <div className="col-md-12 text-center">
               <div className="custom-pagination ml-auto">
-                <a href="#" className="prev">
-                  Previous
-                </a>
-                <div className="d-inline-block">
-                  <a href="#" className="active">
-                    1
-                  </a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-                </div>
-                <a href="#" className="next">
-                  Next
-                </a>
+                {page < totalPages.totalPages && (
+                  <button className="btn-apply btn--info" onClick={onClickPage}>
+                    Load More...
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
-      <Partner />
+
+      <section className="site-section py-4 mb-5 border-top">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-12 text-center mt-4 mb-5">
+              <div className="row justify-content-center">
+                <div className="col-md-7">
+                  <h2 className="section-title mb-2">
+                    Our Candidates Work In Company
+                  </h2>
+                  <p className="lead">
+                    Porro error reiciendis commodi beatae omnis similique
+                    voluptate rerum ipsam fugit mollitia ipsum facilis expedita
+                    tempora suscipit iste
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_mailchimp.svg"
+                alt="Image"
+                className="img-fluid logo-1"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_paypal.svg"
+                alt="Image"
+                className="img-fluid logo-2"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_stripe.svg"
+                alt="Image"
+                className="img-fluid logo-3"
+              />
+            </div>
+            <div className="col-6 col-lg-3 col-md-6 text-center">
+              <img
+                src="images/logo_visa.svg"
+                alt="Image"
+                className="img-fluid logo-4"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
       <Member />
     </div>
   );

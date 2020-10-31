@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 jQuery(function($) {
 
 	'use strict';
@@ -145,6 +146,7 @@ jQuery(function($) {
 	  function recalc() {
 	  	if ( $('.jm-sticky-top').length > 0 ) {
 		    var elements = $('.jm-sticky-top');
+		    // eslint-disable-next-line no-undef
 		    Stickyfill.add(elements);
 	    }
 	  }
@@ -153,22 +155,22 @@ jQuery(function($) {
 
 
 	// navigation
-  var OnePageNavigation = function() {
-    var navToggler = $('.site-menu-toggle');
-   	$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
-      e.preventDefault();
+//   var OnePageNavigation = function() {
+//     var navToggler = $('.site-menu-toggle');
+//    	$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
+//       e.preventDefault();
 
-      var hash = this.hash;
+//       var hash = this.hash;
 
-      $('html, body').animate({
-        'scrollTop': $(hash).offset().top
-      }, 600, 'easeInOutCirc', function(){
-        window.location.hash = hash;
-      });
+//       $('html, body').animate({
+//         'scrollTop': $(hash).offset().top
+//       }, 600, 'easeInOutCirc', function(){
+//         window.location.hash = hash;
+//       });
 
-    });
-  };
-  OnePageNavigation();
+//     });
+//   };
+//   OnePageNavigation();
 
   var counterInit = function() {
 		if ( $('.section-counter').length > 0 ) {
@@ -235,6 +237,7 @@ jQuery(function($) {
 		];
 
 		if ( $('.editor').length > 0 ) {
+			// eslint-disable-next-line no-undef
 			var quill = new Quill('#editor-1', {
 			  modules: {
 			    toolbar: toolbarOptions,
@@ -242,6 +245,7 @@ jQuery(function($) {
 			  placeholder: 'Compose an epic...',
 			  theme: 'snow'  // or 'bubble'
 			});
+			// eslint-disable-next-line no-undef
 			var quill = new Quill('#editor-2', {
 			  modules: {
 			    toolbar: toolbarOptions,

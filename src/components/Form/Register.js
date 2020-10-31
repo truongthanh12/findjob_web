@@ -55,15 +55,9 @@ const Register = () => {
             timer: 1200,
           });
           console.log(res);
-          history.push("/home");
+          history.push("/login");
+          localStorage.setItem("dataRegisted", (res.config.data));
         } else {
-          swal({
-            title: "Fail",
-            text: "Failed!",
-            button: "OK",
-            icon: "warning",
-            timer: 1200,
-          });
         }
       })
       .catch((error) => {
@@ -142,6 +136,7 @@ const Register = () => {
                       type="text"
                       name="accountID"
                       id="username"
+                      required
                       className="form-control"
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
@@ -156,6 +151,7 @@ const Register = () => {
                       type="password"
                       name="password"
                       id="password"
+                      required
                       className="form-control"
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
@@ -170,6 +166,7 @@ const Register = () => {
                       type="text"
                       name="email"
                       id="email"
+                      required
                       className="form-control"
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
@@ -198,20 +195,7 @@ const Register = () => {
                       </select>
                     </div>
                   </div>
-                  {/* <div className="form-group">
-                    <label htmlFor="cityName" className="text-info">
-                      cityName
-                    </label>
-                    <br />
-                    <input
-                      type="text"
-                      name="cityName"
-                      id="cityName"
-                      className="form-control"
-                      value={dataRegister.accountID}
-                      onChange={(value) => handleChange(value)}
-                    />
-                  </div> */}
+
                   <div className="form-group">
                     <label htmlFor="companyName" className="text-info">
                       companyName
@@ -221,6 +205,7 @@ const Register = () => {
                       type="text"
                       name="companyName"
                       id="companyName"
+                      required
                       className="form-control"
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
@@ -235,6 +220,7 @@ const Register = () => {
                       type="text"
                       name="address"
                       id="address"
+                      required
                       className="form-control"
                       value={dataRegister.accountID}
                       onChange={(value) => handleChange(value)}
@@ -250,6 +236,7 @@ const Register = () => {
                       name="companyDescription"
                       id="companyDescription"
                       cols={30}
+                      required
                       rows={5}
                       className="form-control"
                       value={dataRegister.accountID}

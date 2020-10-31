@@ -1,104 +1,196 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import swal from "sweetalert";
+
 const DescriptionJob = () => {
   // DescriptionJob
+  const history = useHistory();
 
+  const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
   const { id } = useParams();
   const [jobId, setJobId] = useState([]);
-
   useEffect(() => {
     const getJobId = async () => {
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-job-detail?jobID=${id}`
       );
       setJobId(result.data.data);
-      console.log(result.data);
     };
     getJobId();
-  }, []);
-
-  // modal apply
-
-  const [applyForm, setApplyForm] = useState({
-    employeeName: "",
-    email: "",
-    phone: "",
-    coverLetter: "",
-    jobID: "",
-    cv: "",
-  });
-  const handleChangeValue = (e) => {
-    setApplyForm({ ...applyForm, [e.target.name]: e.target.value });
-    console.log(e.target.value)
-  };
-
-  const handleFile = (e) => {
-    setApplyForm({ cv: e.target.files[0] });
-    console.log(e.target.value);
-  };
+  }, [id]);
 
   // apply job
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
-    let new_file = new FormData();
-    new_file.append("employeeName", applyForm.employeeName);
+    const new_file = new FormData();
+    new_file.append("EmployeeName", applyForm.EmployeeName);
     new_file.append("email", applyForm.email);
     new_file.append("phone", applyForm.phone);
     new_file.append("coverLetter", applyForm.coverLetter);
-    new_file.append("jobID", applyForm.jobID);
-    new_file.append("cv", applyForm.cv);
+    new_file.append("jobID", id);
+    new_file.append("CV", applyForm.CV);
 
-    console.log(new_file);
+    axios
+      .post(
+        `https://webjobfinder.azurewebsites.net/api/Employee/Apply-job`,
+        new_file,
+        {
+          headers: {
+            "Content-Type":
+              // eslint-disable-next-line no-template-curly-in-string
+              "multipart/form-data; boundary=${new_file._boundary}",
+            body: "formData",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res) {
+          setApplyForm(!new_file);
+          swal({
+            title: "Success",
+            text: "Post your job!",
+            button: "OK",
+            icon: "success",
+            timer: 1200,
+          });
+        } else {
+        }
+      })
 
-    fetch(
-      `https://webjobfinder.azurewebsites.net/api/Employee/Apply-job?jobID=${id}`,
-      {
-        method: "POST",
-        body: new_file,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `token ${localStorage.getItem("token")}`,
-        },
-      }
-    ).then((res) => {
-      if (res && res.status === 200) {
-        setApplyForm(!applyForm);
-        swal({
-          title: "Success",
-          text: "Post your job!",
-          button: "OK",
-          icon: "success",
-          timer: 1500,
-        });
-        console.log(res);
-      } else {
+      .catch((error) => {
         swal({
           title: "Fail",
           text: "Failed!",
           button: "OK",
           icon: "warning",
-          timer: 1500,
+          timer: 1200,
         });
+      });
+  };
+
+  // Delete
+  const onDelete = () => {
+    swal({
+      title: "Are you sure?",
+      text:
+        "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axios
+          .delete(
+            `https://webjobfinder.azurewebsites.net/api/Job/Delete-job?jobID=${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.data.success) {
+              swal({
+                title: "Success",
+                text: "Post your job!",
+                button: "OK",
+                icon: "success",
+                timer: 1200,
+              });
+              history.push("/home");
+              swal("Poof! Your imaginary file has been deleted!", {
+                timer: 1500,
+                icon: "success",
+              });
+            } else {
+            }
+          });
+      } else {
+        swal("Your imaginary file is safe!", { timer: 1500 });
       }
     });
   };
+
+  // modal apply
+
+  const [applyForm, setApplyForm] = useState({
+    EmployeeName: "",
+    email: "",
+    phone: "",
+    coverLetter: "",
+    jobID: id,
+    CV: null,
+  });
+  const handleChangeValue = (e) => {
+    setApplyForm({ ...applyForm, [e.target.name]: e.target.value });
+  };
+
+  const handleFile = (e) => {
+    setApplyForm({ ...applyForm, [e.target.name]: e.target.files[0] });
+  };
+
+  // getImage
+  const { accountName } = JSON.parse(
+    localStorage.getItem("dataLogged") || "{}"
+  );
+
+  const { accountID } = JSON.parse(
+    localStorage.getItem("dataRegisted") || "{}"
+  );
+  console.log(accountID);
+  const [avatarCompany, setAvatarCompany] = useState({
+    File: null,
+    accountID: accountName,
+  });
+
+  // get api file imgae
+  const [getFile, setGetFile] = useState([]);
+  useEffect(() => {
+    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+
+    const fetchJobApplied = async () => {
+      axios
+        .get(
+          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${accountID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setGetFile(res.data.data);
+          }
+        })
+        .catch((error) => {})
+        .then(function () {
+          // always executed
+        });
+    };
+    fetchJobApplied();
+  }, [accountID]);
+
   return (
     <div>
       <section
         className="home-section section-hero inner-page overlay bg-image"
-        style={{ backgroundImage: 'url("images/hero_1.jpg")' }}
+        style={{ backgroundImage: 'url("/images/hero_1.jpg")' }}
         id="home-section"
       >
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <h1 className="text-white font-weight-bold text-center">
-                {jobId.jobName}
+                {jobId.companyName}
               </h1>
+              <p className="text-center">We are hiring {jobId.jobName}</p>
             </div>
           </div>
         </div>
@@ -106,25 +198,24 @@ const DescriptionJob = () => {
       <section className="site-section">
         <div className="container">
           <div className="row align-items-center mb-5">
-            <div className="col-lg-8 mb-4 mb-lg-0">
+            <div className="col-lg-8 col-12 mb-4 mb-lg-0">
               <div className="d-flex align-items-center">
-                <div className="p-2 d-inline-block mr-3">
-                  <img
-                    style={{ width: "70%" }}
-                    src="https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </div>
-                <div>
+                <img
+                  src={
+                    getFile.image ||
+                    "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                  }
+                  alt="Image"
+                  className="img-fluid pr-5 img-description"
+                />
+                <div className="col-12 info-company-description">
                   <h2>{jobId.companyName}</h2>
                   <div>
-                    <span className="text-primary">{jobId.jobName}</span>
+                    <span className="text-primary">
+                      <span className="icon-briefcase mr-2"></span>
+                      {jobId.jobName}
+                    </span>
                     <br />
-                    {/* <span className="ml-0 mr-2 mb-2">
-                      <span className="icon-briefcase mr-2" />
-                      Puma
-                    </span> */}
                     <span className="text-primary">
                       <span className="icon-room mr-2" />
                       {jobId.city}
@@ -141,12 +232,14 @@ const DescriptionJob = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-12">
               <div className="row">
                 <div className="col-6">
-                  <a href="#" className="btn btn-block btn-light btn-md">
-                    <span className="icon-heart-o mr-2 text-danger" />
-                    Save Job
+                  <a
+                    className="btn btn-block btn-light btn-md"
+                    onClick={onDelete}
+                  >
+                    Delete
                   </a>
                 </div>
                 <div className="col-6">
@@ -178,12 +271,6 @@ const DescriptionJob = () => {
                   Job Description
                 </h3>
                 <p>{jobId.jobDescription}</p>
-                {/* <p>
-                    Velit unde aliquam et voluptas reiciendis non sapiente
-                    labore, deleniti asperiores blanditiis nihil quia officiis
-                    dolor vero iste dolore vel molestiae saepe. Id nisi,
-                    consequuntur sunt impedit quidem, vitae mollitia!
-                  </p> */}
               </div>
               <div className="mb-5">
                 <h3 className="h5 d-flex align-items-center mb-4 text-primary">
@@ -195,29 +282,7 @@ const DescriptionJob = () => {
                     <span className="icon-check_circle mr-2 text-muted" />
                     <span>Necessitatibus quibusdam facilis</span>
                   </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Velit unde aliquam et voluptas reiciendis n Velit unde
-                      aliquam et
-                    </span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>Commodi quae ipsum quas est itaque</span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                    </span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Deleniti asperiores blanditiis nihil quia officiis dolor
-                    </span>
-                  </li>
+                  
                 </ul>
               </div>
               <div className="mb-5">
@@ -237,16 +302,7 @@ const DescriptionJob = () => {
                       labore
                     </span>
                   </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>Commodi quae ipsum quas est itaque</span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                    </span>
-                  </li>
+                  
                   <li className="d-flex align-items-center mb-2">
                     <span className="icon-check_circle mr-2 text-muted" />
                     <span>
@@ -255,41 +311,7 @@ const DescriptionJob = () => {
                   </li>
                 </ul>
               </div>
-              <div className="mb-5">
-                <h3 className="h5 d-flex align-items-center mb-4 text-primary">
-                  <span className="icon-turned_in mr-3" />
-                  Other Benifits
-                </h3>
-                <ul className="list-unstyled m-0 p-0">
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>Necessitatibus quibusdam facilis</span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Velit unde aliquam et voluptas reiciendis non sapiente
-                      labore
-                    </span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>Commodi quae ipsum quas est itaque</span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                    </span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Deleniti asperiores blanditiis nihil quia officiis dolor
-                    </span>
-                  </li>
-                </ul>
-              </div>
+              
             </div>
             <div className="col-lg-5">
               <div className="bg-light p-3 border rounded mb-4">
@@ -391,15 +413,15 @@ const DescriptionJob = () => {
                     <div className="col-md-12">
                       <div className="row form-group">
                         <div className="col-md-12 mb-3">
-                          <label className="text-black" htmlFor="cv">
+                          <label className="text-black" htmlFor="CV">
                             Add Curriculum Vitae
                           </label>
                           <input
                             type="file"
-                            id="cv"
-                            name="cv"
-                            defaultValue={applyForm.cv || ""}
-                            onChange={(value) => handleFile(value)}
+                            id="CV"
+                            name="CV"
+                            defaultValue={applyForm.CV || ""}
+                            onChange={(e) => handleFile(e)}
                           />
                           <div style={{ fontSize: "12px" }}>
                             <strong style={{ color: "red" }}>Note: </strong>-
@@ -421,8 +443,8 @@ const DescriptionJob = () => {
                             type="text"
                             id="lname"
                             className="form-control"
-                            name="employeeName"
-                            value={applyForm.employeeName || ""}
+                            name="EmployeeName"
+                            value={applyForm.EmployeeName || ""}
                             onChange={(value) => handleChangeValue(value)}
                           />
                         </div>
@@ -464,13 +486,13 @@ const DescriptionJob = () => {
                             Job Description
                           </label>
                           <textarea
-                            name="coverletter"
+                            name="coverLetter"
                             id="description"
                             cols={30}
                             rows={8}
                             className="form-control"
                             placeholder="Write your description here..."
-                            value={applyForm.coverletter || ""}
+                            value={applyForm.coverLetter || ""}
                             onChange={(value) => handleChangeValue(value)}
                           />
                         </div>

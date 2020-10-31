@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
@@ -31,6 +31,7 @@ const LoginForm = () => {
       })
       .then((res) => {
         if (res.data.success) {
+          localStorage.setItem("dataLogged", JSON.stringify(res.data.data));
           setDataLogin(!login);
           swal({
             title: "Success",
@@ -39,11 +40,22 @@ const LoginForm = () => {
             icon: "success",
             timer: 1200,
           });
-          localStorage.setItem("dataLogged", JSON.stringify(res.data.data));
-          history.push("/home");
+
+          history.push({
+            pathname: "/home",
+          });
+          
         } else {
+          swal({
+            title: "Fail",
+            text: "Failed!",
+            button: "OK",
+            icon: "warning",
+            timer: 1200,
+          });
         }
       })
+
       .catch((error) => {
         swal({
           title: "Fail",
@@ -53,53 +65,7 @@ const LoginForm = () => {
           timer: 1200,
         });
       });
-
-    // fetch("https://webjobfinder.azurewebsites.net/api/Account/Check", {
-    //   method: "POST",
-    //   body: JSON.stringify(login),
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
-    // }).then((res) => {
-    //   if (res && res.status === 200) {
-    //     setDataLogin(!login);
-    //     swal({
-    //       title: "Success",
-    //       text: "Post your job!",
-    //       button: "OK",
-    //       icon: "success",
-    //       timer: 1200,
-    //     });
-    //     console.log(res);
-    //     localStorage.setItem("res", JSON.stringify(res));
-    //     history.push("/home");
-    //   } else {
-    //     swal({
-    //       title: "Fail",
-    //       text: "Failed!",
-    //       button: "OK",
-    //       icon: "warning",
-    //       timer: 1200,
-    //     });
-    //   }
-    // });
   };
-
-  // const [userData, setUserData] = useState();
-  // useEffect(() => {
-  //   setUserData(localStorage.getItem("userData"));
-  // }, [localStorage.getItem("userData")]);
-  // window.onload = function () {
-  //   if (localStorage) {
-  //     document
-  //       .getElementById("login-form")
-  //       .addEventListener("submit", function () {
-  //         var login = document.getElementById("login").value;
-  //         localStorage.setItem("login", login);
-  //         console.log(login)
-  //       });
-  //   }
-  // };
   return (
     <div className="login-form">
       <div id="login">
@@ -113,14 +79,16 @@ const LoginForm = () => {
                 <form id="login-form" className="form" onSubmit={onSubmit}>
                   <h3 className="text-center text-info">Sign in</h3>
                   <div className="form-group">
-                    <label htmlFor="username" className="text-info">
-                      Username:
-                    </label>
-                    <br />
+                    <div>
+                      <label htmlFor="username" className="text-info">
+                        Username:
+                      </label>
+                    </div>
                     <input
                       type="text"
                       name="accountID"
                       id="accountid"
+                      required
                       className="form-control"
                       value={dataLogin.accountID}
                       onChange={(value) => handleChange(value)}
@@ -132,9 +100,10 @@ const LoginForm = () => {
                     </label>
                     <br />
                     <input
-                      type="text"
+                      type="password"
                       name="password"
                       id="password"
+                      required
                       className="form-control"
                       value={dataLogin.password}
                       onChange={(value) => handleChange(value)}

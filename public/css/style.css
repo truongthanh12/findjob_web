@@ -87,6 +87,7 @@
   color: rgba(255, 255, 255, 0.5);
   display: inline-block;
   text-decoration: none !important;
+  font-weight: 600;
 }
 .site-navbar .site-navigation .site-menu > li > a:hover {
   color: #fff;
@@ -976,6 +977,11 @@ h4 {
 .job-listings .badge {
   color: #fff;
   padding: 4px 10px;
+}
+.badge{
+  line-height:1.3;
+  white-space: unset !important; 
+  text-align: left;
 }
 @media (max-width: 991.98px) {
   .job-listings .custom-width {
@@ -2211,7 +2217,7 @@ h4 {
 .login-form {
   margin: 0;
   padding: 0;
-  background-color: #17a2b8;
+  background-color: #1644ba;
 }
 #login-row {
   padding-bottom: 7rem;
@@ -2268,6 +2274,10 @@ h4 {
 .profile-img img{
     width: 50%;
     height: 100%;
+}
+.profile-img .btn--info{
+  z-index: 999999999;
+  position: relative;
 }
 .profile-img .file {
     position: relative;
@@ -2346,4 +2356,70 @@ h4 {
 .profile-tab p{
     font-weight: 600;
     color: #0062cc;
+}
+
+.bossne{
+  font-weight: bold;
+  border-radius: 100%;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  right: 82%;
+  top: 4%;
+  color: #0062cc;
+}
+
+.containerHomeSection{
+  padding: 0 150px;
+}
+@media (max-width: 991px){
+  .containerHomeSection{
+    padding: 0 100px;
+  }
+}
+@media (max-width: 768px){
+  .containerHomeSection{
+    padding: 0 70px;
+  }
+
+  .profile-work{
+    display: none;
+  }
+}
+@media (max-width: 600px){
+  .containerHomeSection{
+    padding: 0;
+  }
+
+  .mobile-none{
+    display:none !important;
+  }
+
+  .img-fluid{
+    display: block;
+    margin: 0 auto;
+    max-width: 40%;
+  }
+
+  .img-description{
+    width: 150px;
+  }
+
+  h2{
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 768px){
+  .info-company-description{
+    flex: unset;
+  }
+}
+
+.upload-file{
+  z-index: 9999999999;
+  height: 60px;
+}
+.img-description{
+  width: 200px;
 }

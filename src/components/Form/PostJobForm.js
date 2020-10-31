@@ -9,6 +9,7 @@ const PostJobForm = () => {
   const [employeeType, setEmployeeType] = useState([]);
   const [position, setPosition] = useState([]);
   const [salary, setSalary] = useState([]);
+
   const [dataForm, setDataForm] = useState({
     jobName: "",
     jobDescription: "",
@@ -86,7 +87,7 @@ const PostJobForm = () => {
           icon: "success",
           timer: 1500,
         });
-        history.push("/", { postJob: post_job });
+        history.push("/home", { postJob: post_job });
       } else {
         swal({
           title: "Fail",
@@ -97,34 +98,8 @@ const PostJobForm = () => {
         });
       }
     });
-    // console.log(dataFormAddEmail);
-    // fetch("https://webjobfinder.azurewebsites.net/api/Employers/Upload-Img", {
-    //   method: "PUT",
-    //   body: JSON.stringify(post_job),
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // }).then((res) => {
-    //   if (res) {
-    //     setLogoCompany(post_job);
-    //   }
-    // });
-
-    // fetch("https://webjobfinder.azurewebsites.net/api/Employers/Create", {
-    //   method: "POST",
-    //   body: post_job,
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //   },
-    // }).then((res) => {
-    //   if (res) {
-    //     setDataFormAddEmail(!dataFormAddEmail);
-    //   }
-    // });
   };
-
-  //get file image logo company
-
+  
   // get api select
   useEffect(() => {
     const fetchCity = async () => {
@@ -199,28 +174,47 @@ const PostJobForm = () => {
             <div className="row">
               <div className="col-lg-6 mb-5 mb-lg-0">
                 <div className="row form-group">
-                  <div className="col-md-6 mb-3 mb-md-0">
-                    <label className="text-black" htmlFor="logo">
-                      Logo Company
+                  <div className="col-md-12">
+                    <label className="text-black" htmlFor="lname">
+                      Company Name
                     </label>
                     <input
-                      type="file"
-                      id="logo"
-                      name="logo"
-                      onChange={(value) => handleChangeLogo(value)}
+                      type="text"
+                      name="lname"
+                      required
+                      className="form-control"
+                      placeholder="Enter your company name"
+                      value={postJob.jobTitle}
+                      onChange={(value) => handleChangeValue(value)}
                     />
-                    {/* <div style={{ fontSize: "12px" }}>
-                      <strong style={{ color: "red" }}>Note: </strong>- The
-                      system currently supports only one uploaded file in .pdf
-                    </div> */}
                   </div>
-                  <div className="col-md-6">
+                </div>
+                <div className="row form-group">
+                  <div className="col-md-12">
+                    <label className="text-black" htmlFor="lname">
+                      Job Name
+                    </label>
+                    <input
+                      type="text"
+                      name="jobName"
+                      required
+                      className="form-control"
+                      placeholder="Enter your Job Name"
+                      value={postJob.jobName}
+                      onChange={(value) => handleChangeValue(value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="row form-group">
+                  <div className="col-md-12">
                     <label className="text-black" htmlFor="typejob">
                       Job Type
                     </label>
                     <select
                       className="form-control"
                       name="jobTypeName"
+                      required
                       value={postJob.jobTitle}
                       onChange={(value) => handleChangeValue(value)}
                     >
@@ -237,42 +231,12 @@ const PostJobForm = () => {
                 </div>
 
                 <div className="row form-group">
-                  <div className="col-md-12">
-                    <label className="text-black" htmlFor="lname">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      name="lname"
-                      className="form-control"
-                      placeholder="Enter your company name"
-                      value={postJob.jobTitle}
-                      onChange={(value) => handleChangeValue(value)}
-                    />
-                  </div>
-                </div>
-                <div className="row form-group">
-                  <div className="col-md-12">
-                    <label className="text-black" htmlFor="lname">
-                      Job Name
-                    </label>
-                    <input
-                      type="text"
-                      name="jobName"
-                      className="form-control"
-                      placeholder="Enter your Job Name"
-                      value={postJob.jobName}
-                      onChange={(value) => handleChangeValue(value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="row form-group">
                   <div className="col-md-6">
                     <label className="text-black">Employee Type</label>
                     <select
                       className="form-control"
                       name="titleName"
+                      required
                       value={postJob.titleName}
                       onChange={(value) => handleChangeValue(value)}
                     >
@@ -292,6 +256,7 @@ const PostJobForm = () => {
                     <select
                       className="form-control"
                       name="jobCategoryName"
+                      required
                       value={postJob.jobCategoryName}
                       onChange={(value) => handleChangeValue(value)}
                     >
@@ -316,6 +281,7 @@ const PostJobForm = () => {
                       id="jobRequire"
                       cols={30}
                       rows={8}
+                      required
                       className="form-control"
                       placeholder="Write your description here..."
                       value={postJob.jobRequire}
@@ -323,38 +289,9 @@ const PostJobForm = () => {
                     />
                   </div>
                 </div>
-                {/* <div className="row form-group">
-                  <div className="col-md-12">
-                    <label className="text-black" htmlFor="Locate">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      className="form-control"
-                      placeholder="Enter your address"
-                      // value={dataFormAddEmail.address}
-                      // onChange={(value) => handleChangeValue(value)}
-                    />
-                  </div>
-                </div> */}
+                
               </div>
               <div className="col-lg-6">
-                {/* <div className="row form-group">
-                  <div className="col-md-12 mb-3 mb-md-0">
-                    <label className="text-black" htmlFor="email">
-                      Email
-                    </label>
-                    <input
-                      type="text"
-                      name="email"
-                      className="form-control"
-                      placeholder="Enter your email"
-                      // value={postJob.companyName}
-                      // onChange={(value) => handleChangeValue(value)}
-                    />
-                  </div>
-                </div> */}
                 <div className="row form-group">
                   <div className="col-md-12">
                     <label className="text-black" htmlFor="experience">

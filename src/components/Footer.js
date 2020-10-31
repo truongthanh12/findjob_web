@@ -5,7 +5,7 @@ const Footer = () => {
       <footer className="site-footer">
         <div className="container">
           <div className="row mb-5">
-            <div className="col-4 col-md-4 mb-4 mb-md-0">
+            <div className="col-6 col-md-4 mb-4 mb-md-0">
               <h3>Company</h3>
               <ul className="list-unstyled">
                 <li>
@@ -22,7 +22,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div className="col-4 col-md-4 mb-4 mb-md-0">
+            <div className="col-6 col-md-5 mb-4 mb-md-0">
               <h3>Support</h3>
               <ul className="list-unstyled">
                 <li>
@@ -36,7 +36,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div className="col-4 col-md-4 mb-4 mb-md-0">
+            <div className="col-12 col-md-3 mb-4 mb-md-0">
               <h3>Contact Us</h3>
               <div className="footer-social">
                 <a href="#">
@@ -57,13 +57,11 @@ const Footer = () => {
           <div className="row text-center">
             <div className="col-12">
               <p>
-                {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                Copyright © All rights reserved | This template is made with{" "}
-                <i className="icon-heart-o" aria-hidden="true" /> by{" "}
-                <a href="https://colorlib.com" target="_blank">
-                  Colorlib
+                Copyright © All rights reserved | website is built with {" "}
+                <i className="icon-heart-o" aria-hidden="true" /> by {" "}
+                <a href="https://thanh-profile.vercel.app" target="_blank">
+                  TruongThanh
                 </a>
-                {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
               </p>
             </div>
           </div>

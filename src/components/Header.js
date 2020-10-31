@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 
 const Header = () => {
+  const { accountName } = JSON.parse(
+    localStorage.getItem("dataLogged") || "{}"
+  );
+
   const history = useHistory();
 
   const onClickLogOut = () => {
@@ -16,8 +19,8 @@ const Header = () => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        localStorage.clear();
-        history.push("/");
+        localStorage.removeItem("dataLogged");
+        history.push("/login");
         swal({
           title: "Success",
           text: "Logged out!",
@@ -36,26 +39,6 @@ const Header = () => {
       }
     });
   };
-  const colorWhite = {
-    color: "white",
-  };
-
-  const [jobList, setJobList] = useState([]);
-
-  useEffect(() => {
-    const { employerID } = JSON.parse(
-      localStorage.getItem("dataLogged") || "{}"
-    );
-    console.log(employerID);
-
-    const fetchJobList = async () => {
-      const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}`
-      );
-      setJobList(result.data.data);
-    };
-    fetchJobList();
-  }, []);
 
   return (
     <div>
@@ -100,9 +83,8 @@ const Header = () => {
                 className="ml-auto"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <div className="dropdown">
-                  <span
-                    className="pr-3"
+                <div className="dropdown mr-3">
+                  <div
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -118,24 +100,21 @@ const Header = () => {
                       src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
                       alt="avatar"
                     ></img>
-                    {(jobList || []).map((item, index) => {
-                      return (
-                        <span className="dropdown-toggle pl-2 mb-2" key={index}>
-                          {item.companyName}
-                        </span>
-                      );
-                    })}
-                  </span>
+                    <span className="dropdown-toggle pl-2 mb-2">
+                      {accountName}
+                    </span>
+                  </div>
+
                   <div
                     className="dropdown-menu dropdown-menu-right"
                     style={{ marginTop: "10px", width: "70%" }}
                     aria-labelledby="dropdownMenuButton"
                   >
                     <div
-                      className="d-flex justify-content-center align-items-center"
+                      className="d-flex pl-2 align-items-center"
                       style={{
                         borderBottom: "1px solid",
-                        paddingBottom: "6px"
+                        paddingBottom: "6px",
                       }}
                     >
                       <NavLink to="/profile" className="text-black">
@@ -154,7 +133,7 @@ const Header = () => {
                       </NavLink>
                     </div>
                     <div
-                      className="d-flex justify-content-center align-items-center"
+                      className="d-flex pl-2 align-items-center"
                       style={{ paddingTop: "6px" }}
                     >
                       <span
