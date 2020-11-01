@@ -119,7 +119,7 @@ const Register = () => {
                               name="accountID"
                               id="username"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -134,7 +134,7 @@ const Register = () => {
                               name="password"
                               id="password"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -149,7 +149,7 @@ const Register = () => {
                               name="email"
                               id="email"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -161,7 +161,7 @@ const Register = () => {
                               </label>
                               <select
                                 name="cityName"
-                                className="form-control"
+                                className="form-control input-special"
                                 required
                                 value={dataRegister.accountID}
                                 onChange={(value) => handleChange(value)}
@@ -188,7 +188,7 @@ const Register = () => {
                               name="companyName"
                               id="companyName"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -203,7 +203,7 @@ const Register = () => {
                               name="address"
                               id="address"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -223,7 +223,7 @@ const Register = () => {
                               cols={30}
                               required
                               rows={5}
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataRegister.accountID}
                               onChange={(value) => handleChange(value)}
                             />

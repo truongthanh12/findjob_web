@@ -40,7 +40,7 @@ const LoginForm = () => {
             icon: "success",
             timer: 1200,
           });
-          
+
           setDataLogin([...dataLogin], res.data.data);
           history.push({
             pathname: "/",
@@ -101,7 +101,7 @@ const LoginForm = () => {
                               name="accountID"
                               id="accountid"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataLogin.accountID}
                               onChange={(value) => handleChange(value)}
                             />
@@ -116,7 +116,7 @@ const LoginForm = () => {
                               name="password"
                               id="password"
                               required
-                              className="form-control"
+                              className="form-control input-special"
                               value={dataLogin.password}
                               onChange={(value) => handleChange(value)}
                             />
