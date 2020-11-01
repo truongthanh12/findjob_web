@@ -1,14 +1,30 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { NavLink } from "react-router-dom";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
-  const { accountName } = JSON.parse(
+  const { accountName, employerID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
   const history = useHistory();
+
+  // const [infoUser, getInfoUser] = useEffect([])
+  const [jobList, setJobList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  useEffect(() => {
+    const fetchJobList = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
+      );
+      setJobList(result.data.employer);
+      setTotalPages(result.data);
+    };
+    fetchJobList();
+  }, [employerID]);
 
   const onClickLogOut = () => {
     swal({
@@ -20,10 +36,10 @@ const Header = () => {
     }).then((willDelete) => {
       if (willDelete) {
         localStorage.removeItem("dataLogged");
-        history.push("/login");
+        history.push("/")
         swal({
           title: "Success",
-          text: "Logged out!",
+          text: "Post your job!",
           button: "OK",
           icon: "success",
           timer: 1200,
@@ -56,12 +72,12 @@ const Header = () => {
         <div className="container-fluid">
           <div className="row align-items-center">
             <div className="site-logo col-6">
-              <NavLink to="/home">Careers</NavLink>
+              <NavLink to="/">Careers</NavLink>
             </div>
             <nav className="mx-auto site-navigation">
               <ul className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                 <li>
-                  <NavLink exact={true} to="/home">
+                  <NavLink exact={true} to="/">
                     Home
                   </NavLink>
                 </li>
@@ -83,70 +99,104 @@ const Header = () => {
                 className="ml-auto"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <div className="dropdown mr-3">
-                  <div
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "100%",
-                        objectFit: "cover",
-                      }}
-                      src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
-                      alt="avatar"
-                    ></img>
-                    <span className="dropdown-toggle pl-2 mb-2">
-                      {accountName}
-                    </span>
-                  </div>
-
-                  <div
-                    className="dropdown-menu dropdown-menu-right"
-                    style={{ marginTop: "10px", width: "70%" }}
-                    aria-labelledby="dropdownMenuButton"
-                  >
+                {accountName ? (
+                  <div className="dropdown mr-3">
                     <div
-                      className="d-flex pl-2 align-items-center"
-                      style={{
-                        borderBottom: "1px solid",
-                        paddingBottom: "6px",
-                      }}
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      style={{ cursor: "pointer" }}
                     >
-                      <NavLink to="/profile" className="text-black">
-                        <img
-                          style={{
-                            width: "30px",
-                            height: "30px",
-                            borderRadius: "100%",
-                            objectFit: "cover",
-                            marginRight: "10px",
-                          }}
-                          src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
-                          alt="avatar"
-                        ></img>
-                        Profile
-                      </NavLink>
+                      <img
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "100%",
+                          objectFit: "cover",
+                          objectPosition: "center"
+                        }}
+                        src={jobList.image || "https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"}
+                        alt="avatar"
+                      ></img>
+                      <span className="dropdown-toggle pl-2 mb-2">
+                        {accountName}
+                      </span>
                     </div>
+
                     <div
-                      className="d-flex pl-2 align-items-center"
-                      style={{ paddingTop: "6px" }}
+                      className="dropdown-menu dropdown-menu-right"
+                      style={{ marginTop: "10px", width: "70%" }}
+                      aria-labelledby="dropdownMenuButton"
                     >
-                      <span
-                        onClick={onClickLogOut}
-                        className="text-black"
-                        style={{ cursor: "pointer" }}
-                      >
-                        <span className="mr-4 icon-paper-plane" />
-                        Logout
+                      <div>
+                        <div
+                          className="d-flex pl-2 align-items-center"
+                          style={{
+                            borderBottom: "1px solid",
+                            paddingBottom: "6px",
+                          }}
+                        >
+                          <NavLink to="/profile" className="text-black">
+                            <img
+                              style={{
+                                width: "30px",
+                                height: "30px",
+                                borderRadius: "100%",
+                                objectFit: "cover",
+                                marginRight: "10px",
+                              }}
+                              src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
+                              alt="avatar"
+                            ></img>
+                            Profile
+                          </NavLink>
+                        </div>
+                        <NavLink to="/job-posted" className="text-black">
+                        <div
+                          className="d-flex pl-2 align-items-center job-posted"
+                          style={{
+                            borderBottom: "1px solid",
+                            paddingBottom: "6px",
+                            paddingTop: "6px"
+                          }}
+                        >
+                          <span
+                            className="text-black job-posted"
+                          >
+                            <i className="fab fa-ups mr-2 pl-2" style={{fontSize: "22px", color: "#0062cc"}}></i>
+                            Job posted
+                          </span>
+                          </div>
+                        </NavLink>
+                        <div
+                          className="d-flex pl-2 align-items-center"
+                          style={{ paddingTop: "6px" }}
+                        >
+                          <span
+                            onClick={onClickLogOut}
+                            className="text-black"
+                            style={{ cursor: "pointer" }}
+                          >
+                           <i className="fas fa-sign-out-alt mr-2 pl-2" style={{fontSize: "22px"}}></i>
+                            Logout
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="site-navigation" style={{position: "unset", left: "unset", transform: "unset"}}>
+                    <div className="site-menu js-clone-nav d-none d-xl-block log-group">
+                      <span className="pr-3">
+                        <NavLink to="/login">Login</NavLink>
+                      </span>
+
+                      <span>
+                        <NavLink to="/register">Register</NavLink>
                       </span>
                     </div>
                   </div>
-                </div>
+                )}
                 {/* <NavLink
                   style={colorWhite}
                   to="/login"
@@ -159,7 +209,7 @@ const Header = () => {
 
                 <NavLink
                   to="/post-a-job"
-                  className="btn btn-primary border-width-2 d-none d-lg-inline-block"
+                  className="btn btn-primary border-width-2 d-none d-lg-inline-block ml-2"
                 >
                   <span className="mr-2 icon-paper-plane" />
                   Post a job

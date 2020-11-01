@@ -1,4 +1,5 @@
 import React from 'react'
+import BackTop from './BackTop'
 
 const About = () => {
     return (
@@ -130,6 +131,7 @@ const About = () => {
             </div>
           </div>
         </section>
+        <BackTop />
       </div>
     );
 }

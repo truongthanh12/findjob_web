@@ -2198,13 +2198,19 @@ h4 {
   opacity: 0.8;
 }
 
-/* login  */
-.login-form{
-  z-index: 9999999;
-  position: relative;
+.password-special:disabled {
+  background: #fff;
+  border: none;
+  min-width: 50px;
+  max-width: 250px;
+  width: 50px;
+  text-align: center;
+  font-size: 20px;
 }
+
+/* login  */
 #login .container #login-row #login-column #login-box {
-  margin-top: 70px;
+  margin-top: 120px;
   max-width: 600px;
   height: max-content;
   border: 1px solid #9c9c9c;
@@ -2402,7 +2408,7 @@ h4 {
   }
 
   .img-description{
-    width: 150px;
+    display:none;
   }
 
   h2{
@@ -2422,4 +2428,27 @@ h4 {
 }
 .img-description{
   width: 200px;
+}
+
+/* back to top  */
+/* .btn-backtop{
+  border-radius: 2px;
+  padding: 5px;
+  background-color: #0062cc;
+} */
+.fas{
+  font-size: 35px;
+  color: #0062cc;
+  cursor: pointer;
+}
+.log-group span a{
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+}
+.site-navbar .site-navigation .log-group a:hover{
+  color: #fff;
+  text-decoration: underline !important;
+}
+.job-posted{
+  text-decoration: none !important;
 }

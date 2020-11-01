@@ -31,20 +31,19 @@ const LoginForm = () => {
       })
       .then((res) => {
         if (res.data.success) {
-          localStorage.setItem("dataLogged", JSON.stringify(res.data.data));
-          setDataLogin(!login);
+          setDataLogin(loginForm);
           swal({
             title: "Success",
-            text: "Post your job!",
+            text: "Login success!",
             button: "OK",
             icon: "success",
             timer: 1200,
           });
-
-          history.push({
-            pathname: "/home",
-          });
           
+          setDataLogin([...dataLogin], res.data.data);
+          history.push({
+            pathname: "/",
+          });
         } else {
           swal({
             title: "Fail",
@@ -67,80 +66,96 @@ const LoginForm = () => {
       });
   };
   return (
-    <div className="login-form">
-      <div id="login">
+    <div>
+      <section
+        className="home-section section-hero inner-page overlay bg-image"
+        style={{ backgroundImage: 'url("/images/hero_1.jpg")' }}
+        id="home-section"
+      >
         <div className="container">
-          <div
-            id="login-row"
-            className="row justify-content-center align-items-center "
-          >
-            <div id="login-column" className="col-md-6">
-              <div id="login-box" className="col-md-12">
-                <form id="login-form" className="form" onSubmit={onSubmit}>
-                  <h3 className="text-center text-info">Sign in</h3>
-                  <div className="form-group">
-                    <div>
-                      <label htmlFor="username" className="text-info">
-                        Username:
-                      </label>
+          <div className="row align-items-center justify-content-center">
+            <div className="col-md-12">
+              <div>
+                <div className="container">
+                  <div
+                    id="login-row"
+                    className="row justify-content-center align-items-center "
+                  >
+                    <div id="login-column" className="col-md-6">
+                      <div id="login-box" className="col-md-12">
+                        <form
+                          id="login-form"
+                          className="form"
+                          onSubmit={onSubmit}
+                        >
+                          <h2 className="text-center text-info">Sign in</h2>
+                          <div className="form-group">
+                            <div>
+                              <label htmlFor="username" className="text-info">
+                                Username:
+                              </label>
+                            </div>
+                            <input
+                              type="text"
+                              name="accountID"
+                              id="accountid"
+                              required
+                              className="form-control"
+                              value={dataLogin.accountID}
+                              onChange={(value) => handleChange(value)}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="password" className="text-info">
+                              Password:
+                            </label>
+                            <br />
+                            <input
+                              type="password"
+                              name="password"
+                              id="password"
+                              required
+                              className="form-control"
+                              value={dataLogin.password}
+                              onChange={(value) => handleChange(value)}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="remember-me" className="text-info">
+                              <span>Remember me</span>&nbsp;
+                              <span>
+                                <input
+                                  id="remember-me"
+                                  name="remember-me"
+                                  type="checkbox"
+                                />
+                              </span>
+                            </label>
+                            <br />
+                            <input
+                              style={{ margin: "auto", display: "block" }}
+                              type="submit"
+                              name="SUBMIT"
+                              className="btn btn-info btn-md"
+                              defaultValue="submit"
+                            />
+                          </div>
+                          <div id="register-link" className="text-center pr-2">
+                            You don't have accout! {""}
+                            <NavLink to="/register" className="text-info">
+                              {""}Sign up
+                            </NavLink>
+                          </div>
+                        </form>
+                      </div>
                     </div>
-                    <input
-                      type="text"
-                      name="accountID"
-                      id="accountid"
-                      required
-                      className="form-control"
-                      value={dataLogin.accountID}
-                      onChange={(value) => handleChange(value)}
-                    />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="password" className="text-info">
-                      Password:
-                    </label>
-                    <br />
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      required
-                      className="form-control"
-                      value={dataLogin.password}
-                      onChange={(value) => handleChange(value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="remember-me" className="text-info">
-                      <span>Remember me</span>&nbsp;
-                      <span>
-                        <input
-                          id="remember-me"
-                          name="remember-me"
-                          type="checkbox"
-                        />
-                      </span>
-                    </label>
-                    <br />
-                    <input
-                      style={{ margin: "auto", display: "block" }}
-                      type="submit"
-                      name="SUBMIT"
-                      className="btn btn-info btn-md"
-                      defaultValue="submit"
-                    />
-                  </div>
-                  <div id="register-link" className="text-center pr-2">
-                    You don't have accout!
-                    <NavLink to="/register" className="text-info">
-                      Sign up
-                    </NavLink>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

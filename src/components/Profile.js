@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
+import BackTop from "./BackTop";
 
 const Profile = () => {
-  const { accountName } = JSON.parse(
+  const { accountName, employerID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
-  const {
-    companyName,
-    accountID,
-    cityName,
-    email,
-    address,
-    companyDescription,
-  } = JSON.parse(localStorage.getItem("dataRegisted") || "{}");
+  const { accountID } = JSON.parse(
+    localStorage.getItem("dataRegisted") || "{}"
+  );
 
   const [avatarCompany, setAvatarCompany] = useState({
     File: null,
@@ -29,7 +25,7 @@ const Profile = () => {
     const fetchJobApplied = async () => {
       axios
         .get(
-          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${accountID}`,
+          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${avatarCompany.accountID}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -63,7 +59,6 @@ const Profile = () => {
     new_file.append("File", avatarCompany.File);
     new_file.append("accountID", avatarCompany.accountID);
 
-    console.log(new_file);
     axios
       .post(
         `https://webjobfinder.azurewebsites.net/api/Employers/Upload-Image`,
@@ -77,7 +72,7 @@ const Profile = () => {
       )
       .then((res) => {
         if (res) {
-          setAvatarCompany(res.data.data)
+          setAvatarCompany(res.data.data);
           setGetFile(getFile);
           swal({
             title: "Success",
@@ -101,7 +96,26 @@ const Profile = () => {
       });
   };
 
-  // change state
+  // get job by employerID
+  const [jobList, setJobList] = useState([]);
+  const [totalJob, setTotalJob] = useState([]);
+  // pagination load more
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  useEffect(() => {
+    const fetchJobList = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
+      );
+      setJobList(result.data.employer);
+      setTotalJob(result.data);
+      setTotalPages(result.data);
+    };
+    fetchJobList();
+  }, [employerID]);
+
+  // change status
   const [changeStatus, setChangeStatus] = useState({ editing: false });
 
   const upload = () => {
@@ -116,7 +130,10 @@ const Profile = () => {
       return (
         <div>
           <img
-            src={getFile.image || 'https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png'}
+            src={
+              jobList.image ||
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
             alt="user avatar"
           />
           <div className="file btn btn-lg btn-primary">
@@ -136,7 +153,10 @@ const Profile = () => {
       return (
         <div>
           <img
-            src={getFile.image || 'https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png'}
+            src={
+              jobList.image ||
+              "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+            }
             alt="user avatar"
           />
           <div className="file btn btn-lg btn-primary">
@@ -172,7 +192,7 @@ const Profile = () => {
     <div>
       <section
         className="home-section section-hero inner-page overlay bg-image"
-        style={{ backgroundImage: 'url("images/hero_1.jpg")' }}
+        style={{ backgroundImage: 'url("/images/hero_1.jpg")' }}
         id="home-section"
       >
         <div className="container">
@@ -192,16 +212,22 @@ const Profile = () => {
       <div className="container emp-profile">
         <div className="row">
           <div className="col-md-4">
-            <div className="profile-img">
-              {showUpload()}
-            </div>
+            <div className="profile-img">{showUpload()}</div>
           </div>
           <div className="col-md-6">
             <div className="profile-head">
-              <h5>{accountID || ""}</h5>
-              <h6>{companyName || ""}</h6>
+              {/* <h5>{accountID || ""} (
+                <input
+                  type="password"
+                  disabled="disabled"
+                  className="password-special"
+                  value={jobList.password}
+                />
+                )</h5> */}
+              <h5>{jobList.accountID}</h5>
+              <h6>{jobList.companyName || ""}</h6>
               <span className="icon-room pr-2" />
-              {cityName || ""}
+              {jobList.cityName || ""}
               <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item">
                   <a
@@ -260,7 +286,7 @@ const Profile = () => {
                     <label>User Id</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{accountID || ""}</p>
+                    <p>{jobList.accountID || ""}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -268,7 +294,7 @@ const Profile = () => {
                     <label>Name</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{companyName || ""}</p>
+                    <p>{jobList.companyName || ""}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -276,7 +302,7 @@ const Profile = () => {
                     <label>Email</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{email || ""}</p>
+                    <p>{jobList.email || ""}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -284,7 +310,7 @@ const Profile = () => {
                     <label>Address</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{address || ""}</p>
+                    <p>{jobList.address || ""}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -292,7 +318,7 @@ const Profile = () => {
                     <label>Description about company</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{companyDescription || ""}</p>
+                    <p>{jobList.companyDescription || ""}</p>
                   </div>
                 </div>
               </div>
@@ -347,6 +373,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <BackTop />
     </div>
   );
 };

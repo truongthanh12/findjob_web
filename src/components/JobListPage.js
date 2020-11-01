@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Member from "./Member";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import BackTop from "./BackTop";
 
 const JobList = () => {
   const [jobList, setJobList] = useState([]);
@@ -17,13 +18,12 @@ const JobList = () => {
         `https://webjobfinder.azurewebsites.net/api/Job/Get-all_jobs?page=${page}`
       );
       setJobList(result.data.data);
-      // setPage(result.data);
       setTotalJob(result.data);
       console.log(result.data);
       setTotalPages(result.data);
     };
     fetchJobList();
-  }, []);
+  }, [page]);
 
   const onClickPage = () => {
     setPage(page + 1);
@@ -54,6 +54,23 @@ const JobList = () => {
     accountID: accountName,
   });
 
+
+  // back to top 
+
+const [showScroll, setShowScroll] = useState(false)
+const checkScrollTop = () => {    
+   if (!showScroll && window.pageYOffset > 400){
+      setShowScroll(true)    
+   } else if (showScroll && window.pageYOffset <= 400){
+      setShowScroll(false)    
+   }  
+};
+const scrollTop = () =>{
+  window.scrollTo({top: 0, behavior: 'smooth'});
+};
+
+window.addEventListener('scroll', checkScrollTop)
+
   // get api file imgae
   const [getFile, setGetFile] = useState([]);
   useEffect(() => {
@@ -62,7 +79,7 @@ const JobList = () => {
     const fetchJobApplied = async () => {
       axios
         .get(
-          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${accountID}`,
+          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${avatarCompany.accountID}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -80,7 +97,7 @@ const JobList = () => {
         });
     };
     fetchJobApplied();
-  }, [accountID]);
+  }, [accountID, avatarCompany.accountID]);
 
   return (
     <div>
@@ -101,89 +118,94 @@ const JobList = () => {
         </div>
       </section>
 
-      <section className="site-section">
+      <section className="site-section" id="searchResults">
         <div className="container">
           <div className="row mb-5 justify-content-center">
             <div className="col-md-7 text-center">
               <h2 className="section-title mb-2">
                 {jobList.length === 0 ? (
-                  "No job yet! Add now"
+                  "Can't find what you are looking for"
                 ) : (
                   <div>{totalJob.totalRecord} career opportunities </div>
                 )}
               </h2>
             </div>
           </div>
-          {(jobList || []).map((item, index) => {
-            return (
-              <div className="mb-5" key={index}>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
-                    <img
-                      src={
-                        getFile.image ||
-                        "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
-                      }
-                      alt="Image"
-                      className="img-fluid"
-                    />
-                  </div>
+          <div>
+            {(jobList || []).map((item, index) => {
+              return (
+                <div className="mb-5" key={index}>
+                  <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                    <div className="col-md-2">
+                      <img
+                        src={
+                          item.image ||
+                          "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                        }
+                        alt="Image"
+                        className="img-fluid"
+                      />
+                    </div>
 
-                  <div className="col-md-4">
-                    <span className="badge badge-primary px-2 py-1 mb-3">
-                      {item.companyName || ""}
-                    </span>
-                    <h2>
-                      <NavLink to={`/job-detail/${item.jobID}`}>
-                        <span className="icon-briefcase mr-2" />{" "}
-                        {item.jobName || ""}
-                      </NavLink>
-                    </h2>
-                    <h2 className="my-2">
-                      <NavLink to={`/job-detail/${item.jobID}`}>
-                        <span className="icon-room pr-2" /> {item.city || ""}
-                      </NavLink>
-                    </h2>
-                    <p className="meta">
-                      <strong>Post: {item.postDate || ""}</strong>
-                      <br />
-                      <strong>Due Date: {item.requireDate || ""}</strong>
-                    </p>
-                  </div>
-                  <div className="col-md-3 p-4">
-                    Experience: {item.experience || ""}
-                    <p>
+                    <div className="col-md-4">
+                      <span className="badge badge-primary px-2 py-1 mb-3">
+                        {item.companyName || ""}
+                      </span>
+                      <h2>
+                        <NavLink to={`/job-detail/${item.jobID}`}>
+                          <span className="icon-briefcase mr-2" />{" "}
+                          {item.jobName || ""}
+                        </NavLink>
+                      </h2>
+                      <h2 className="my-2">
+                        <NavLink to={`/job-detail/${item.jobID}`}>
+                          <span className="icon-room pr-2" /> {item.city || ""}
+                        </NavLink>
+                      </h2>
+                      <p className="meta">
+                        <strong>Post: {item.postDate || ""}</strong>
+                        <br />
+                        <strong>Due Date: {item.requireDate || ""}</strong>
+                      </p>
+                    </div>
+                    <div className="col-md-3 p-4">
+                      Experience: {item.experience || ""}
+                      <p style={{ marginBottom: 0 }}>
+                        <strong className="text-black">
+                          {item.jobType || ""}
+                        </strong>
+                      </p>
                       <strong className="text-black">
                         {item.salary || ""}
                       </strong>
-                    </p>
-                  </div>
-                  <div className="col-md-3 text-md-right mt-3">
-                    <p>
-                      <NavLink to={`/job-detail/${item.jobID}`}>
-                        <button className="btn-apply btn--info">
-                          Detail Job
-                        </button>
-                      </NavLink>
-                    </p>
-                    <p>
-                      <NavLink to={`/job-applied/${item.jobID}`}>
-                        <button className="btn-apply btn--apply">
-                          Aplied list
-                        </button>
-                      </NavLink>
-                    </p>
+                    </div>
+                    <div className="col-md-3 text-md-right mt-3">
+                      <p>
+                        <NavLink to={`/job-detail/${item.jobID}`}>
+                          <button className="btn-apply btn--info">
+                            Detail Job
+                          </button>
+                        </NavLink>
+                      </p>
+                      {/* <p>
+                        <NavLink to={`/job-applied/${item.jobID}`}>
+                          <button className="btn-apply btn--apply">
+                            Aplied list
+                          </button>
+                        </NavLink>
+                      </p> */}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
           <div className="row pagination-wrap">
             <div className="col-md-12 text-center">
               <div className="custom-pagination ml-auto">
                 {page < totalPages.totalPages && (
                   <button className="btn-apply btn--info" onClick={onClickPage}>
-                    Load More...
+                    Job More...
                   </button>
                 )}
               </div>
@@ -240,6 +262,7 @@ const JobList = () => {
           </div>
         </div>
       </section>
+      <BackTop />
       <Member />
     </div>
   );

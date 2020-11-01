@@ -6,7 +6,7 @@ const NotFound = () => {
     <div>
       <section
         className="home-section section-hero inner-page overlay bg-image"
-        style={{ backgroundImage: 'url("images/hero_1.jpg")' }}
+        style={{ backgroundImage: 'url("/images/hero_1.jpg")' }}
         id="home-section"
       >
         <div className="container">
@@ -19,11 +19,11 @@ const NotFound = () => {
 
                 <p>
                   You can look for more at{" "}
-                  <NavLink to="/home" style={{ color: "white" }}>
+                  <NavLink to="/" style={{ color: "white" }}>
                     home
                   </NavLink>
                 </p>
-                <NavLink to="/home">
+                <NavLink to="/">
                   <button className="btn-apply btn--apply">Back Home</button>
                 </NavLink>
               </div>

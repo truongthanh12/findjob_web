@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import BackTop from "./BackTop";
 
 const ApplyList = () => {
   const { id } = useParams();
@@ -122,6 +123,7 @@ const ApplyList = () => {
           </div>
         </div>
       </section>
+      <BackTop />
     </div>
   );
 };

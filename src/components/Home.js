@@ -5,7 +5,7 @@ import Member from "./Member";
 import axios from "axios";
 import swal from "sweetalert";
 import { NavLink } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import BackTop from "./BackTop";
 
 const Home = () => {
   const [cityName, setCityName] = useState([]);
@@ -13,7 +13,6 @@ const Home = () => {
   const [salary, setSalary] = useState([]);
   const [totalJob, setTotalJob] = useState([]);
 
-  const history = useHistory();
   // search
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
@@ -53,19 +52,11 @@ const Home = () => {
       .then((res) => {
         if (res && res.status === 200) {
           setSearchResults(res.data.data);
-          swal({
-            title: "Success",
-            text: "Post your job!",
-            button: "OK",
-            icon: "success",
-            timer: 1500,
-          });
+
           window.scroll({
             top: 900,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
-          // let elements = document.getElementById("searchResult");
-          // elements.scrollIntoView({ behavior: "smooth" });
         } else {
           swal({
             title: "Fail",
@@ -77,7 +68,7 @@ const Home = () => {
         }
       });
   };
-
+ 
   // getImage
   const { accountName } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
@@ -100,7 +91,7 @@ const Home = () => {
     const fetchJobApplied = async () => {
       axios
         .get(
-          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${accountID}`,
+          `https://webjobfinder.azurewebsites.net/api/Employee/Get-image-by-AccountID?AccountID=${avatarCompany.accountID}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -118,7 +109,7 @@ const Home = () => {
         });
     };
     fetchJobApplied();
-  }, [accountID]);
+  }, [avatarCompany.accountID]);
 
   // get api select
   useEffect(() => {
@@ -312,7 +303,7 @@ const Home = () => {
                     <div className="col-md-2">
                       <img
                         src={
-                          getFile.image ||
+                          item.image ||
                           "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
                         }
                         alt="Image"
@@ -343,11 +334,14 @@ const Home = () => {
                     </div>
                     <div className="col-md-3 p-4">
                       Experience: {item.experience || ""}
-                      <p>
+                      <p style={{ marginBottom: 0 }}>
                         <strong className="text-black">
-                          {item.salary || ""}
+                          {item.jobType || ""}
                         </strong>
                       </p>
+                      <strong className="text-black">
+                        {item.salary || ""}
+                      </strong>
                     </div>
                     <div className="col-md-3 text-md-right mt-3">
                       <p>
@@ -357,13 +351,13 @@ const Home = () => {
                           </button>
                         </NavLink>
                       </p>
-                      <p>
+                      {/* <p>
                         <NavLink to={`/job-applied/${item.jobID}`}>
                           <button className="btn-apply btn--apply">
                             Aplied list
                           </button>
                         </NavLink>
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>
@@ -433,6 +427,7 @@ const Home = () => {
         </div>
       </section>
       <Member />
+      <BackTop />
     </div>
   );
 };

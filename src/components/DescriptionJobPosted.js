@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -10,9 +9,7 @@ const DescriptionJob = () => {
   // DescriptionJob
   const history = useHistory();
 
-  const { token, employerID } = JSON.parse(
-    localStorage.getItem("dataLogged") || "{}"
-  );
+  const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
   const { id } = useParams();
   const [jobId, setJobId] = useState([]);
   useEffect(() => {
@@ -21,62 +18,9 @@ const DescriptionJob = () => {
         `https://webjobfinder.azurewebsites.net/api/Job/Get-job-detail?jobID=${id}`
       );
       setJobId(result.data.data);
-      console.log(result.data.data);
     };
     getJobId();
   }, [id]);
-
-  // apply job
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
-
-    const new_file = new FormData();
-    new_file.append("EmployeeName", applyForm.EmployeeName);
-    new_file.append("email", applyForm.email);
-    new_file.append("phone", applyForm.phone);
-    new_file.append("coverLetter", applyForm.coverLetter);
-    new_file.append("jobID", id);
-    new_file.append("CV", applyForm.CV);
-
-    axios
-      .post(
-        `https://webjobfinder.azurewebsites.net/api/Employee/Apply-job`,
-        new_file,
-        {
-          headers: {
-            "Content-Type":
-              // eslint-disable-next-line no-template-curly-in-string
-              "multipart/form-data; boundary=${new_file._boundary}",
-            body: "formData",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        if (res) {
-          setApplyForm(!new_file);
-          swal({
-            title: "Success",
-            text: "Applied success! Good luck",
-            button: "OK",
-            icon: "success",
-            timer: 2000,
-          });
-        } else {
-        }
-      })
-
-      .catch((error) => {
-        swal({
-          title: "Fail",
-          text: "Failed!",
-          button: "OK",
-          icon: "warning",
-          timer: 1200,
-        });
-      });
-  };
 
   // Delete
   const onDelete = () => {
@@ -107,7 +51,7 @@ const DescriptionJob = () => {
                 icon: "success",
                 timer: 1200,
               });
-              history.push("/");
+              history.push("/job-posted");
               swal("Poof! Your imaginary file has been deleted!", {
                 timer: 1500,
                 icon: "success",
@@ -120,35 +64,6 @@ const DescriptionJob = () => {
       }
     });
   };
-
-  // modal apply
-
-  const [applyForm, setApplyForm] = useState({
-    EmployeeName: "",
-    email: "",
-    phone: "",
-    coverLetter: "",
-    jobID: id,
-    CV: null,
-  });
-  const handleChangeValue = (e) => {
-    setApplyForm({ ...applyForm, [e.target.name]: e.target.value });
-  };
-
-  const handleFile = (e) => {
-    setApplyForm({ ...applyForm, [e.target.name]: e.target.files[0] });
-  };
-
-  
-  // getImage
-  const { accountName } = JSON.parse(
-    localStorage.getItem("dataLogged") || "{}"
-  );
-
-  const [avatarCompany, setAvatarCompany] = useState({
-    File: null,
-    accountID: accountName,
-  });
 
   const saveJob = () => {
     swal({
@@ -180,7 +95,7 @@ const DescriptionJob = () => {
       <section className="site-section">
         <div className="container">
           <div className="row align-items-center mb-5">
-            <div className="col-lg-8 col-12 mb-4 mb-lg-0">
+            <div className="col-lg-10 col-12 mb-4 mb-lg-0">
               <div className="d-flex align-items-center">
                 <img
                   src={jobId.image}
@@ -211,27 +126,17 @@ const DescriptionJob = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-12">
+            <div className="col-lg-2 col-12">
               <div className="row">
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-light btn-md"
-                      onClick={saveJob}
-                    >
-                      <span className="icon-heart-o mr-2 text-danger"></span>
-                      Save Job
-                    </a>
-                  </div>
-                <div className="col-6">
-                  <a
-                    href="#"
-                    className="btn btn-block btn-primary btn-md"
-                    data-toggle="modal"
-                    data-target="#AcceptModal"
-                  >
-                    Apply Now
-                  </a>
-                </div>
+                <a
+                  style={{ color: "#fff", cursor: "pointer" }}
+                  onClick={onDelete}
+                  className="btn btn-block btn-primary btn-md"
+                  data-toggle="modal"
+                  data-target="#AcceptModal"
+                >
+                  Delete
+                </a>
               </div>
             </div>
           </div>
@@ -368,139 +273,6 @@ const DescriptionJob = () => {
           </div>
         </div>
       </section>
-      {/* Modal apply*/}
-      <div
-        className="modal fade"
-        id="AcceptModal"
-        tabIndex={-1}
-        role="dialog"
-        aria-labelledby="AcceptModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <form action="post" onSubmit={handleSubmit}>
-              <div className="modal-header">
-                <h5 className="modal-title" id="AcceptModalLabel">
-                  Submit Curriculum Vitae Form
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="row form-group">
-                        <div className="col-md-12 mb-3">
-                          <label className="text-black" htmlFor="CV">
-                            Add Curriculum Vitae
-                          </label>
-                          <input
-                            type="file"
-                            id="CV"
-                            name="CV"
-                            defaultValue={applyForm.CV || ""}
-                            onChange={(e) => handleFile(e)}
-                          />
-                          <div style={{ fontSize: "13px" }}>
-                            <strong style={{ color: "red" }}>Note: </strong>-
-                            The system currently supports only one uploaded file
-                            in <span style={{ fontWeight: "bold" }}>.pdf</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row form-group">
-                        <div className="col-md-12">
-                          <label
-                            className="text-black"
-                            name="fullname"
-                            htmlFor="fullname"
-                          >
-                            Full Name
-                          </label>
-                          <input
-                            type="text"
-                            id="lname"
-                            className="form-control"
-                            name="EmployeeName"
-                            value={applyForm.EmployeeName || ""}
-                            onChange={(value) => handleChangeValue(value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="row form-group">
-                        <div className="col-md-12">
-                          <label className="text-black" htmlFor="phone">
-                            Phone
-                          </label>
-                          <input
-                            type="text"
-                            id="phone"
-                            className="form-control"
-                            name="phone"
-                            value={applyForm.phone || ""}
-                            onChange={(value) => handleChangeValue(value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="row form-group">
-                        <div className="col-md-12">
-                          <label className="text-black" htmlFor="Locate">
-                            Email
-                          </label>
-                          <input
-                            type="text"
-                            id="Locate"
-                            className="form-control"
-                            name="email"
-                            value={applyForm.email || ""}
-                            onChange={(value) => handleChangeValue(value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row form-group">
-                        <div className="col-md-12">
-                          <label className="text-black" htmlFor="description">
-                            Job Description
-                          </label>
-                          <textarea
-                            name="coverLetter"
-                            id="description"
-                            cols={30}
-                            rows={8}
-                            className="form-control"
-                            placeholder="Write your description here..."
-                            value={applyForm.coverLetter || ""}
-                            onChange={(value) => handleChangeValue(value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button className="btn-apply btn--info">Cancel</button>
-                <button
-                  className="btn-apply btn--apply"
-                  data-toggle="modal"
-                  data-target="#AcceptModal"
-                >
-                  accept
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
 
       <BackTop />
     </div>
