@@ -59,7 +59,7 @@ const PostJobForm = () => {
     const { employerID, token } = JSON.parse(
       localStorage.getItem("dataLogged") || "{}"
     );
-    console.log(employerID);
+    
     const post_job = {
       jobName: dataForm.jobName,
       jobDescription: [dataForm.jobDescription],
@@ -75,7 +75,6 @@ const PostJobForm = () => {
       logo: dataForm.logo,
       jobTitle: dataForm.jobTitle,
     };
-    console.log(post_job);
 
     fetch("https://webjobfinder.azurewebsites.net/api/Job/Add-jobs", {
       method: "POST",

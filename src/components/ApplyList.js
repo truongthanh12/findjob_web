@@ -25,7 +25,6 @@ const ApplyList = () => {
         .then((res) => {
           if (res.data.success) {
             setJobApplied(res.data.data);
-            console.log(res);
           }
         })
         .catch((error) => {})

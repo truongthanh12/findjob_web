@@ -98,7 +98,10 @@ const DescriptionJob = () => {
             <div className="col-lg-10 col-12 mb-4 mb-lg-0">
               <div className="d-flex align-items-center">
                 <img
-                  src={jobId.image}
+                  src={
+                    jobId.image ||
+                    "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                  }
                   alt="Image"
                   className="img-fluid pr-5 img-description"
                 />

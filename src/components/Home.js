@@ -37,7 +37,6 @@ const Home = () => {
       salary: searchTerm.salary,
       page: searchTerm.page,
     };
-    console.log(search_job);
     axios
       .post(
         `https://webjobfinder.azurewebsites.net/api/Job/Filter-list-job`,
@@ -77,7 +76,7 @@ const Home = () => {
   const { accountID } = JSON.parse(
     localStorage.getItem("dataRegisted") || "{}"
   );
-  console.log(accountID);
+ 
   const [avatarCompany, setAvatarCompany] = useState({
     File: null,
     accountID: accountName,
@@ -154,7 +153,6 @@ const Home = () => {
       setSearchResults(result.data.data);
       // setPage(result.data);
       setTotalJob(result.data);
-      console.log(result.data);
       setTotalPages(result.data);
     };
     fetchJobList();

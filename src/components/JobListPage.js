@@ -19,7 +19,6 @@ const JobList = () => {
       );
       setJobList(result.data.data);
       setTotalJob(result.data);
-      console.log(result.data);
       setTotalPages(result.data);
     };
     fetchJobList();
@@ -48,7 +47,7 @@ const JobList = () => {
   const { accountID } = JSON.parse(
     localStorage.getItem("dataRegisted") || "{}"
   );
-  console.log(accountID);
+  
   const [avatarCompany, setAvatarCompany] = useState({
     File: null,
     accountID: accountName,

@@ -21,7 +21,6 @@ const DescriptionJob = () => {
         `https://webjobfinder.azurewebsites.net/api/Job/Get-job-detail?jobID=${id}`
       );
       setJobId(result.data.data);
-      console.log(result.data.data);
     };
     getJobId();
   }, [id]);
@@ -182,7 +181,10 @@ const DescriptionJob = () => {
             <div className="col-lg-8 col-12 mb-4 mb-lg-0">
               <div className="d-flex align-items-center">
                 <img
-                  src={jobId.image}
+                  src={
+                    jobId.image ||
+                    "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                  }
                   alt="Image"
                   className="img-fluid pr-5 img-description"
                 />

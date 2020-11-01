@@ -23,7 +23,6 @@ const PostedJob = () => {
         `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
       );
       setJobList(result.data.listJob);
-      console.log(result.data);
       setTotalJob(result.data);
       setTotalPages(result.data);
       setGetAvatar(result.data.employer);
