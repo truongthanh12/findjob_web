@@ -349,13 +349,6 @@ const Home = () => {
                           </button>
                         </NavLink>
                       </p>
-                      {/* <p>
-                        <NavLink to={`/job-applied/${item.jobID}`}>
-                          <button className="btn-apply btn--apply">
-                            Aplied list
-                          </button>
-                        </NavLink>
-                      </p> */}
                     </div>
                   </div>
                 </div>

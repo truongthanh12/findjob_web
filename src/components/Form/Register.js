@@ -54,7 +54,7 @@ const Register = () => {
             icon: "success",
             timer: 1200,
           });
-          console.log(res);
+          
           history.push("/login");
           localStorage.setItem("dataRegisted", res.config.data);
         } else {

@@ -31,6 +31,7 @@ const LoginForm = () => {
       })
       .then((res) => {
         if (res.data.success) {
+          localStorage.setItem("dataLogged", JSON.stringify(res.data.data));
           setDataLogin(loginForm);
           swal({
             title: "Success",
