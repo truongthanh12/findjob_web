@@ -139,7 +139,6 @@ const DescriptionJob = () => {
     setApplyForm({ ...applyForm, [e.target.name]: e.target.files[0] });
   };
 
-  
   // getImage
   const { accountName } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
@@ -213,15 +212,15 @@ const DescriptionJob = () => {
             </div>
             <div className="col-lg-4 col-12">
               <div className="row">
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-light btn-md"
-                      onClick={saveJob}
-                    >
-                      <span className="icon-heart-o mr-2 text-danger"></span>
-                      Save Job
-                    </a>
-                  </div>
+                <div className="col-6">
+                  <a
+                    className="btn btn-block btn-light btn-md"
+                    onClick={saveJob}
+                  >
+                    <span className="icon-heart-o mr-2 text-danger"></span>
+                    Save Job
+                  </a>
+                </div>
                 <div className="col-6">
                   <a
                     href="#"
@@ -258,45 +257,10 @@ const DescriptionJob = () => {
                   Job Requirements
                 </h3>
                 <span className="icon-check_circle mr-2 text-muted" />
+                <span>{jobId.experience}</span>
+                <br />
+                <span className="icon-check_circle mr-2 text-muted" />
                 {jobId.jobRequire}
-              </div>
-              <div className="mb-5">
-                <h3 className="h5 d-flex align-items-center mb-4 text-primary">
-                  <span className="icon-rocket mr-3" />
-                  Responsibilities
-                </h3>
-                <ul className="list-unstyled m-0 p-0">
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>Necessitatibus quibusdam facilis</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="mb-5">
-                <h3 className="h5 d-flex align-items-center mb-4 text-primary">
-                  <span className="icon-book mr-3" />
-                  Education + Experience
-                </h3>
-                <ul className="list-unstyled m-0 p-0">
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>{jobId.experience}</span>
-                  </li>
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Velit unde aliquam et voluptas reiciendis non sapiente
-                      labore
-                    </span>
-                  </li>
-
-                  <li className="d-flex align-items-center mb-2">
-                    <span className="icon-check_circle mr-2 text-muted" />
-                    <span>
-                      Deleniti asperiores blanditiis nihil quia officiis dolor
-                    </span>
-                  </li>
-                </ul>
               </div>
             </div>
             <div className="col-lg-5">
