@@ -45,6 +45,7 @@ const LoginForm = () => {
           history.push({
             pathname: "/",
           });
+          window.location.reload();
         } else {
           swal({
             title: "Fail",

@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const Header = () => {
+  
   const { accountName, employerID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
@@ -29,14 +30,13 @@ const Header = () => {
   const onClickLogOut = () => {
     swal({
       title: "Are you sure log out?",
-      // text: "Once deleted, you will not be able to recover this imaginary file!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         localStorage.removeItem("dataLogged");
-        history.push("/")
+        history.push("/");
         swal({
           title: "Success",
           text: "Post your job!",
@@ -44,6 +44,7 @@ const Header = () => {
           icon: "success",
           timer: 1200,
         });
+        window.location.reload();
       } else {
         swal({
           title: "Fail",
@@ -152,20 +153,21 @@ const Header = () => {
                           </NavLink>
                         </div>
                         <NavLink to="/job-posted" className="text-black">
-                        <div
-                          className="d-flex pl-2 align-items-center job-posted"
-                          style={{
-                            borderBottom: "1px solid",
-                            paddingBottom: "6px",
-                            paddingTop: "6px"
-                          }}
-                        >
-                          <span
-                            className="text-black job-posted"
+                          <div
+                            className="d-flex pl-2 align-items-center job-posted"
+                            style={{
+                              borderBottom: "1px solid",
+                              paddingBottom: "6px",
+                              paddingTop: "6px",
+                            }}
                           >
-                            <i className="fab fa-ups mr-2 pl-2" style={{fontSize: "22px", color: "#0062cc"}}></i>
-                            Job posted
-                          </span>
+                            <span className="text-black job-posted">
+                              <i
+                                className="fab fa-ups mr-2 pl-2"
+                                style={{ fontSize: "22px", color: "#0062cc" }}
+                              ></i>
+                              Job posted
+                            </span>
                           </div>
                         </NavLink>
                         <div
@@ -177,7 +179,10 @@ const Header = () => {
                             className="text-black"
                             style={{ cursor: "pointer" }}
                           >
-                           <i className="fas fa-sign-out-alt mr-2 pl-2" style={{fontSize: "22px"}}></i>
+                            <i
+                              className="fas fa-sign-out-alt mr-2 pl-2"
+                              style={{ fontSize: "22px" }}
+                            ></i>
                             Logout
                           </span>
                         </div>
@@ -185,7 +190,14 @@ const Header = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="site-navigation" style={{position: "unset", left: "unset", transform: "unset"}}>
+                  <div
+                    className="site-navigation"
+                    style={{
+                      position: "unset",
+                      left: "unset",
+                      transform: "unset",
+                    }}
+                  >
                     <div className="site-menu js-clone-nav d-none d-xl-block log-group">
                       <span className="pr-3">
                         <NavLink to="/login">Login</NavLink>

@@ -81,6 +81,7 @@ const Profile = () => {
             icon: "success",
             timer: 2200,
           });
+          window.location.reload();
         } else {
         }
       })
