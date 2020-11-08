@@ -53,23 +53,6 @@ const JobList = () => {
     accountID: accountName,
   });
 
-
-  // back to top 
-
-const [showScroll, setShowScroll] = useState(false)
-const checkScrollTop = () => {    
-   if (!showScroll && window.pageYOffset > 400){
-      setShowScroll(true)    
-   } else if (showScroll && window.pageYOffset <= 400){
-      setShowScroll(false)    
-   }  
-};
-const scrollTop = () =>{
-  window.scrollTo({top: 0, behavior: 'smooth'});
-};
-
-window.addEventListener('scroll', checkScrollTop)
-
   // get api file imgae
   const [getFile, setGetFile] = useState([]);
   useEffect(() => {
@@ -147,9 +130,11 @@ window.addEventListener('scroll', checkScrollTop)
                     </div>
 
                     <div className="col-md-4">
+                      <NavLink to={`/job-detail/${item.jobID}`}>
                       <span className="badge badge-primary px-2 py-1 mb-3">
                         {item.companyName || ""}
                       </span>
+                      </NavLink>
                       <h2>
                         <NavLink to={`/job-detail/${item.jobID}`}>
                           <span className="icon-briefcase mr-2" />{" "}

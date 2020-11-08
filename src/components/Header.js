@@ -5,8 +5,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const Header = () => {
-  
-  const { accountName, employerID } = JSON.parse(
+  const { accountName, employerID, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
@@ -25,7 +24,7 @@ const Header = () => {
       setTotalPages(result.data);
     };
     fetchJobList();
-  }, [employerID]);
+  }, [employerID, page]);
 
   const onClickLogOut = () => {
     swal({
@@ -114,16 +113,19 @@ const Header = () => {
                           height: "30px",
                           borderRadius: "100%",
                           objectFit: "cover",
-                          objectPosition: "center"
+                          objectPosition: "center",
                         }}
-                        src={jobList.image || "https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"}
+                        src={
+                          jobList.image ||
+                          "https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
+                        }
                         alt="avatar"
                       ></img>
                       <span className="dropdown-toggle pl-2 mb-2">
                         {accountName}
                       </span>
                     </div>
-
+                    {userType === "Employer" ?(
                     <div
                       className="dropdown-menu dropdown-menu-right"
                       style={{ marginTop: "10px", width: "70%" }}
@@ -188,6 +190,73 @@ const Header = () => {
                         </div>
                       </div>
                     </div>
+                    ) : (
+                      <div
+                      className="dropdown-menu dropdown-menu-right"
+                      style={{ marginTop: "10px", width: "70%" }}
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <div>
+                        <div
+                          className="d-flex pl-2 align-items-center"
+                          style={{
+                            borderBottom: "1px solid",
+                            paddingBottom: "6px",
+                          }}
+                        >
+                          <NavLink to="/profile" className="text-black">
+                            <img
+                              style={{
+                                width: "30px",
+                                height: "30px",
+                                borderRadius: "100%",
+                                objectFit: "cover",
+                                marginRight: "10px",
+                              }}
+                              src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
+                              alt="avatar"
+                            ></img>
+                            Profile
+                          </NavLink>
+                        </div>
+                        <NavLink to="/job-applied" className="text-black">
+                          <div
+                            className="d-flex pl-2 align-items-center job-posted"
+                            style={{
+                              borderBottom: "1px solid",
+                              paddingBottom: "6px",
+                              paddingTop: "6px",
+                            }}
+                          >
+                            <span className="text-black job-posted">
+                              <i
+                                className="fab fa-ups mr-2 pl-2"
+                                style={{ fontSize: "22px", color: "#0062cc" }}
+                              ></i>
+                              Job Applied
+                            </span>
+                          </div>
+                        </NavLink>
+                        <div
+                          className="d-flex pl-2 align-items-center"
+                          style={{ paddingTop: "6px" }}
+                        >
+                          <span
+                            onClick={onClickLogOut}
+                            className="text-black"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <i
+                              className="fas fa-sign-out-alt mr-2 pl-2"
+                              style={{ fontSize: "22px" }}
+                            ></i>
+                            Logout
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    )}
+                  
                   </div>
                 ) : (
                   <div
@@ -203,21 +272,17 @@ const Header = () => {
                         <NavLink to="/login">Login</NavLink>
                       </span>
 
-                      <span>
-                        <NavLink to="/register">Register</NavLink>
+                      <span className="dropdown">
+                        <NavLink to="/register" className="dropdown-toggle" id="dropdownRegister" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register</NavLink>
+                        <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownRegister">
+                          <NavLink className="dropdown-item text-black" to="/register-user">Employee</NavLink>
+                          <NavLink className="dropdown-item text-black" to="/register">Employer</NavLink>
+                        </div>
                       </span>
                     </div>
+                    
                   </div>
                 )}
-                {/* <NavLink
-                  style={colorWhite}
-                  to="/login"
-                >
-                  Sign in
-                </NavLink>
-                <NavLink style={colorWhite} to="/register" className="px-2">
-                  Register
-                </NavLink> */}
 
                 <NavLink
                   to="/post-a-job"

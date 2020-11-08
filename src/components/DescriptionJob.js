@@ -10,11 +10,22 @@ const DescriptionJob = () => {
   // DescriptionJob
   const history = useHistory();
 
-  const { token, employerID } = JSON.parse(
+  const { token, employeeID, accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
   const { id } = useParams();
   const [jobId, setJobId] = useState([]);
+  const [jobList, setJobList] = useState([]);
+  useEffect(() => {
+    const fetchJobList = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/EmployeeJob/Get-listjob-employee-applied?employeeID=${employeeID}&page=1`
+      );
+      setJobList(result.data.listJob);
+    };
+    fetchJobList();
+  }, [employeeID]);
+
   useEffect(() => {
     const getJobId = async () => {
       const result = await axios(
@@ -31,22 +42,21 @@ const DescriptionJob = () => {
     const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
     const new_file = new FormData();
-    new_file.append("EmployeeName", applyForm.EmployeeName);
-    new_file.append("email", applyForm.email);
-    new_file.append("phone", applyForm.phone);
-    new_file.append("coverLetter", applyForm.coverLetter);
-    new_file.append("jobID", id);
+    // new_file.append("EmployeeName", applyForm.EmployeeName);
+    // new_file.append("email", applyForm.email);
+    // new_file.append("phone", applyForm.phone);
+    // new_file.append("coverLetter", applyForm.coverLetter);
+    new_file.append("JobId", id);
+    new_file.append("EmployeeId", employeeID);
     new_file.append("CV", applyForm.CV);
 
     axios
       .post(
-        `https://webjobfinder.azurewebsites.net/api/Employee/Apply-job`,
+        `https://webjobfinder.azurewebsites.net/api/EmployeeJob/Apply-job`,
         new_file,
         {
           headers: {
-            "Content-Type":
-              // eslint-disable-next-line no-template-curly-in-string
-              "multipart/form-data; boundary=${new_file._boundary}",
+            "Content-Type": "multipart/form-data",
             body: "formData",
             Authorization: `Bearer ${token}`,
           },
@@ -101,7 +111,7 @@ const DescriptionJob = () => {
             if (res.data.success) {
               swal({
                 title: "Success",
-                text: "Post your job!",
+                text: "Deleted!",
                 button: "OK",
                 icon: "success",
                 timer: 1200,
@@ -112,10 +122,10 @@ const DescriptionJob = () => {
                 icon: "success",
               });
             } else {
+              
             }
           });
       } else {
-        swal("Your imaginary file is safe!", { timer: 1500 });
       }
     });
   };
@@ -123,11 +133,12 @@ const DescriptionJob = () => {
   // modal apply
 
   const [applyForm, setApplyForm] = useState({
-    EmployeeName: "",
-    email: "",
-    phone: "",
-    coverLetter: "",
-    jobID: id,
+    // EmployeeName: accountName,
+    EmployeeId: employeeID,
+    // email: "",
+    // phone: "",
+    // coverLetter: "",
+    JobId: id,
     CV: null,
   });
   const handleChangeValue = (e) => {
@@ -139,9 +150,6 @@ const DescriptionJob = () => {
   };
 
   // getImage
-  const { accountName } = JSON.parse(
-    localStorage.getItem("dataLogged") || "{}"
-  );
 
   const [avatarCompany, setAvatarCompany] = useState({
     File: null,
@@ -155,6 +163,35 @@ const DescriptionJob = () => {
       button: "OK",
       icon: "warning",
       timer: 2200,
+    });
+  };
+
+  const [jobApplied, setJobApplied] = useState([]);
+  useEffect(() => {
+    const fetchJobList = async () => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/Employee/Get-employee-by-id?EmployeeID=${employeeID}`
+      );
+      setJobApplied(result.data.data);
+    };
+    fetchJobList();
+  }, [employeeID]);
+
+  const LoginToApply = () => {
+    swal({
+      title: "Unauthorized",
+      text: "Please login with employee account!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        localStorage.removeItem("dataLogged");
+        history.push("/login");
+        window.location.reload();
+      } else {
+        swal("Canceled!", { icon: "warning", time: 1300 });
+      }
     });
   };
   return (
@@ -212,6 +249,55 @@ const DescriptionJob = () => {
                 </div>
               </div>
             </div>
+            {userType === "Employer" ? (
+              <div className="col-lg-4 col-12">
+                <div className="row">
+                  <div className="col-6">
+                    <a
+                      className="btn btn-block btn-light btn-md"
+                      onClick={saveJob}
+                    >
+                      <span className="icon-heart-o mr-2 text-danger"></span>
+                      Save Job
+                    </a>
+                  </div>
+                  <div className="col-6">
+                    <a
+                      href="#"
+                      className="btn btn-block btn-primary btn-md"
+                      onClick={LoginToApply}
+                    >
+                      Apply Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="col-lg-4 col-12">
+                <div className="row">
+                  <div className="col-6">
+                    <a
+                      className="btn btn-block btn-light btn-md"
+                      onClick={saveJob}
+                    >
+                      <span className="icon-heart-o mr-2 text-danger"></span>
+                      Save Job
+                    </a>
+                  </div>
+                  <div className="col-6">
+                    <a
+                      href="#"
+                      className="btn btn-block btn-primary btn-md"
+                      data-toggle="modal"
+                      data-target="#AcceptModal"
+                    >
+                      Apply Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* {accountName === false && (
             <div className="col-lg-4 col-12">
               <div className="row">
                 <div className="col-6">
@@ -235,6 +321,7 @@ const DescriptionJob = () => {
                 </div>
               </div>
             </div>
+          )} */}
           </div>
           <div className="row">
             <div className="col-lg-7">
@@ -334,6 +421,7 @@ const DescriptionJob = () => {
           </div>
         </div>
       </section>
+
       {/* Modal apply*/}
       <div
         className="modal fade"
@@ -382,6 +470,7 @@ const DescriptionJob = () => {
                           </div>
                         </div>
                       </div>
+
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label
@@ -395,9 +484,8 @@ const DescriptionJob = () => {
                             type="text"
                             id="lname"
                             className="form-control"
-                            name="EmployeeName"
-                            value={applyForm.EmployeeName || ""}
-                            onChange={(value) => handleChangeValue(value)}
+                            name="JobId"
+                            defaultValue={jobApplied.employeeName || ""}
                           />
                         </div>
                       </div>
@@ -411,41 +499,23 @@ const DescriptionJob = () => {
                             id="phone"
                             className="form-control"
                             name="phone"
-                            value={applyForm.phone || ""}
-                            onChange={(value) => handleChangeValue(value)}
+                            defaultValue={jobApplied.phone || ""}
                           />
                         </div>
                       </div>
-                      <div className="row form-group">
-                        <div className="col-md-12">
-                          <label className="text-black" htmlFor="Locate">
-                            Email
-                          </label>
-                          <input
-                            type="text"
-                            id="Locate"
-                            className="form-control"
-                            name="email"
-                            value={applyForm.email || ""}
-                            onChange={(value) => handleChangeValue(value)}
-                          />
-                        </div>
-                      </div>
-
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="description">
-                            Job Description
+                            Cover Letter
                           </label>
                           <textarea
                             name="coverLetter"
-                            id="description"
-                            cols={30}
-                            rows={8}
+                            id="coverLetter"
+                            cols={20}
+                            rows={4}
                             className="form-control"
                             placeholder="Write your description here..."
-                            value={applyForm.coverLetter || ""}
-                            onChange={(value) => handleChangeValue(value)}
+                            defaultValue={jobApplied.coverLetter || ""}
                           />
                         </div>
                       </div>

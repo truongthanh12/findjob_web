@@ -9,7 +9,9 @@ const DescriptionJob = () => {
   // DescriptionJob
   const history = useHistory();
 
-  const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+  const { token, userType } = JSON.parse(
+    localStorage.getItem("dataLogged") || "{}"
+  );
   const { id } = useParams();
   const [jobId, setJobId] = useState([]);
   useEffect(() => {
@@ -52,15 +54,23 @@ const DescriptionJob = () => {
                 timer: 1200,
               });
               history.push("/job-posted");
-              swal("Poof! Your imaginary file has been deleted!", {
+              swal("Poof! Your job has been deleted!", {
                 timer: 1500,
                 icon: "success",
               });
             } else {
             }
-          });
+          })
+          .catch(
+            swal({
+              title: "Fail",
+              text: "You can't delete!",
+              button: "OK",
+              icon: "warning",
+              timer: 2200,
+            })
+          );
       } else {
-        swal("Your imaginary file is safe!", { timer: 1500 });
       }
     });
   };
@@ -130,17 +140,29 @@ const DescriptionJob = () => {
               </div>
             </div>
             <div className="col-lg-2 col-12">
-              <div className="row">
-                <a
-                  style={{ color: "#fff", cursor: "pointer" }}
-                  onClick={onDelete}
-                  className="btn btn-block btn-primary btn-md"
-                  data-toggle="modal"
-                  data-target="#AcceptModal"
-                >
-                  Delete
-                </a>
-              </div>
+              {userType === "Employer" ? (
+                <div className="row">
+                  <a
+                    style={{ color: "#fff", cursor: "pointer" }}
+                    onClick={onDelete}
+                    className="btn btn-block btn-primary btn-md"
+                    data-toggle="modal"
+                    data-target="#AcceptModal"
+                  >
+                    Delete
+                  </a>
+                </div>
+              ) : (
+                <div className="row">
+                  <a
+                    className="btn btn-block btn-light btn-md"
+                    onClick={saveJob}
+                  >
+                    <span className="icon-heart-o mr-2 text-danger"></span>
+                    Save Job
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           <div className="row">

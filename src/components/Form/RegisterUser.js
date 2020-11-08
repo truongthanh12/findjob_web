@@ -9,10 +9,9 @@ const Register = () => {
     accountID: "",
     password: "",
     email: "",
-    cityName: "",
-    companyName: "",
-    address: "",
-    companyDescription: "",
+    employeeName: "",
+    phone: "",
+    coverLetter: ""
   });
   const history = useHistory();
   const [dataRegister, setDataRegister] = useState([]);
@@ -28,15 +27,14 @@ const Register = () => {
       accountID: registerForm.accountID,
       password: registerForm.password,
       email: registerForm.email,
-      cityName: registerForm.cityName,
-      companyName: registerForm.companyName,
-      address: registerForm.address,
-      companyDescription: registerForm.companyDescription,
+      employeeName: registerForm.employeeName,
+      phone: registerForm.phone,
+      coverLetter: registerForm.coverLetter,
     };
 
     axios
       .post(
-        `https://webjobfinder.azurewebsites.net/api/Account/Create-Account-Employer`,
+        `https://webjobfinder.azurewebsites.net/api/Account/Create-Account-Employee`,
         register,
         {
           headers: {
@@ -45,7 +43,7 @@ const Register = () => {
         }
       )
       .then((res) => {
-        if (res.data.success) {
+        if (res) {
           setDataRegister(register);
           swal({
             title: "Success",
@@ -71,16 +69,6 @@ const Register = () => {
       });
   };
 
-  // get api select
-  useEffect(() => {
-    const fetchCity = async () => {
-      const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/City/Get-list-city`
-      );
-      setCityName(result.data.data);
-    };
-    fetchCity();
-  }, []);
   return (
     <div>
       <section
@@ -104,9 +92,9 @@ const Register = () => {
                           className="form"
                           onSubmit={handleSubmit}
                         >
-                          <h2 className="text-center text-info pb-2">Register for employer</h2>
+                         <h2 className="text-center text-info pb-2">Register for employee</h2>
                           <div style={{display: "flex", justifyContent: "center", fontSize: "20px"}}>
-                            <NavLink to="/register-user" className="text-center text-info">For employee</NavLink>
+                            <NavLink to="/register" className="text-center text-info">For employer</NavLink>
                           </div>
                           <p className="text-center pt-2" style={{fontSize: "15px"}}>
                             Please enter all the field below, the system will
@@ -138,7 +126,7 @@ const Register = () => {
                               id="password"
                               required
                               className="form-control input-special"
-                              value={dataRegister.accountID}
+                              value={dataRegister.password}
                               onChange={(value) => handleChange(value)}
                             />
                           </div>
@@ -153,81 +141,53 @@ const Register = () => {
                               id="email"
                               required
                               className="form-control input-special"
-                              value={dataRegister.accountID}
+                              value={dataRegister.email}
                               onChange={(value) => handleChange(value)}
                             />
                           </div>
-                          <div className="row form-group">
-                            <div className="col-md-12">
-                              <label className="text-info" htmlFor="city">
-                                City
-                              </label>
-                              <select
-                                name="cityName"
-                                className="form-control input-special"
-                                required
-                                value={dataRegister.accountID}
-                                onChange={(value) => handleChange(value)}
-                              >
-                                <option selected disabled hidden>
-                                  Choose city
-                                </option>
-                                {cityName.map((value, index) => (
-                                  <option value={value} key={index}>
-                                    {value}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
+                          
                           <div className="form-group">
-                            <label htmlFor="companyName" className="text-info">
-                              Compny Name
+                            <label htmlFor="employeeName" className="text-info">
+                              Full Name
                             </label>
                             <br />
                             <input
                               type="text"
-                              name="companyName"
-                              id="companyName"
+                              name="employeeName"
+                              id="employeeName"
                               required
                               className="form-control input-special"
-                              value={dataRegister.accountID}
+                              value={dataRegister.employeeName}
                               onChange={(value) => handleChange(value)}
                             />
                           </div>
                           <div className="form-group">
-                            <label htmlFor="address" className="text-info">
-                              Address
+                            <label htmlFor="phone" className="text-info">
+                              Phone
                             </label>
                             <br />
                             <input
                               type="text"
-                              name="address"
-                              id="address"
+                              name="phone"
+                              id="phone"
                               required
                               className="form-control input-special"
-                              value={dataRegister.accountID}
+                              value={dataRegister.phone}
                               onChange={(value) => handleChange(value)}
                             />
                           </div>
                           <div className="form-group">
-                            <label
-                              htmlFor="companyDescription"
-                              className="text-info"
-                            >
-                              About company
+                            <label htmlFor="coverLetter" className="text-info">
+                              Cover Letter
                             </label>
                             <br />
-                            <textarea
+                            <input
                               type="text"
-                              name="companyDescription"
-                              id="companyDescription"
-                              cols={30}
+                              name="coverLetter"
+                              id="coverLetter"
                               required
-                              rows={5}
                               className="form-control input-special"
-                              value={dataRegister.accountID}
+                              value={dataRegister.coverLetter}
                               onChange={(value) => handleChange(value)}
                             />
                           </div>

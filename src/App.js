@@ -9,12 +9,14 @@ import PostJobForm from "./components/Form/PostJobForm";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginForm from "./components/Form/LoginForm";
 import Register from "./components/Form/Register";
+import RegisterUser from "./components/Form/RegisterUser";
 import NotFound from "./components/NotFound";
 import Profile from "./components/Profile";
 import ApplyList from "./components/ApplyList";
 import Home from "./components/Home";
 import PostedJob from "./components/PostedJob";
 import DescriptionJobPosted from "./components/DescriptionJobPosted";
+import JobApplied from "./components/JobApplied";
 
 function App() {
   return (
@@ -31,8 +33,10 @@ function App() {
           <Route path="/job-detail-posted/:id" component={() => <DescriptionJobPosted />} />
           <Route path="/login" component={() => <LoginForm />} />
           <Route path="/register" component={() => <Register />} />
+          <Route path="/register-user" component={() => <RegisterUser />} />
           <Route path="/profile" component={() => <Profile />} />
           <Route path="/job-posted" component={() => <PostedJob />} />
+          <Route path="/job-applied" component={() => <JobApplied />} />
 
           <Route component={() => <NotFound />} />
         </Switch>

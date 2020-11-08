@@ -3,9 +3,10 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import FormPostJobDetail from "./FormPostJobDetail";
 
 const PostJobForm = () => {
-  const { accountName } = JSON.parse(
+  const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
@@ -59,7 +60,7 @@ const PostJobForm = () => {
     const { employerID, token } = JSON.parse(
       localStorage.getItem("dataLogged") || "{}"
     );
-    
+
     const post_job = {
       jobName: dataForm.jobName,
       jobDescription: [dataForm.jobDescription],
@@ -164,7 +165,7 @@ const PostJobForm = () => {
         id="home-section"
       >
         <div className="container">
-          {accountName ? (
+          {userType === "Employer" && (
             <div className="row align-items-center justify-content-center">
               <div className="col-md-12">
                 <div className="mb-5 text-center">
@@ -175,13 +176,31 @@ const PostJobForm = () => {
                 </div>
               </div>
             </div>
-          ) : (
+          )}
+          {!userType && (
             <div className="row align-items-center justify-content-center">
               <div className="col-md-12">
                 <div className="mb-5 text-center">
-                  <h1 className="text-white font-weight-bold">
+                  <h2 className="text-white font-weight-bold">
                     Please log in when posting job
-                  </h1>
+                  </h2>
+                  <div className="col-md-12 text-center">
+                    <NavLink to="/login">
+                      <button className="btn-apply btn--apply">Log in</button>
+                    </NavLink>
+                  </div>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          )}
+          {userType === "Employee" && (
+            <div className="row align-items-center justify-content-center">
+              <div className="col-md-12">
+                <div className="mb-5 text-center">
+                  <h2 className="text-white font-weight-bold">
+                    Please log in with employer account when posting job
+                  </h2>
                   <div className="col-md-12 text-center">
                     <NavLink to="/login">
                       <button className="btn-apply btn--apply">Log in</button>
@@ -195,7 +214,7 @@ const PostJobForm = () => {
         </div>
       </section>
 
-      {accountName ? (
+      {userType === "Employer" ? (
         <section className="site-section" id="next-section">
           <div className="container">
             <form method="post">
@@ -432,10 +451,9 @@ const PostJobForm = () => {
           </div>
         </section>
       ) : (
-        <div>
-          
-        </div>
+        <div></div>
       )}
+      {/* <FormPostJobDetail /> */}
     </div>
   );
 };

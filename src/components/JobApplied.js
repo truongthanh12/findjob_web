@@ -1,50 +1,63 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import { NavLink } from "react-router-dom";
 import BackTop from "./BackTop";
 
-const PostedJob = () => {
-  const { employerID } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
-
-  //get images
-  const [getAvatar, setGetAvatar] = useState([]);
+const jobApplied = () => {
+  const { employeeID, employerID} = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
   // get job by employerID
-  const [jobList, setJobList] = useState([]);
   const [totalJob, setTotalJob] = useState([]);
   // pagination load more
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [jobApplied, setJobApplied] = useState([])
   useEffect(() => {
-    const fetchJobList = async () => {
-      const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
-      );
-      setJobList(result.data.listJob);
-      setTotalJob(result.data);
-      setTotalPages(result.data);
-      setGetAvatar(result.data.employer);
-    };
-    fetchJobList();
-  }, [employerID, page]);
+    const { token, employeeID } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
+    const fetchJobApplied = async () => {
+      axios
+        .get(
+          `https://webjobfinder.azurewebsites.net/api/EmployeeJob/Get-listjob-employee-applied?employeeID=${employeeID}&page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            setJobApplied(res.data.listJob);
+            setTotalJob(res.data);
+            setTotalPages(res.data);
+          }
+        })
+        .catch((error) => {})
+        .then(function () {
+          // always executed
+        });
+    };
+    fetchJobApplied();
+  }, [employeeID, page]);
+
+  // click page newload
   const onClickPage = () => {
     setPage(page + 1);
     const fetchNewPage = async () => {
       const result = await axios(
-        `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
+        `https://webjobfinder.azurewebsites.net/api/Job/Get-all_jobs?page=${page}`
       );
 
       const cursorCurrent = window.pageYOffset;
 
-      // setJobList([...jobList, ...result.data.data]);
+      setJobApplied([...jobApplied, ...result.data.jobList]);
       window.scrollTo(0, cursorCurrent);
     };
     fetchNewPage();
   };
-
   return (
     <div>
       <section
@@ -56,7 +69,7 @@ const PostedJob = () => {
           <div className="row align-items-center justify-content-center">
             <div className="col-md-12">
               <div className="mb-5 text-center">
-                <h1 className="text-white font-weight-bold">Job posted page</h1>
+                <h1 className="text-white font-weight-bold">Job applied</h1>
                 <p>
                   Find your dream jobs in our powerful career website template.
                 </p>
@@ -71,22 +84,22 @@ const PostedJob = () => {
           <div className="row mb-5 justify-content-center">
             <div className="col-md-7 text-center">
               <h2 className="section-title mb-2 pt-5">
-                {jobList.length === 0 ? (
-                  "No job posted yet! Post now"
+                {jobApplied.length === 0 ? (
+                  "You have applied job yet! Back later"
                 ) : (
-                  <div>You posted {totalJob.totalRecord} jobs </div>
+                  <div>You applied {totalJob.totalRecord} jobs </div>
                 )}
               </h2>
             </div>
           </div>
-          {(jobList || []).map((item, index) => {
+          {(jobApplied || []).map((item, index) => {
             return (
               <div className="mb-5" key={index}>
                 <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
                   <div className="col-md-2">
                     <img
                       src={
-                        getAvatar.image ||
+                        item.image ||
                         "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
                       }
                       alt="Image"
@@ -95,9 +108,9 @@ const PostedJob = () => {
                   </div>
 
                   <div className="col-md-4">
-                  <NavLink to={`/job-detail/${item.jobID}`}>
+                  <NavLink to={`/job-detail-posted/${item.jobID}`}>
                     <span className="badge badge-primary px-2 py-1 mb-3">
-                      {getAvatar.companyName || ""}
+                      {item.companyName || ""}
                     </span>
                     </NavLink>
                     <h2>
@@ -138,11 +151,6 @@ const PostedJob = () => {
                         </button>
                       </NavLink>
                     </p>
-                    <NavLink to={`/job-applied/${item.jobID}`}>
-                      <button className="btn-apply btn--apply">
-                        Aplied list
-                      </button>
-                    </NavLink>
                   </div>
                 </div>
               </div>
@@ -166,4 +174,4 @@ const PostedJob = () => {
   );
 };
 
-export default PostedJob;
+export default jobApplied;

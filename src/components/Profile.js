@@ -97,6 +97,35 @@ const Profile = () => {
       });
   };
 
+  // get employee
+  const [jobApplied, setJobApplied] = useState([]);
+  // useEffect(() => {
+  //   const { token, employeeID } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+
+  //   const fetchJobApplied = async () => {
+  //     axios
+  //       .get(
+  //         `https://webjobfinder.azurewebsites.net/api/Employee/Get-employee-by-id?EmployeeID=${employeeID}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         if (res) {
+  //           setJobApplied(res.data.data);
+  //           console.log(res.data.data)
+  //         }
+  //       })
+  //       .catch((error) => {})
+  //       .then(function () {
+  //         // always executed
+  //       });
+  //   };
+  //   fetchJobApplied();
+  // }, []);
+
   // get job by employerID
   const [jobList, setJobList] = useState([]);
   const [totalJob, setTotalJob] = useState([]);
@@ -104,17 +133,41 @@ const Profile = () => {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  
+
   useEffect(() => {
-    const fetchJobList = async () => {
+    const getListJobByEmployer = async (employerID) => {
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
       );
       setJobList(result.data.employer);
       setTotalJob(result.data);
+      console.log(result.data);
       setTotalPages(result.data);
     };
-    fetchJobList();
-  }, [employerID]);
+  
+    const getListJobByEmployee = async (employeeID) => {
+      const result = await axios(
+        `https://webjobfinder.azurewebsites.net/api/Employee/Get-employee-by-id?EmployeeID=${employeeID}`
+      );
+      setJobApplied(result.data.data);
+    };
+    const { userType, employeeID, employerID } = JSON.parse(
+      localStorage.getItem("dataLogged") || "{}"
+    );
+
+    switch (userType) {
+      case "Employee":
+        getListJobByEmployee(employeeID);
+        break;
+      case "Employer":
+        getListJobByEmployer(employerID);
+        break;
+      default:
+        break;
+    }
+  }, [page]);
 
   // change status
   const [changeStatus, setChangeStatus] = useState({ editing: false });
@@ -225,10 +278,10 @@ const Profile = () => {
                   value={jobList.password}
                 />
                 )</h5> */}
-              <h5>{jobList.accountID}</h5>
+              <h5>{jobList.accountID || jobApplied.employeeName}</h5>
               <h6>{jobList.companyName || ""}</h6>
               <span className="icon-room pr-2" />
-              {jobList.cityName || ""}
+              {jobList.cityName || jobApplied.email}
               <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item">
                   <a
@@ -287,7 +340,7 @@ const Profile = () => {
                     <label>User Id</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{jobList.accountID || ""}</p>
+                    <p>{jobList.accountID || jobApplied.accountID}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -295,7 +348,7 @@ const Profile = () => {
                     <label>Name</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{jobList.companyName || ""}</p>
+                    <p>{jobList.companyName || jobApplied.employeeName}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -303,7 +356,15 @@ const Profile = () => {
                     <label>Email</label>
                   </div>
                   <div className="col-md-6">
-                    <p>{jobList.email || ""}</p>
+                    <p>{jobList.email || jobApplied.email}</p>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <label>Phone</label>
+                  </div>
+                  <div className="col-md-6">
+                    <p>{jobApplied.phone || ""}</p>
                   </div>
                 </div>
                 <div className="row">
