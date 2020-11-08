@@ -4,7 +4,7 @@ import swal from "sweetalert";
 import BackTop from "./BackTop";
 
 const Profile = () => {
-  const { accountName, employerID } = JSON.parse(
+  const { accountName, employerID, userType, employeeID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
@@ -73,7 +73,7 @@ const Profile = () => {
       .then((res) => {
         if (res) {
           setAvatarCompany(res.data.data);
-          console.log(res)
+          console.log(res);
           setGetFile(getFile);
           swal({
             title: "Success",
@@ -108,8 +108,6 @@ const Profile = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-  
-
   useEffect(() => {
     const getListJobByEmployer = async (employerID) => {
       const result = await axios(
@@ -120,7 +118,7 @@ const Profile = () => {
       console.log(result.data);
       setTotalPages(result.data);
     };
-  
+
     const getListJobByEmployee = async (employeeID) => {
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Employee/Get-employee-by-id?EmployeeID=${employeeID}`
@@ -164,17 +162,21 @@ const Profile = () => {
             }
             alt="user avatar"
           />
-          <div className="file btn btn-lg btn-primary">
-            Change Photo
-            <input
-              type="file"
-              name="File"
-              className="upload-file"
-              defaultValue={avatarCompany.File || ""}
-              onChange={(e) => handleFiles(e)}
-              onClick={changePhoto}
-            />
-          </div>
+          {userType === "Employer" ? (
+            <div className="file btn btn-lg btn-primary">
+              Change Photo
+              <input
+                type="file"
+                name="File"
+                className="upload-file"
+                defaultValue={avatarCompany.File || ""}
+                onChange={(e) => handleFiles(e)}
+                onClick={changePhoto}
+              />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       );
     } else {
@@ -216,6 +218,131 @@ const Profile = () => {
     }
   };
 
+  // update employer
+  const [updateEmployer, setUpdateEmployer] = useState({
+    employerID: employerID,
+    companyName: jobList.companyName,
+    email: jobList.email,
+    address: jobList.address,
+    companyDescription: jobList.companyDescription,
+  });
+
+  const handleChangeUpdate = (e) => {
+    setUpdateEmployer({ ...updateEmployer, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmitUpdateEmployer = (e) => {
+    e.preventDefault();
+    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+
+    const update_employer = {
+      employerID: employerID,
+      companyName: updateEmployer.companyName,
+      email: updateEmployer.email,
+      address: updateEmployer.address,
+      companyDescription: updateEmployer.companyDescription,
+    };
+    axios
+      .post(
+        `https://webjobfinder.azurewebsites.net/api/Employers/Update-employer`,
+        update_employer,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res) {
+          setUpdateEmployer({update_employer, ...updateEmployer });
+          setJobList({...jobList})
+          console.log(jobList);
+          swal({
+            title: "Success",
+            text: "Update your profile!",
+            button: "OK",
+            icon: "success",
+            timer: 2000,
+          });
+          window.location.reload();
+        } else {
+        }
+      })
+
+      .catch((error) => {
+        swal({
+          title: "Fail",
+          text: "Failed!",
+          button: "OK",
+          icon: "warning",
+          timer: 1500,
+        });
+      });
+  };
+
+  // update employee
+  const [updateEmployee, setUpdateEmployee] = useState({
+    employeeID: employeeID,
+    employeeName: jobApplied.employeeName,
+    email: jobApplied.email,
+    phone: jobApplied.phone,
+    coverLetter: jobApplied.coverLetter,
+  });
+
+  const handleChangeUpdateEmployee = (e) => {
+    setUpdateEmployee({ ...updateEmployee, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmitUpdateEmployee = (e) => {
+    e.preventDefault();
+    const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
+
+    const update_employee = {
+      employeeID: employeeID,
+      employeeName: updateEmployee.employeeName,
+      email: updateEmployee.email,
+      phone: updateEmployee.phone,
+      coverLetter: updateEmployee.coverLetter,
+    };
+    axios
+      .post(
+        `https://webjobfinder.azurewebsites.net/api/Employee/Update-employee`,
+        update_employee,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res) {
+          setUpdateEmployee({ ...update_employee });
+          setUpdateEmployer({update_employee, ...updateEmployee });
+          setJobApplied({...jobApplied})
+          swal({
+            title: "Success",
+            text: "Update your profile!",
+            button: "OK",
+            icon: "success",
+            timer: 2000,
+          });
+          // window.location.reload();
+        } else {
+        }
+      })
+
+      .catch((error) => {
+        swal({
+          title: "Fail",
+          text: "Failed!",
+          button: "OK",
+          icon: "warning",
+          timer: 1500,
+        });
+      });
+  };
   return (
     <div>
       <section
@@ -244,14 +371,6 @@ const Profile = () => {
           </div>
           <div className="col-md-6">
             <div className="profile-head">
-              {/* <h5>{accountID || ""} (
-                <input
-                  type="password"
-                  disabled="disabled"
-                  className="password-special"
-                  value={jobList.password}
-                />
-                )</h5> */}
               <h5>{jobList.accountID || jobApplied.employeeName}</h5>
               <h6>{jobList.companyName || ""}</h6>
               <span className="icon-room pr-2" />
@@ -286,6 +405,16 @@ const Profile = () => {
               </ul>
             </div>
           </div>
+          <div className="col-md-2">
+            <input
+              type="submit"
+              className="profile-edit-btn"
+              name="btnAddMore"
+              value="Edit Profile"
+              data-toggle="modal"
+              data-target="#editProfile"
+            />
+          </div>
         </div>
         <div className="row">
           <div className="col-md-4">
@@ -317,14 +446,22 @@ const Profile = () => {
                     <p>{jobList.accountID || jobApplied.accountID}</p>
                   </div>
                 </div>
+
                 <div className="row">
-                  <div className="col-md-6">
-                    <label>Name</label>
-                  </div>
+                  {userType === "Employee" ? (
+                    <div className="col-md-6">
+                      <label>Name</label>
+                    </div>
+                  ) : (
+                    <div className="col-md-6">
+                      <label>Company Name</label>
+                    </div>
+                  )}
                   <div className="col-md-6">
                     <p>{jobList.companyName || jobApplied.employeeName}</p>
                   </div>
                 </div>
+
                 <div className="row">
                   <div className="col-md-6">
                     <label>Email</label>
@@ -333,30 +470,35 @@ const Profile = () => {
                     <p>{jobList.email || jobApplied.email}</p>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Phone</label>
+                {userType === "Employee" ? (
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Phone</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>{jobApplied.phone || ""}</p>
+                    </div>
                   </div>
-                  <div className="col-md-6">
-                    <p>{jobApplied.phone || ""}</p>
+                ) : (
+                  <div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label>Address</label>
+                      </div>
+                      <div className="col-md-6">
+                        <p>{jobList.address || ""}</p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label>Description about company</label>
+                      </div>
+                      <div className="col-md-6">
+                        <p>{jobList.companyDescription || ""}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Address</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>{jobList.address || ""}</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Description about company</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>{jobList.companyDescription || ""}</p>
-                  </div>
-                </div>
+                )}
               </div>
               <div
                 className="tab-pane fade"
@@ -409,6 +551,213 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* modal edit profile  */}
+      <div
+        className="modal fade"
+        id="editProfile"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="editProfile"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="editProfile">
+                Edit Profile
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {userType === "Employer" ? (
+              <div>
+                <div className="modal-body">
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label
+                        className="text-black"
+                        name="companyName"
+                        htmlFor="companyName"
+                      >
+                        Company Name
+                      </label>
+                      <input
+                        type="text"
+                        id="companyName"
+                        className="form-control"
+                        name="companyName"
+                        defaultValue={jobList.companyName || ""}
+                        onChange={(value) => handleChangeUpdate(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="email">
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        id="email"
+                        className="form-control"
+                        name="email"
+                        defaultValue={jobList.email || ""}
+                        onChange={(value) => handleChangeUpdate(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="address">
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        id="address"
+                        className="form-control"
+                        name="address"
+                        defaultValue={jobList.address || ""}
+                        onChange={(value) => handleChangeUpdate(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="description">
+                        Company Description
+                      </label>
+                      <textarea
+                        name="companyDescription"
+                        id="companyDescription"
+                        cols={20}
+                        rows={4}
+                        className="form-control"
+                        placeholder="Write your description here..."
+                        defaultValue={jobList.companyDescription || ""}
+                        onChange={(value) => handleChangeUpdate(value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleSubmitUpdateEmployer}
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            ) : (
+              // employee
+              <div>
+                <div className="modal-body">
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label
+                        className="text-black"
+                        name="employeeName"
+                        htmlFor="employeeName"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="employeeName"
+                        className="form-control"
+                        name="employeeName"
+                        defaultValue={jobApplied.employeeName || ""}
+                        onChange={(value) => handleChangeUpdateEmployee(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="email">
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        id="email"
+                        className="form-control"
+                        name="email"
+                        defaultValue={jobApplied.email || ""}
+                        onChange={(value) => handleChangeUpdateEmployee(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="phone">
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        id="phone"
+                        className="form-control"
+                        name="phone"
+                        defaultValue={jobApplied.phone || ""}
+                        onChange={(value) => handleChangeUpdateEmployee(value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row form-group">
+                    <div className="col-md-12">
+                      <label className="text-black" htmlFor="description">
+                        Cover Letter
+                      </label>
+                      <textarea
+                        name="coverLetter"
+                        id="coverLetter"
+                        cols={20}
+                        rows={4}
+                        className="form-control"
+                        placeholder="Write your description here..."
+                        defaultValue={jobApplied.coverLetter || ""}
+                        onChange={(value) => handleChangeUpdateEmployee(value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleSubmitUpdateEmployee}
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       <BackTop />
     </div>
   );

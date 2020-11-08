@@ -85,7 +85,7 @@ const DescriptionJob = () => {
           timer: 1200,
         });
       });
-  };
+    };
 
   // Delete
   const onDelete = () => {
@@ -433,7 +433,7 @@ const DescriptionJob = () => {
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
-            <form action="post" onSubmit={handleSubmit}>
+            <form>
               <div className="modal-header">
                 <h5 className="modal-title" id="AcceptModalLabel">
                   Submit Curriculum Vitae Form
@@ -529,6 +529,7 @@ const DescriptionJob = () => {
                   className="btn-apply btn--apply"
                   data-toggle="modal"
                   data-target="#AcceptModal"
+                  onClick={handleSubmit}
                 >
                   accept
                 </button>
