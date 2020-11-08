@@ -73,6 +73,7 @@ const Profile = () => {
       .then((res) => {
         if (res) {
           setAvatarCompany(res.data.data);
+          console.log(res)
           setGetFile(getFile);
           swal({
             title: "Success",
@@ -99,33 +100,6 @@ const Profile = () => {
 
   // get employee
   const [jobApplied, setJobApplied] = useState([]);
-  // useEffect(() => {
-  //   const { token, employeeID } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
-
-  //   const fetchJobApplied = async () => {
-  //     axios
-  //       .get(
-  //         `https://webjobfinder.azurewebsites.net/api/Employee/Get-employee-by-id?EmployeeID=${employeeID}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       )
-  //       .then((res) => {
-  //         if (res) {
-  //           setJobApplied(res.data.data);
-  //           console.log(res.data.data)
-  //         }
-  //       })
-  //       .catch((error) => {})
-  //       .then(function () {
-  //         // always executed
-  //       });
-  //   };
-  //   fetchJobApplied();
-  // }, []);
-
   // get job by employerID
   const [jobList, setJobList] = useState([]);
   const [totalJob, setTotalJob] = useState([]);
