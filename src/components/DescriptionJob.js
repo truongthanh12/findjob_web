@@ -249,7 +249,30 @@ const DescriptionJob = () => {
                 </div>
               </div>
             </div>
-            {userType === "Employer" ? (
+            {token ===  "" && (
+              <div className="col-lg-4 col-12">
+                <div className="row">
+                  <div className="col-6">
+                    <a
+                      className="btn btn-block btn-light btn-md"
+                      onClick={saveJob}
+                    >
+                      <span className="icon-heart-o mr-2 text-danger"></span>
+                      Save Job
+                    </a>
+                  </div>
+                  <div className="col-6">
+                    <a
+                      className="btn btn-block btn-primary btn-md"
+                      onClick={LoginToApply}
+                    >
+                      Apply Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+            {userType === "Employee" ? (
               <div className="col-lg-4 col-12">
                 <div className="row">
                   <div className="col-6">
@@ -265,7 +288,8 @@ const DescriptionJob = () => {
                     <a
                       href="#"
                       className="btn btn-block btn-primary btn-md"
-                      onClick={LoginToApply}
+                      data-toggle="modal"
+                      data-target="#AcceptModal"
                     >
                       Apply Now
                     </a>
@@ -288,12 +312,12 @@ const DescriptionJob = () => {
                     <a
                       href="#"
                       className="btn btn-block btn-primary btn-md"
-                      data-toggle="modal"
-                      data-target="#AcceptModal"
+                      onClick={LoginToApply}
                     >
                       Apply Now
                     </a>
                   </div>
+                  
                 </div>
               </div>
             )}
