@@ -70,21 +70,17 @@ const About = () => {
             <div className="row align-items-center block__69944">
               <div className="col-md-6">
                 <img
-                  src="images/person_2.jpg"
+                  src="https://scontent-hkt1-2.xx.fbcdn.net/v/t1.0-9/61936266_941832282815726_6375181572777181184_n.jpg?_nc_cat=111&ccb=2&_nc_sid=09cbfe&_nc_ohc=igXbWnBQijIAX-SegZb&_nc_ht=scontent-hkt1-2.xx&oh=36f1a6ff2f74086419ad2394aadef5cb&oe=60293EF2"
                   alt="Image"
                   className="img-fluid mb-4 rounded"
                 />
-                <h3>John Smith</h3>
-                <p className="text-muted">Creative Director</p>
+                <h3>Nguyen Truong Thanh</h3>
+                <p className="text-muted">Front-End Developer</p>
                 <p>
-                  Soluta quasi cum delectus eum facilis recusandae nesciunt
-                  molestias accusantium libero dolores repellat id in dolorem
-                  laborum ad modi qui at quas dolorum voluptatem voluptatum
-                  repudiandae voluptatibus ut? Ex vel ad explicabo iure ipsa
-                  possimus consectetur neque rem molestiae eligendi velit?.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis temporibus laborum vel tempora ipsam voluptas?
                 </p>
                 <div className="social mt-4">
-                  <a href="#">
+                  <a href="https://www.facebook.com/profile.php?id=100009668899108" target="_blank">
                     <span className="icon-facebook" />
                   </a>
                   <a href="#">
@@ -100,21 +96,18 @@ const About = () => {
               </div>
               <div className="col-md-6 order-md-2">
                 <img
-                  src="images/person_1.jpg"
+                  src="https://lh3.googleusercontent.com/proxy/MqEWYRvUhB4pdWU6N7FnjMjUySDN5zlN948RGWib3yL2qDwQScD7yOVmeNCtSJ1XEU5GWw0htXBP_I-HZli-O_G7EGWd_9dRZiE3jT2xOQdMauRIasrFVS8C1OMaBzKknf6h0EGbhYKiJsE0"
                   alt="Image"
                   className="img-fluid mb-4 rounded"
                 />
-                <h3>Tuan Kiet</h3>
-                <p className="text-muted">Creative Director</p>
+                <h3>Nguyen Kiet</h3>
+                <p className="text-muted">Back-End Developer</p>
                 <p>
                   Soluta quasi cum delectus eum facilis recusandae nesciunt
                   molestias accusantium libero dolores repellat id in dolorem
-                  laborum ad modi qui at quas dolorum voluptatem voluptatum
-                  repudiandae voluptatibus ut? Ex vel ad explicabo iure ipsa
-                  possimus consectetur neque rem molestiae eligendi velit?.
                 </p>
                 <div className="social mt-4">
-                  <a href="https://www.facebook.com/profile.php?id=100009668899108" target="_blank">
+                  <a href target="_blank">
                     <span className="icon-facebook" />
                   </a>
                   <a href="#">

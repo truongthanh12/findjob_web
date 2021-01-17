@@ -5,9 +5,11 @@ import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import BackTop from "./BackTop";
+import SkeletonDescription from "./skeleton/SkeletonDescription";
 
 const DescriptionJob = () => {
   // DescriptionJob
+  const [skeleton, setSkeleton] = useState(false);
   const history = useHistory();
 
   const { token, employeeID, accountName, userType } = JSON.parse(
@@ -28,10 +30,12 @@ const DescriptionJob = () => {
 
   useEffect(() => {
     const getJobId = async () => {
+      setSkeleton(true)
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-job-detail?jobID=${id}`
       );
       setJobId(result.data.data);
+      setSkeleton(false)
     };
     getJobId();
   }, [id]);
@@ -212,7 +216,10 @@ const DescriptionJob = () => {
           </div>
         </div>
       </section>
-      <section className="site-section">
+      {skeleton ? (
+        <SkeletonDescription />
+      ) : (
+     <section className="site-section">
         <div className="container">
           <div className="row align-items-center mb-5">
             <div className="col-lg-8 col-12 mb-4 mb-lg-0">
@@ -445,7 +452,7 @@ const DescriptionJob = () => {
           </div>
         </div>
       </section>
-
+      )}
       {/* Modal apply*/}
       <div
         className="modal fade"

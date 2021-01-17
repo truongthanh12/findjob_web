@@ -9,18 +9,15 @@ const Member = () => {
               <div className="col-lg-6 mx-auto">
                 <img
                   className="img-fluid mx-auto"
-                  src="images/person_1.jpg"
+                  src="images/person.jpg"
                   alt="Image"
                 />
                 <blockquote>
                   <p>
-                    “Soluta quasi cum delectus eum facilis recusandae nesciunt
-                    molestias accusantium libero dolores repellat id in dolorem
-                    laborum ad modi qui at quas dolorum voluptatem voluptatum
-                    repudiandae.”
+                    “The harder you work the better you achieve”
                   </p>
                   <p>
-                    <cite> — Richard Anderson</cite>
+                    <cite> — Nguyen Truong Thanh (Front-End)</cite>
                   </p>
                 </blockquote>
               </div>
@@ -31,18 +28,34 @@ const Member = () => {
               <div className="col-lg-6 mx-auto">
                 <img
                   className="img-fluid mx-auto"
-                  src="images/person_2.jpg"
+                  src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
                   alt="Image"
                 />
                 <blockquote>
                   <p>
-                    “Soluta quasi cum delectus eum facilis recusandae nesciunt
-                    molestias accusantium libero dolores repellat id in dolorem
-                    laborum ad modi qui at quas dolorum voluptatem voluptatum
-                    repudiandae.”
+                    “Updating ...”
                   </p>
                   <p>
-                    <cite> — Chris Peters</cite>
+                    <cite> — Nguyen Kiet (Back-End)</cite>
+                  </p>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-6 mx-auto">
+                <img
+                  className="img-fluid mx-auto"
+                  src="https://media-exp1.licdn.com/dms/image/C5103AQH0Ozk_IO8-2g/profile-displayphoto-shrink_100_100/0/1562221456953?e=1616630400&v=beta&t=nUt3BEXaYosmuAYEhjrGMtTZjiJZ6rZS1nUFB7kdAhA"
+                  alt="Image"
+                />
+                <blockquote>
+                  <p>
+                  "When I die, I will be remembered for the life I live, not the money I made"
+                  </p>
+                  <p>
+                    <cite> — Nguyen Phu Trong (Supporter)</cite>
                   </p>
                 </blockquote>
               </div>

@@ -6,12 +6,14 @@ import axios from "axios";
 import swal from "sweetalert";
 import { NavLink } from "react-router-dom";
 import BackTop from "./BackTop";
+import SkeletonJob from "./skeleton/SkeletonJob";
 
 const Home = () => {
   const [cityName, setCityName] = useState([]);
   const [jobType, setJobType] = useState([]);
   const [salary, setSalary] = useState([]);
   const [totalJob, setTotalJob] = useState([]);
+  const [skeleton, setSkeleton] = useState(false);
 
   // search
   const [searchResults, setSearchResults] = useState([]);
@@ -147,12 +149,14 @@ const Home = () => {
 
   useEffect(() => {
     const fetchJobList = async () => {
+      setSkeleton(true)
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-all_jobs?page=${page}`
       );
       setSearchResults(result.data.data);
       // setPage(result.data);
       setTotalJob(result.data);
+      setSkeleton(false)
       setTotalPages(result.data);
     };
     fetchJobList();
@@ -279,7 +283,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+      {skeleton ? (
+        <SkeletonJob />
+      ) : (
       <section className="site-section" id="searchResults">
         <div className="container">
           <div className="row mb-5 justify-content-center">
@@ -370,6 +376,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      )}
 
       <Member />
       <BackTop />

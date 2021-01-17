@@ -116,7 +116,7 @@ const Header = () => {
                           objectPosition: "center",
                         }}
                         src={
-                          jobList.image ||
+                          // jobList.image ||
                           "https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
                         }
                         alt="avatar"

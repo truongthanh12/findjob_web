@@ -3,13 +3,14 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import FormPostJobDetail from "./FormPostJobDetail";
+import SkeletonPost from "../skeleton/SkeletonPost";
 
 const PostJobForm = () => {
   const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
+  const [skeleton, setSkeleton] = useState(false);
   const [cityName, setCityName] = useState([]);
   const [jobType, setJobType] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
@@ -110,10 +111,12 @@ const PostJobForm = () => {
   // get api select
   useEffect(() => {
     const fetchCity = async () => {
+      setSkeleton(true)
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/City/Get-list-city`
       );
       setCityName(result.data.data);
+      setSkeleton(false)
     };
     fetchCity();
   }, []);
@@ -158,6 +161,10 @@ const PostJobForm = () => {
     fetchJobType();
   }, []);
   return (
+    <div>
+    {skeleton ? (
+      <SkeletonPost />
+    ) : (
     <div>
       <section
         className="home-section section-hero inner-page overlay bg-image"
@@ -213,248 +220,250 @@ const PostJobForm = () => {
           )}
         </div>
       </section>
-
-      {userType === "Employer" ? (
-        <section className="site-section" id="next-section">
-          <div className="container">
-            <form method="post">
-              <div className="row">
-                <div className="col-lg-6 mb-5 mb-lg-0">
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="lname">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        name="lname"
-                        required
-                        className="form-control"
-                        placeholder="Enter your company name"
-                        value={postJob.jobTitle}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
+      
+        {userType === "Employer" ? (
+          <section className="site-section" id="next-section">
+            <div className="container">
+              <form method="post">
+                <div className="row">
+                  <div className="col-lg-6 mb-5 mb-lg-0">
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="lname">
+                          Company Name
+                        </label>
+                        <input
+                          type="text"
+                          name="lname"
+                          required
+                          className="form-control"
+                          placeholder="Enter your company name"
+                          value={postJob.jobTitle}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="lname">
-                        Job Name
-                      </label>
-                      <input
-                        type="text"
-                        name="jobName"
-                        required
-                        className="form-control"
-                        placeholder="Enter your Job Name"
-                        value={postJob.jobName}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="lname">
+                          Job Name
+                        </label>
+                        <input
+                          type="text"
+                          name="jobName"
+                          required
+                          className="form-control"
+                          placeholder="Enter your Job Name"
+                          value={postJob.jobName}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="typejob">
-                        Job Type
-                      </label>
-                      <select
-                        className="form-control"
-                        name="jobTypeName"
-                        required
-                        value={postJob.jobTitle}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose here
-                        </option>
-                        {jobType.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="typejob">
+                          Job Type
+                        </label>
+                        <select
+                          className="form-control"
+                          name="jobTypeName"
+                          required
+                          value={postJob.jobTitle}
+                          onChange={(value) => handleChangeValue(value)}
+                        >
+                          <option selected disabled hidden>
+                            Choose here
                           </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="row form-group">
-                    <div className="col-md-6">
-                      <label className="text-black">Employee Type</label>
-                      <select
-                        className="form-control"
-                        name="titleName"
-                        required
-                        value={postJob.titleName}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose here
-                        </option>
-                        {employeeType.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
+                          {jobType.map((value, index) => (
+                            <option value={value} key={index}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
-                    <div className="col-md-6">
-                      <label className="text-black">Category</label>
-                      <select
-                        className="form-control"
-                        name="jobCategoryName"
-                        required
-                        value={postJob.jobCategoryName}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose position
-                        </option>
-                        {position.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
+                    <div className="row form-group">
+                      <div className="col-md-6">
+                        <label className="text-black">Employee Type</label>
+                        <select
+                          className="form-control"
+                          name="titleName"
+                          required
+                          value={postJob.titleName}
+                          onChange={(value) => handleChangeValue(value)}
+                        >
+                          <option selected disabled hidden>
+                            Choose here
                           </option>
-                        ))}
-                      </select>
+                          {employeeType.map((value, index) => (
+                            <option value={value} key={index}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="text-black">Category</label>
+                        <select
+                          className="form-control"
+                          name="jobCategoryName"
+                          required
+                          value={postJob.jobCategoryName}
+                          onChange={(value) => handleChangeValue(value)}
+                        >
+                          <option selected disabled hidden>
+                            Choose position
+                          </option>
+                          {position.map((value, index) => (
+                            <option value={value} key={index}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="description">
+                          Job Requirements
+                        </label>
+                        <textarea
+                          name="jobRequire"
+                          id="jobRequire"
+                          cols={30}
+                          rows={8}
+                          required
+                          className="form-control"
+                          placeholder="Write your description here..."
+                          value={postJob.jobRequire}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="description">
-                        Job Requirements
-                      </label>
-                      <textarea
-                        name="jobRequire"
-                        id="jobRequire"
-                        cols={30}
-                        rows={8}
-                        required
-                        className="form-control"
-                        placeholder="Write your description here..."
-                        value={postJob.jobRequire}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
+                  <div className="col-lg-6">
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="experience">
+                          Experience
+                        </label>
+                        <input
+                          type="subject"
+                          name="experience"
+                          className="form-control"
+                          placeholder="2 years...."
+                          value={postJob.experience}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="requireDate">
+                          DueDate
+                        </label>
+                        <input
+                          required
+                          type="date"
+                          name="requireDate"
+                          className="form-control"
+                          placeholder="Date"
+                          value={postJob.requireDate}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="city">
+                          City
+                        </label>
+                        <select
+                          name="cityName"
+                          className="form-control"
+                          required
+                          value={postJob.cityName}
+                          onChange={(value) => handleChangeValue(value)}
+                        >
+                          <option selected disabled hidden>
+                            Choose city
+                          </option>
+                          {cityName.map((value, index) => (
+                            <option value={value} key={index}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="salary">
+                          Salary
+                        </label>
+                        <select
+                          name="salary"
+                          className="form-control"
+                          required
+                          value={postJob.salary}
+                          onChange={(value) => handleChangeValue(value)}
+                        >
+                          <option selected disabled hidden>
+                            Choose salary
+                          </option>
+                          {salary.map((value, index) => (
+                            <option value={value} key={index}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row form-group">
+                      <div className="col-md-12">
+                        <label className="text-black" htmlFor="description">
+                          Job Description
+                        </label>
+                        <textarea
+                          name="jobDescription"
+                          id="description"
+                          cols={30}
+                          rows={8}
+                          className="form-control"
+                          required
+                          placeholder="Write your description here..."
+                          value={postJob.jobDescription}
+                          onChange={(value) => handleChangeValue(value)}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="experience">
-                        Experience
-                      </label>
-                      <input
-                        type="subject"
-                        name="experience"
-                        className="form-control"
-                        placeholder="2 years...."
-                        value={postJob.experience}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="requireDate">
-                        DueDate
-                      </label>
-                      <input
-                        required
-                        type="date"
-                        name="requireDate"
-                        className="form-control"
-                        placeholder="Date"
-                        value={postJob.requireDate}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="city">
-                        City
-                      </label>
-                      <select
-                        name="cityName"
-                        className="form-control"
-                        required
-                        value={postJob.cityName}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose city
-                        </option>
-                        {cityName.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="salary">
-                        Salary
-                      </label>
-                      <select
-                        name="salary"
-                        className="form-control"
-                        required
-                        value={postJob.salary}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose salary
-                        </option>
-                        {salary.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="description">
-                        Job Description
-                      </label>
-                      <textarea
-                        name="jobDescription"
-                        id="description"
-                        cols={30}
-                        rows={8}
-                        className="form-control"
-                        required
-                        placeholder="Write your description here..."
-                        value={postJob.jobDescription}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
+                <p>{postJob.requireDate}</p>
+                <p>{postJob.jobDescription}</p>
+                <div className="row form-group">
+                  <div className="col-md-12 mt-3 text-center">
+                    <input
+                      onClick={handleSubmit}
+                      type="submit"
+                      className="btn btn-primary btn-md text-white"
+                      style={{ padding: "1rem 3rem" }}
+                    />
                   </div>
                 </div>
-              </div>
-              <p>{postJob.requireDate}</p>
-              <p>{postJob.jobDescription}</p>
-              <div className="row form-group">
-                <div className="col-md-12 mt-3 text-center">
-                  <input
-                    onClick={handleSubmit}
-                    type="submit"
-                    className="btn btn-primary btn-md text-white"
-                    style={{ padding: "1rem 3rem" }}
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
-        </section>
-      ) : (
-        <div></div>
+              </form>
+            </div>
+          </section>
+        ) : (
+          <div></div>
       )}
-      {/* <FormPostJobDetail /> */}
+      
     </div>
+
+  )}</div>
   );
 };
 

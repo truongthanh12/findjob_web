@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import BackTop from "./BackTop";
+import SkeletonProfile from "./skeleton/SkeletonProfile";
 
 const Profile = () => {
   const { accountName, employerID, userType, employeeID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
+  const [skeleton, setSkeleton] = useState(false);
 
   const { accountID } = JSON.parse(
     localStorage.getItem("dataRegisted") || "{}"
@@ -101,7 +103,7 @@ const Profile = () => {
   // get employee
   const [jobApplied, setJobApplied] = useState([]);
   // get job by employerID
-  const [jobList, setJobList] = useState([]);
+  const [jobList, setJobList] = useState({});
   const [totalJob, setTotalJob] = useState([]);
   // pagination load more
 
@@ -110,6 +112,7 @@ const Profile = () => {
 
   useEffect(() => {
     const getListJobByEmployer = async (employerID) => {
+      setSkeleton(true)
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
       );
@@ -117,6 +120,7 @@ const Profile = () => {
       setTotalJob(result.data);
       console.log(result.data);
       setTotalPages(result.data);
+      setSkeleton(false)
     };
 
     const getListJobByEmployee = async (employeeID) => {
@@ -242,6 +246,8 @@ const Profile = () => {
       address: updateEmployer.address,
       companyDescription: updateEmployer.companyDescription,
     };
+console.log(update_employer);
+    return;
     axios
       .post(
         `https://webjobfinder.azurewebsites.net/api/Employers/Update-employer`,
@@ -363,7 +369,9 @@ const Profile = () => {
           </div>
         </div>
       </section>
-
+      {skeleton ? (
+        <SkeletonProfile />
+      ) : (
       <div className="container emp-profile">
         <div className="row">
           <div className="col-md-4">
@@ -551,7 +559,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
+      )}
       {/* modal edit profile  */}
       <div
         className="modal fade"
