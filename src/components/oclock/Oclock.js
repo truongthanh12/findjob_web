@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 
 class Oclock extends React.Component {
   constructor(props) {
@@ -299,9 +298,9 @@ class Oclock extends React.Component {
             </div>
           </div>
         </div>
-        <Helmet>
+        {/* <Helmet>
           <script src="../../../public/js/main.js" type="text/javascript" />
-        </Helmet>
+        </Helmet> */}
       </div>
     );
   }

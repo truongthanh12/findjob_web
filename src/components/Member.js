@@ -1,11 +1,31 @@
-import React from 'react'
-
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  A11y,
+  Autoplay,
+} from "swiper";
+// Import Swiper styles
+import "swiper/swiper.scss";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/pagination/pagination.scss";
+// install Swiper components
+SwiperCore.use([Navigation, Pagination, A11y, Autoplay]);
 const Member = () => {
-    return (
-      <section className="bg-light pt-5 testimony-full">
-        <div className="owl-carousel single-carousel">
-          <div className="container">
-            <div className="row">
+  return (
+    <section className="bg-light pt-5 testimony-full">
+      <div className="container">
+        <div className="row">
+          <Swiper
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+            loop={true}
+            autoplay={{delay: 2500}}
+          >
+            <SwiperSlide>
               <div className="col-lg-6 mx-auto">
                 <img
                   className="img-fluid mx-auto"
@@ -13,18 +33,14 @@ const Member = () => {
                   alt="Image"
                 />
                 <blockquote>
-                  <p>
-                    “The harder you work the better you achieve”
-                  </p>
+                  <p>“The harder you work the better you achieve”</p>
                   <p>
                     <cite> — Nguyen Truong Thanh (Front-End)</cite>
                   </p>
                 </blockquote>
               </div>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
+            </SwiperSlide>
+            <SwiperSlide>
               <div className="col-lg-6 mx-auto">
                 <img
                   className="img-fluid mx-auto"
@@ -32,18 +48,14 @@ const Member = () => {
                   alt="Image"
                 />
                 <blockquote>
-                  <p>
-                    “Updating ...”
-                  </p>
+                  <p>“Updating ...”</p>
                   <p>
                     <cite> — Nguyen Kiet (Back-End)</cite>
                   </p>
                 </blockquote>
               </div>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
+            </SwiperSlide>
+            <SwiperSlide>
               <div className="col-lg-6 mx-auto">
                 <img
                   className="img-fluid mx-auto"
@@ -52,18 +64,19 @@ const Member = () => {
                 />
                 <blockquote>
                   <p>
-                  "When I die, I will be remembered for the life I live, not the money I made"
+                    "When I die, I will be remembered for the life I live, not
+                    the money I made"
                   </p>
                   <p>
                     <cite> — Nguyen Phu Trong (Supporter)</cite>
                   </p>
                 </blockquote>
               </div>
-            </div>
-          </div>
+            </SwiperSlide>
+          </Swiper>
         </div>
-      </section>
-    );
-}
-
-export default Member
+      </div>
+    </section>
+  );
+};
+export default Member;

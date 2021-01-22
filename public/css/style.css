@@ -6,6 +6,11 @@
   width: 100%;
   top: 2rem;
 }
+a{
+  color:#333;
+  display: block;
+  text-decoration: none !important;
+}
 .site-navbar .container-fluid {
   padding-left: 7rem;
   padding-right: 7rem;
@@ -2614,11 +2619,11 @@ h4 {
 }
 
 .dark .col-lg-8 .d-flex .text-primary,
-.dark .text-black {
+.dark .text-black, .dark cite {
   color: #fff !important;
 }
 .dark .badge-primary,
-.dark .social a {
+.dark .social a, .dark .swiper-pagination-bullet{
   background-color: #ba8fff !important;
 }
 .dark h1,
