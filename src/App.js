@@ -28,9 +28,9 @@ function App() {
   }, []);
   return (
     <div>
-      {/* {spinner ? (
+      {spinner ? (
         <LoadingApp />
-      ) : ( */}
+      ) : (
         <div className="site-wrap">
           <Router>
             <Header />
@@ -61,7 +61,7 @@ function App() {
             <Footer />
           </Router>
         </div>
-      {/* )} */}
+      )}
     </div>
   );
 }
