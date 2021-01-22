@@ -16,7 +16,7 @@ const About = () => {
                   <h1 className="text-white font-weight-bold">About Us</h1>
                   <p>
                     Find your dream jobs in our powerful career website
-                    template.
+                    .
                   </p>
                 </div>
               </div>

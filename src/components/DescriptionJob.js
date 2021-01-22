@@ -6,9 +6,11 @@ import { useHistory, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import BackTop from "./BackTop";
 import SkeletonDescription from "./skeleton/SkeletonDescription";
+import { Spinner } from "react-bootstrap";
 
 const DescriptionJob = () => {
   // DescriptionJob
+  const [loading, setLoading] = useState(false);
   const [skeleton, setSkeleton] = useState(false);
   const history = useHistory();
 
@@ -30,12 +32,12 @@ const DescriptionJob = () => {
 
   useEffect(() => {
     const getJobId = async () => {
-      setSkeleton(true)
+      setSkeleton(true);
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-job-detail?jobID=${id}`
       );
       setJobId(result.data.data);
-      setSkeleton(false)
+      setSkeleton(false);
     };
     getJobId();
   }, [id]);
@@ -43,6 +45,7 @@ const DescriptionJob = () => {
   // apply job
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
     const new_file = new FormData();
@@ -67,6 +70,7 @@ const DescriptionJob = () => {
         }
       )
       .then((res) => {
+        setLoading(false);
         if (res) {
           setApplyForm(!new_file);
           swal({
@@ -89,53 +93,9 @@ const DescriptionJob = () => {
           timer: 1200,
         });
       });
-    };
-
-  // Delete
-  const onDelete = () => {
-    swal({
-      title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios
-          .delete(
-            `https://webjobfinder.azurewebsites.net/api/Job/Delete-job?jobID=${id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((res) => {
-            if (res.data.success) {
-              swal({
-                title: "Success",
-                text: "Deleted!",
-                button: "OK",
-                icon: "success",
-                timer: 1200,
-              });
-              history.push("/");
-              swal("Poof! Your imaginary file has been deleted!", {
-                timer: 1500,
-                icon: "success",
-              });
-            } else {
-              
-            }
-          });
-      } else {
-      }
-    });
   };
 
   // modal apply
-
   const [applyForm, setApplyForm] = useState({
     // EmployeeName: accountName,
     EmployeeId: employeeID,
@@ -145,21 +105,12 @@ const DescriptionJob = () => {
     JobId: id,
     CV: null,
   });
-  const handleChangeValue = (e) => {
-    setApplyForm({ ...applyForm, [e.target.name]: e.target.value });
-  };
 
   const handleFile = (e) => {
     setApplyForm({ ...applyForm, [e.target.name]: e.target.files[0] });
   };
 
   // getImage
-
-  const [avatarCompany, setAvatarCompany] = useState({
-    File: null,
-    accountID: accountName,
-  });
-
   const saveJob = () => {
     swal({
       title: "Warning",
@@ -219,116 +170,117 @@ const DescriptionJob = () => {
       {skeleton ? (
         <SkeletonDescription />
       ) : (
-     <section className="site-section">
-        <div className="container">
-          <div className="row align-items-center mb-5">
-            <div className="col-lg-8 col-12 mb-4 mb-lg-0">
-              <div className="d-flex align-items-center">
-                <img
-                  src={
-                    jobId.image ||
-                    "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
-                  }
-                  alt="Image"
-                  className="img-fluid pr-5 img-description"
-                />
-                <div className="info-company-description">
-                  <h2>{jobId.companyName}</h2>
-                  <div>
-                    <span className="text-primary">
-                      <span className="icon-briefcase mr-2"></span>
-                      {jobId.jobName}
-                    </span>
-                    <br />
-                    <span className="text-primary">
-                      <span className="icon-room mr-2" />
-                      {jobId.city}
-                    </span>
-                    <span className="m-2">
-                      <span className="icon-clock-o mr-2" />
-                      <span className="text-primary">{jobId.jobType}</span>
-                    </span>
-                    <span className="m-2">
-                      <span className="icon-clock-o mr-2" />
-                      <span className="text-primary">{jobId.jobCategory}</span>
-                    </span>
+        <section className="site-section">
+          <div className="container">
+            <div className="row align-items-center mb-5">
+              <div className="col-lg-8 col-12 mb-4 mb-lg-0">
+                <div className="d-flex align-items-center">
+                  <img
+                    src={
+                      jobId.image ||
+                      "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png"
+                    }
+                    alt="Image"
+                    className="img-fluid pr-5 img-description"
+                  />
+                  <div className="info-company-description">
+                    <h2>{jobId.companyName}</h2>
+                    <div>
+                      <span className="text-primary">
+                        <span className="icon-briefcase mr-2"></span>
+                        {jobId.jobName}
+                      </span>
+                      <br />
+                      <span className="text-primary">
+                        <span className="icon-room mr-2" />
+                        {jobId.city}
+                      </span>
+                      <span className="m-2">
+                        <span className="icon-clock-o mr-2" />
+                        <span className="text-primary">{jobId.jobType}</span>
+                      </span>
+                      <span className="m-2">
+                        <span className="icon-clock-o mr-2" />
+                        <span className="text-primary">
+                          {jobId.jobCategory}
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {token ===  "" && (
-              <div className="col-lg-4 col-12">
-                <div className="row">
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-light btn-md"
-                      onClick={saveJob}
-                    >
-                      <span className="icon-heart-o mr-2 text-danger"></span>
-                      Save Job
-                    </a>
-                  </div>
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-primary btn-md"
-                      onClick={LoginToApply}
-                    >
-                      Apply Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-            {userType === "Employee" ? (
-              <div className="col-lg-4 col-12">
-                <div className="row">
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-light btn-md"
-                      onClick={saveJob}
-                    >
-                      <span className="icon-heart-o mr-2 text-danger"></span>
-                      Save Job
-                    </a>
-                  </div>
-                  <div className="col-6">
-                    <a
-                      href="#"
-                      className="btn btn-block btn-primary btn-md"
-                      data-toggle="modal"
-                      data-target="#AcceptModal"
-                    >
-                      Apply Now
-                    </a>
+              {token === "" && (
+                <div className="col-lg-4 col-12">
+                  <div className="row">
+                    <div className="col-6">
+                      <a
+                        className="btn btn-block btn-light btn-md"
+                        onClick={saveJob}
+                      >
+                        <span className="icon-heart-o mr-2 text-danger"></span>
+                        Save Job
+                      </a>
+                    </div>
+                    <div className="col-6">
+                      <a
+                        className="btn btn-block btn-primary btn-md"
+                        onClick={LoginToApply}
+                      >
+                        Apply Now
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="col-lg-4 col-12">
-                <div className="row">
-                  <div className="col-6">
-                    <a
-                      className="btn btn-block btn-light btn-md"
-                      onClick={saveJob}
-                    >
-                      <span className="icon-heart-o mr-2 text-danger"></span>
-                      Save Job
-                    </a>
+              )}
+              {userType === "Employee" ? (
+                <div className="col-lg-4 col-12">
+                  <div className="row">
+                    <div className="col-6">
+                      <a
+                        className="btn btn-block btn-light btn-md"
+                        onClick={saveJob}
+                      >
+                        <span className="icon-heart-o mr-2 text-danger"></span>
+                        Save Job
+                      </a>
+                    </div>
+                    <div className="col-6">
+                      <a
+                        href="#"
+                        className="btn btn-block btn-primary btn-md"
+                        data-toggle="modal"
+                        data-target="#AcceptModal"
+                      >
+                        Apply Now
+                      </a>
+                    </div>
                   </div>
-                  <div className="col-6">
-                    <a
-                      href="#"
-                      className="btn btn-block btn-primary btn-md"
-                      onClick={LoginToApply}
-                    >
-                      Apply Now
-                    </a>
-                  </div>
-                  
                 </div>
-              </div>
-            )}
-            {/* {accountName === false && (
+              ) : (
+                <div className="col-lg-4 col-12">
+                  <div className="row">
+                    <div className="col-6">
+                      <a
+                        className="btn btn-block btn-light btn-md"
+                        onClick={saveJob}
+                      >
+                        <span className="icon-heart-o mr-2 text-danger"></span>
+                        Save Job
+                      </a>
+                    </div>
+                    <div className="col-6">
+                      <a
+                        href="#"
+                        className="btn btn-block btn-primary btn-md"
+                        onClick={LoginToApply}
+                      >
+                        Apply Now
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* {accountName === false && (
             <div className="col-lg-4 col-12">
               <div className="row">
                 <div className="col-6">
@@ -353,105 +305,106 @@ const DescriptionJob = () => {
               </div>
             </div>
           )} */}
-          </div>
-          <div className="row">
-            <div className="col-lg-7">
-              <div className="mb-5">
-                <figure className="mb-5">
-                  <img
-                    style={{ width: "100%" }}
-                    src="https://salt.topdev.vn/1BcK47h8CrD7IgjKBORAzL3J8Ix0ZtPkA2qYj4-F7Ks/auto/500/357/ce/1/aHR0cHM6Ly9hc3NldHMudG9wZGV2LnZuL3N0YXRpYy9hc3NldHMvZGVza3RvcC9pbWFnZXMvY29tcGFueS1zY2VuZS02LnBuZw/company-scene-6.png"
-                    alt="Free Website Template by Free-Template.co"
-                    className="img-fluid rounded"
-                  />
-                </figure>
-                <h3 className="h5 d-flex align-items-center mb-4 text-primary">
-                  <span className="icon-align-left mr-3" />
-                  Job Description
-                </h3>
-                <span className="icon-check_circle mr-2 text-muted" />
-                {jobId.jobDescription}
-
-                <h3 className="h5 d-flex align-items-center my-4 mt-5 text-primary">
-                  <span className="icon-turned_in mr-3"></span>
-                  Job Requirements
-                </h3>
-                <span className="icon-check_circle mr-2 text-muted" />
-                <span>{jobId.experience}</span>
-                <br />
-                <span className="icon-check_circle mr-2 text-muted" />
-                {jobId.jobRequire}
-              </div>
             </div>
-            <div className="col-lg-5">
-              <div className="bg-light p-3 border rounded mb-4">
-                <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">
-                  Job Summary
-                </h3>
-                <ul className="list-unstyled pl-3 mb-0">
-                  <li className="mb-2">
-                    <strong className="text-black">Email:</strong> {jobId.email}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Published on:</strong>{" "}
-                    {jobId.postDate}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">DueDate on:</strong>{" "}
-                    {jobId.requireDate}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Vacancy:</strong>{" "}
-                    {jobId.jobName}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Employment Status:</strong>{" "}
-                    {jobId.jobType}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Experience:</strong>{" "}
-                    {jobId.experience}(s)
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Job Location:</strong>{" "}
-                    {jobId.address}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Salary:</strong>{" "}
-                    {jobId.salary}
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">Gender:</strong> Any
-                  </li>
-                  <li className="mb-2">
-                    <strong className="text-black">
-                      Application Deadline:
-                    </strong>{" "}
-                    {jobId.requireDate}
-                  </li>
-                </ul>
+            <div className="row">
+              <div className="col-lg-7">
+                <div className="mb-5">
+                  <figure className="mb-5">
+                    <img
+                      style={{ width: "100%" }}
+                      src="https://salt.topdev.vn/1BcK47h8CrD7IgjKBORAzL3J8Ix0ZtPkA2qYj4-F7Ks/auto/500/357/ce/1/aHR0cHM6Ly9hc3NldHMudG9wZGV2LnZuL3N0YXRpYy9hc3NldHMvZGVza3RvcC9pbWFnZXMvY29tcGFueS1zY2VuZS02LnBuZw/company-scene-6.png"
+                      alt="Free Website"
+                      className="img-fluid rounded"
+                    />
+                  </figure>
+                  <h3 className="h5 d-flex align-items-center mb-4 text-primary">
+                    <span className="icon-align-left mr-3" />
+                    Job Description
+                  </h3>
+                  <span className="icon-check_circle mr-2 text-muted" />
+                  {jobId.jobDescription}
+
+                  <h3 className="h5 d-flex align-items-center my-4 mt-5 text-primary">
+                    <span className="icon-turned_in mr-3"></span>
+                    Job Requirements
+                  </h3>
+                  <span className="icon-check_circle mr-2 text-muted" />
+                  <span>{jobId.experience}</span>
+                  <br />
+                  <span className="icon-check_circle mr-2 text-muted" />
+                  {jobId.jobRequire}
+                </div>
               </div>
-              <div className="bg-light p-3 border rounded">
-                <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
-                <div className="px-3">
-                  <a href="#" className="pt-3 pb-3 pr-3 pl-0">
-                    <span className="icon-facebook" />
-                  </a>
-                  <a href="#" className="pt-3 pb-3 pr-3 pl-0">
-                    <span className="icon-twitter" />
-                  </a>
-                  <a href="#" className="pt-3 pb-3 pr-3 pl-0">
-                    <span className="icon-linkedin" />
-                  </a>
-                  <a href="#" className="pt-3 pb-3 pr-3 pl-0">
-                    <span className="icon-pinterest" />
-                  </a>
+              <div className="col-lg-5">
+                <div className="bg-light p-3 border rounded mb-4">
+                  <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">
+                    Job Summary
+                  </h3>
+                  <ul className="list-unstyled pl-3 mb-0">
+                    <li className="mb-2">
+                      <strong className="text-black">Email:</strong>{" "}
+                      {jobId.email}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Published on:</strong>{" "}
+                      {jobId.postDate}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">DueDate on:</strong>{" "}
+                      {jobId.requireDate}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Vacancy:</strong>{" "}
+                      {jobId.jobName}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Employment Status:</strong>{" "}
+                      {jobId.jobType}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Experience:</strong>{" "}
+                      {jobId.experience}(s)
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Job Location:</strong>{" "}
+                      {jobId.address}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Salary:</strong>{" "}
+                      {jobId.salary}
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">Gender:</strong> Any
+                    </li>
+                    <li className="mb-2">
+                      <strong className="text-black">
+                        Application Deadline:
+                      </strong>{" "}
+                      {jobId.requireDate}
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-light p-3 border rounded">
+                  <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
+                  <div className="px-3">
+                    <a href="#" className="pt-3 pb-3 pr-3 pl-0">
+                      <span className="icon-facebook" />
+                    </a>
+                    <a href="#" className="pt-3 pb-3 pr-3 pl-0">
+                      <span className="icon-twitter" />
+                    </a>
+                    <a href="#" className="pt-3 pb-3 pr-3 pl-0">
+                      <span className="icon-linkedin" />
+                    </a>
+                    <a href="#" className="pt-3 pb-3 pr-3 pl-0">
+                      <span className="icon-pinterest" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
       {/* Modal apply*/}
       <div
@@ -555,14 +508,21 @@ const DescriptionJob = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button className="btn-apply btn--info">Cancel</button>
-                <button
-                  className="btn-apply btn--apply"
-                  data-toggle="modal"
-                  data-target="#AcceptModal"
-                  onClick={handleSubmit}
-                >
-                  accept
+                <button className="btn-apply btn--apply" onClick={handleSubmit}>
+                  {loading ? (
+                    <div variant="primary">
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      Loading...
+                    </div>
+                  ) : (
+                    "Accept"
+                  )}
                 </button>
               </div>
             </form>

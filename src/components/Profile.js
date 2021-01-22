@@ -362,7 +362,7 @@ console.log(update_employer);
               <div className="mb-5 text-center">
                 <h1 className="text-white font-weight-bold">Profile page </h1>
                 <p>
-                  Find your dream jobs in our powerful career website template.
+                  Find your dream jobs in our powerful career website.
                 </p>
               </div>
             </div>

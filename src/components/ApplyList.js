@@ -47,7 +47,7 @@ const ApplyList = () => {
               <div className="mb-5 text-center">
                 <h1 className="text-white font-weight-bold">Employees applied </h1>
                 <p>
-                  Find your dream jobs in our powerful career website template.
+                  Find your dream jobs in our powerful career website.
                 </p>
               </div>
             </div>

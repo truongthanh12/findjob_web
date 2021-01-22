@@ -24,13 +24,13 @@ function App() {
   const [spinner, setSpinner] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => setSpinner(false), 1700);
+    setTimeout(() => setSpinner(false), 1200);
   }, []);
   return (
     <div>
-      {spinner ? (
+      {/* {spinner ? (
         <LoadingApp />
-      ) : (
+      ) : ( */}
         <div className="site-wrap">
           <Router>
             <Header />
@@ -61,7 +61,7 @@ function App() {
             <Footer />
           </Router>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 }
