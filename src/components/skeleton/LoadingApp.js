@@ -3,10 +3,10 @@ import React from "react";
 const LoadingApp = () => {
   return (
       <div className="loading-app">
-    <div class="wrapper-loading">
-    <div class="loader-outer">
-        <div class="loader-inner">
-        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+    <div className="wrapper-loading">
+    <div className="loader-outer">
+        <div className="loader-inner">
+        <i className="fa fa-ellipsis-h" aria-hidden="true"></i>
         </div>
     </div>
     <h1>

@@ -65,7 +65,7 @@ const Header = () => {
           </div>
         </div>
         <div className="site-mobile-menu-body">
-          <ul className="site-menu js-clone-nav">
+          <ul className="site-menu js-clone-nav site-drop-menu">
             <li>
               <NavLink exact={true} to="/">
                 Home
@@ -77,9 +77,15 @@ const Header = () => {
             <li>
               <NavLink to="/about">About</NavLink>
             </li>
-            {/* <li><a href="services.html">Services</a></li>
-        <li><a href="blog.html">Blog</a></li> */}
-
+            <li>
+              <NavLink to="/login">Login</NavLink>
+            </li>
+            <li>
+              <NavLink to="/register-user">Register: Employee</NavLink>
+            </li>
+            <li>
+              <NavLink to="/register">Register: Employer</NavLink>
+            </li>
             {userType === "Employer" ? (
               <NavLink
                 to="/post-a-job"

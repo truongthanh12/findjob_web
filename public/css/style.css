@@ -2640,7 +2640,7 @@ h4 {
 
 .dark .play-icon span,
 .css-1pahdxg-control,
-.css-1wa3eu0-placeholder {
+.css-1wa3eu0-placeholder, .dark span.icon-close2 {
   color: #000 !important;
 }
 .dark .bg-light,
@@ -2834,4 +2834,8 @@ p.error {
     -o-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.site-drop-menu li{
+  padding: 12px 6px;
 }
