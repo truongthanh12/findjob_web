@@ -5,8 +5,11 @@ import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import SkeletonPost from "../skeleton/SkeletonPost";
 import { Spinner } from "react-bootstrap";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const PostJobForm = () => {
+  const { t } = useTranslation();
   const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
@@ -106,8 +109,8 @@ const PostJobForm = () => {
           timer: 1500,
         });
       }
-    setLoading(false);
-  });
+      setLoading(false);
+    });
   };
 
   // get api select
@@ -179,9 +182,9 @@ const PostJobForm = () => {
                   <div className="col-md-12">
                     <div className="mb-5 text-center">
                       <h1 className="text-white font-weight-bold">
-                        Post Your Jobs
+                        {t("post.post")}
                       </h1>
-                      <p>You want to have partners to accompany you?</p>
+                      <p>{t("desc.desc")}</p>
                     </div>
                   </div>
                 </div>
@@ -191,12 +194,12 @@ const PostJobForm = () => {
                   <div className="col-md-12">
                     <div className="mb-5 text-center">
                       <h2 className="text-white font-weight-bold">
-                        Please log in when posting job
+                        {t("Post_warning.Post_warning")}
                       </h2>
                       <div className="col-md-12 text-center">
                         <NavLink to="/login">
                           <button className="btn-apply btn--apply">
-                            Log in
+                            {t("login.login")}
                           </button>
                         </NavLink>
                       </div>
@@ -210,12 +213,12 @@ const PostJobForm = () => {
                   <div className="col-md-12">
                     <div className="mb-5 text-center">
                       <h2 className="text-white font-weight-bold">
-                        Please log in with employer account when posting job
+                        {t("alert_login_acc_emp.alert_login_acc_emp")}
                       </h2>
                       <div className="col-md-12 text-center">
                         <NavLink to="/login">
                           <button className="btn-apply btn--apply">
-                            Log in
+                            {t("login.login")}
                           </button>
                         </NavLink>
                       </div>
@@ -236,7 +239,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="lname">
-                            Company Name
+                            {t("company_name.company_name")}
                           </label>
                           <input
                             type="text"
@@ -252,7 +255,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="lname">
-                            Job Name
+                            {t("post_job.post_job")}
                           </label>
                           <input
                             type="text"
@@ -269,7 +272,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="typejob">
-                            Job Type
+                            {t("post_type.post_type")}
                           </label>
                           <select
                             className="form-control"
@@ -279,7 +282,7 @@ const PostJobForm = () => {
                             onChange={(value) => handleChangeValue(value)}
                           >
                             <option selected disabled hidden>
-                              Choose here
+                              {t("choose.choose")}
                             </option>
                             {jobType.map((value, index) => (
                               <option value={value} key={index}>
@@ -292,7 +295,9 @@ const PostJobForm = () => {
 
                       <div className="row form-group">
                         <div className="col-md-6">
-                          <label className="text-black">Employee Type</label>
+                          <label className="text-black">
+                            {t("post_empp_type.post_empp_type")}
+                          </label>
                           <select
                             className="form-control"
                             name="titleName"
@@ -301,7 +306,7 @@ const PostJobForm = () => {
                             onChange={(value) => handleChangeValue(value)}
                           >
                             <option selected disabled hidden>
-                              Choose here
+                              {t("choose.choose")}
                             </option>
                             {employeeType.map((value, index) => (
                               <option value={value} key={index}>
@@ -321,7 +326,7 @@ const PostJobForm = () => {
                             onChange={(value) => handleChangeValue(value)}
                           >
                             <option selected disabled hidden>
-                              Choose position
+                              {t("choose.choose")}
                             </option>
                             {position.map((value, index) => (
                               <option value={value} key={index}>
@@ -334,7 +339,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="description">
-                            Job Requirements
+                            {t("desc_req.desc_req")}
                           </label>
                           <textarea
                             name="jobRequire"
@@ -354,7 +359,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="experience">
-                            Experience
+                            {t("home_exp.home_exp")}
                           </label>
                           <input
                             type="subject"
@@ -369,7 +374,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="requireDate">
-                            DueDate
+                            {t("home_due_date.home_due_date")}
                           </label>
                           <input
                             required
@@ -385,7 +390,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="city">
-                            City
+                            {t("city.city")}
                           </label>
                           <select
                             name="cityName"
@@ -395,7 +400,7 @@ const PostJobForm = () => {
                             onChange={(value) => handleChangeValue(value)}
                           >
                             <option selected disabled hidden>
-                              Choose city
+                              {t("choose.choose")}
                             </option>
                             {cityName.map((value, index) => (
                               <option value={value} key={index}>
@@ -408,7 +413,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="salary">
-                            Salary
+                            {t("salary.salary")}
                           </label>
                           <select
                             name="salary"
@@ -418,7 +423,7 @@ const PostJobForm = () => {
                             onChange={(value) => handleChangeValue(value)}
                           >
                             <option selected disabled hidden>
-                              Choose salary
+                              {t("choose.choose")}
                             </option>
                             {salary.map((value, index) => (
                               <option value={value} key={index}>
@@ -431,7 +436,7 @@ const PostJobForm = () => {
                       <div className="row form-group">
                         <div className="col-md-12">
                           <label className="text-black" htmlFor="description">
-                            Job Description
+                            {t("desc_job.desc_job")}
                           </label>
                           <textarea
                             name="jobDescription"
@@ -465,7 +470,7 @@ const PostJobForm = () => {
                               role="status"
                               aria-hidden="true"
                             />
-                            Loading...
+                            {t("loading.loading")}
                           </div>
                         ) : (
                           "Submit"

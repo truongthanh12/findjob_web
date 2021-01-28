@@ -3,8 +3,11 @@ import axios from "axios";
 import swal from "sweetalert";
 import BackTop from "./BackTop";
 import SkeletonProfile from "./skeleton/SkeletonProfile";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { accountName, employerID, userType, employeeID } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
@@ -112,7 +115,7 @@ const Profile = () => {
 
   useEffect(() => {
     const getListJobByEmployer = async (employerID) => {
-      setSkeleton(true)
+      setSkeleton(true);
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/Job/Get-listjob-by-employerID?employerID=${employerID}&page=${page}`
       );
@@ -120,7 +123,7 @@ const Profile = () => {
       setTotalJob(result.data);
       console.log(result.data);
       setTotalPages(result.data);
-      setSkeleton(false)
+      setSkeleton(false);
     };
 
     const getListJobByEmployee = async (employeeID) => {
@@ -246,7 +249,7 @@ const Profile = () => {
       address: updateEmployer.address,
       companyDescription: updateEmployer.companyDescription,
     };
-console.log(update_employer);
+    console.log(update_employer);
     return;
     axios
       .post(
@@ -261,8 +264,8 @@ console.log(update_employer);
       )
       .then((res) => {
         if (res) {
-          setUpdateEmployer({update_employer, ...updateEmployer });
-          setJobList({...jobList})
+          setUpdateEmployer({ update_employer, ...updateEmployer });
+          setJobList({ ...jobList });
           console.log(jobList);
           swal({
             title: "Success",
@@ -325,8 +328,8 @@ console.log(update_employer);
       .then((res) => {
         if (res) {
           setUpdateEmployee({ ...update_employee });
-          setUpdateEmployer({update_employee, ...updateEmployee });
-          setJobApplied({...jobApplied})
+          setUpdateEmployer({ update_employee, ...updateEmployee });
+          setJobApplied({ ...jobApplied });
           swal({
             title: "Success",
             text: "Update your profile!",
@@ -360,10 +363,10 @@ console.log(update_employer);
           <div className="row align-items-center justify-content-center">
             <div className="col-md-12">
               <div className="mb-5 text-center">
-                <h1 className="text-white font-weight-bold">Profile page </h1>
-                <p>
-                  Find your dream jobs in our powerful career website.
-                </p>
+                <h1 className="text-white font-weight-bold">
+                  {t("profile.profile")}{" "}
+                </h1>
+                <p>{t("desc.desc")}</p>
               </div>
             </div>
           </div>
@@ -372,193 +375,193 @@ console.log(update_employer);
       {skeleton ? (
         <SkeletonProfile />
       ) : (
-      <div className="container emp-profile">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="profile-img">{showUpload()}</div>
-          </div>
-          <div className="col-md-6">
-            <div className="profile-head">
-              <h5>{jobList.accountID || jobApplied.employeeName}</h5>
-              <h6>{jobList.companyName || ""}</h6>
-              <span className="icon-room pr-2" />
-              {jobList.cityName || jobApplied.email}
-              <ul className="nav nav-tabs" id="myTab" role="tablist">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active"
-                    id="home-tab"
-                    data-toggle="tab"
-                    href="#home"
-                    role="tab"
-                    aria-controls="home"
-                    aria-selected="true"
-                  >
-                    About
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    id="profile-tab"
-                    data-toggle="tab"
-                    href="#profile"
-                    role="tab"
-                    aria-controls="profile"
-                    aria-selected="false"
-                  >
-                    Timeline
-                  </a>
-                </li>
-              </ul>
+        <div className="container emp-profile">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="profile-img">{showUpload()}</div>
+            </div>
+            <div className="col-md-6">
+              <div className="profile-head">
+                <h5>{jobList.accountID || jobApplied.employeeName}</h5>
+                <h6>{jobList.companyName || ""}</h6>
+                <span className="icon-room pr-2" />
+                {jobList.cityName || jobApplied.email}
+                <ul className="nav nav-tabs" id="myTab" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      id="home-tab"
+                      data-toggle="tab"
+                      href="#home"
+                      role="tab"
+                      aria-controls="home"
+                      aria-selected="true"
+                    >
+                      About
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      id="profile-tab"
+                      data-toggle="tab"
+                      href="#profile"
+                      role="tab"
+                      aria-controls="profile"
+                      aria-selected="false"
+                    >
+                      Timeline
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <input
+                type="submit"
+                className="profile-edit-btn"
+                name="btnAddMore"
+                value="Edit Profile"
+                data-toggle="modal"
+                data-target="#editProfile"
+              />
             </div>
           </div>
-          <div className="col-md-2">
-            <input
-              type="submit"
-              className="profile-edit-btn"
-              name="btnAddMore"
-              value="Edit Profile"
-              data-toggle="modal"
-              data-target="#editProfile"
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-4">
-            <div className="profile-work">
-              <p>WORK LINK</p>
-              <a href="">Website Link</a>
-              <br />
-              <a href="">Bootsnipp Profile</a>
-              <br />
-              <a href="">Web Designer</a>
-              <br />
-              <a href="">Web Developer</a>
-              <br />
+          <div className="row">
+            <div className="col-md-4">
+              <div className="profile-work">
+                <p>WORK LINK</p>
+                <a href="">Website Link</a>
+                <br />
+                <a href="">Bootsnipp Profile</a>
+                <br />
+                <a href="">Web Designer</a>
+                <br />
+                <a href="">Web Developer</a>
+                <br />
+              </div>
             </div>
-          </div>
-          <div className="col-md-8">
-            <div className="tab-content profile-tab" id="myTabContent">
-              <div
-                className="tab-pane fade show active"
-                id="home"
-                role="tabpanel"
-                aria-labelledby="home-tab"
-              >
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>User Id</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>{jobList.accountID || jobApplied.accountID}</p>
-                  </div>
-                </div>
-
-                <div className="row">
-                  {userType === "Employee" ? (
-                    <div className="col-md-6">
-                      <label>Name</label>
-                    </div>
-                  ) : (
-                    <div className="col-md-6">
-                      <label>Company Name</label>
-                    </div>
-                  )}
-                  <div className="col-md-6">
-                    <p>{jobList.companyName || jobApplied.employeeName}</p>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Email</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>{jobList.email || jobApplied.email}</p>
-                  </div>
-                </div>
-                {userType === "Employee" ? (
+            <div className="col-md-8">
+              <div className="tab-content profile-tab" id="myTabContent">
+                <div
+                  className="tab-pane fade show active"
+                  id="home"
+                  role="tabpanel"
+                  aria-labelledby="home-tab"
+                >
                   <div className="row">
                     <div className="col-md-6">
-                      <label>Phone</label>
+                      <label>User Id</label>
                     </div>
                     <div className="col-md-6">
-                      <p>{jobApplied.phone || ""}</p>
+                      <p>{jobList.accountID || jobApplied.accountID}</p>
                     </div>
                   </div>
-                ) : (
-                  <div>
+
+                  <div className="row">
+                    {userType === "Employee" ? (
+                      <div className="col-md-6">
+                        <label>Name</label>
+                      </div>
+                    ) : (
+                      <div className="col-md-6">
+                        <label>Company Name</label>
+                      </div>
+                    )}
+                    <div className="col-md-6">
+                      <p>{jobList.companyName || jobApplied.employeeName}</p>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Email</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>{jobList.email || jobApplied.email}</p>
+                    </div>
+                  </div>
+                  {userType === "Employee" ? (
                     <div className="row">
                       <div className="col-md-6">
-                        <label>Address</label>
+                        <label>Phone</label>
                       </div>
                       <div className="col-md-6">
-                        <p>{jobList.address || ""}</p>
+                        <p>{jobApplied.phone || ""}</p>
                       </div>
                     </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <label>Description about company</label>
+                  ) : (
+                    <div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <label>Address</label>
+                        </div>
+                        <div className="col-md-6">
+                          <p>{jobList.address || ""}</p>
+                        </div>
                       </div>
-                      <div className="col-md-6">
-                        <p>{jobList.companyDescription || ""}</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <label>Description about company</label>
+                        </div>
+                        <div className="col-md-6">
+                          <p>{jobList.companyDescription || ""}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              <div
-                className="tab-pane fade"
-                id="profile"
-                role="tabpanel"
-                aria-labelledby="profile-tab"
-              >
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Experience</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>Not update</p>
-                  </div>
+                  )}
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Hourly Rate</label>
+                <div
+                  className="tab-pane fade"
+                  id="profile"
+                  role="tabpanel"
+                  aria-labelledby="profile-tab"
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Experience</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>Not update</p>
+                    </div>
                   </div>
-                  <div className="col-md-6">
-                    <p>Not update</p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Hourly Rate</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>Not update</p>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Total Projects</label>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Total Projects</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>Not update</p>
+                    </div>
                   </div>
-                  <div className="col-md-6">
-                    <p>Not update</p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>English Level</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>Not update</p>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>English Level</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>Not update</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Availability</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>Not update</p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Availability</label>
+                    </div>
+                    <div className="col-md-6">
+                      <p>Not update</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       )}
       {/* modal edit profile  */}
       <div
@@ -573,7 +576,7 @@ console.log(update_employer);
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="editProfile">
-                Edit Profile
+                {t("profile_edit.profile_edit")}
               </h5>
               <button
                 type="button"
@@ -594,7 +597,7 @@ console.log(update_employer);
                         name="companyName"
                         htmlFor="companyName"
                       >
-                        Company Name
+                        {t("company_name.company_name")}
                       </label>
                       <input
                         type="text"
@@ -609,7 +612,7 @@ console.log(update_employer);
                   <div className="row form-group">
                     <div className="col-md-12">
                       <label className="text-black" htmlFor="email">
-                        Email
+                        {t("email.email")}
                       </label>
                       <input
                         type="text"
@@ -624,7 +627,7 @@ console.log(update_employer);
                   <div className="row form-group">
                     <div className="col-md-12">
                       <label className="text-black" htmlFor="address">
-                        Address
+                        {t("address.address")}
                       </label>
                       <input
                         type="text"
@@ -639,7 +642,7 @@ console.log(update_employer);
                   <div className="row form-group">
                     <div className="col-md-12">
                       <label className="text-black" htmlFor="description">
-                        Company Description
+                        {t("desc_comp.desc_comp")}
                       </label>
                       <textarea
                         name="companyDescription"
@@ -660,7 +663,7 @@ console.log(update_employer);
                     className="btn btn-secondary"
                     data-dismiss="modal"
                   >
-                    Close
+                    {t("cancel.cancel")}
                   </button>
                   <button
                     type="button"
@@ -682,7 +685,7 @@ console.log(update_employer);
                         name="employeeName"
                         htmlFor="employeeName"
                       >
-                        Name
+                        {t("profile_name.profile_name")}
                       </label>
                       <input
                         type="text"
@@ -697,7 +700,7 @@ console.log(update_employer);
                   <div className="row form-group">
                     <div className="col-md-12">
                       <label className="text-black" htmlFor="email">
-                        Email
+                        {t("email.email")}
                       </label>
                       <input
                         type="text"
@@ -712,7 +715,7 @@ console.log(update_employer);
                   <div className="row form-group">
                     <div className="col-md-12">
                       <label className="text-black" htmlFor="phone">
-                        Phone
+                        {t("profile_phone.profile_phone")}
                       </label>
                       <input
                         type="text"
@@ -749,7 +752,7 @@ console.log(update_employer);
                       className="btn btn-secondary"
                       data-dismiss="modal"
                     >
-                      Close
+                      {t("cancel.cancel")}
                     </button>
                     <button
                       type="button"

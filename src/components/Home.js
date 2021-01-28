@@ -10,6 +10,9 @@ import SkeletonJob from "./skeleton/SkeletonJob";
 import { Spinner } from "react-bootstrap";
 import { Button } from "bootstrap";
 import Oclock from "./oclock/Oclock";
+import Toggle from "react-toggle";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const [cityName, setCityName] = useState([]);
@@ -28,6 +31,7 @@ const Home = () => {
     salary: "",
     page: 0,
   });
+  const { t } = useTranslation();
 
   const handleChange = (e) => {
     setSearchTerm({ ...searchTerm, [e.target.name]: e.target.value });
@@ -194,11 +198,10 @@ const Home = () => {
             <div className="col-md-12">
               <div className="mb-5 text-center">
                 <h1 className="text-white font-weight-bold">
-                  A Powerful Career Website
+                  {/* A Powerful Career Website */}
+                  {t("home_title.home_title")}
                 </h1>
-                <p>
-                  Find your dream jobs in our powerful career website.
-                </p>
+                <p>{t("desc.desc")}</p>
               </div>
               <form
                 method="post"
@@ -213,7 +216,7 @@ const Home = () => {
                           type="text"
                           name="keyWord"
                           className="form-control form-control-lg"
-                          placeholder="Job title, keywords..."
+                          placeholder= {t("home_ip-placeholder.home_ip-placeholder")}
                           value={searchTerm.keyWord}
                           onChange={(value) => handleChange(value)}
                         />
@@ -227,7 +230,7 @@ const Home = () => {
                         onChange={(value) => handleChange(value)}
                       >
                         <option selected disabled hidden>
-                          Choose city
+                          {t("city.city")}
                         </option>
                         {cityName.map((value, index) => (
                           <option value={value} key={index}>
@@ -247,7 +250,7 @@ const Home = () => {
                           onChange={(value) => handleChange(value)}
                         >
                           <option selected disabled hidden>
-                            Job type
+                            {t("post_type.post_type")}
                           </option>
                           {jobType.map((value, index) => (
                             <option value={value} key={index}>
@@ -264,7 +267,7 @@ const Home = () => {
                         onChange={(value) => handleChange(value)}
                       >
                         <option selected disabled hidden>
-                          Choose salary
+                          {t("salary.salary")}
                         </option>
                         {salary.map((value, index) => (
                           <option value={value} key={index}>
@@ -279,7 +282,7 @@ const Home = () => {
                         className="btn btn-primary btn-lg btn-block text-white btn-search"
                       >
                         <span className="icon-search icon mr-2" />
-                        Search Job
+                        {t("home_btn_search.home_btn_search")}
                       </button>
                     </div>
                   </div>
@@ -292,10 +295,9 @@ const Home = () => {
       {skeleton ? (
         <SkeletonJob />
       ) : (
-        
         <section className="site-section" id="searchResults">
-            {/* <Oclock size={400} timeFormat="24hour" hourFormat="standard" /> */}
-        
+          {/* <Oclock size={400} timeFormat="24hour" hourFormat="standard" /> */}
+
           <div className="container">
             <div className="row mb-5 justify-content-center">
               <div className="col-md-7 text-center">
@@ -303,7 +305,10 @@ const Home = () => {
                   {searchResults.length === 0 ? (
                     "Can't find what you are looking for"
                   ) : (
-                    <div>{totalJob.totalRecord} career opportunities </div>
+                    <div>
+                      {totalJob.totalRecord} 
+                       {t("home_mount_job.home_mount_job")}
+                    </div>
                   )}
                 </h2>
               </div>
@@ -343,13 +348,18 @@ const Home = () => {
                           </NavLink>
                         </h2>
                         <p className="meta">
-                          <strong>Post: {item.postDate || ""}</strong>
+                          <strong>
+                            {t("home_date.home_date")} {item.postDate || ""}
+                          </strong>
                           <br />
-                          <strong>Due Date: {item.requireDate || ""}</strong>
+                          <strong>
+                            {t("home_due_date.home_due_date")}{" "}
+                            {item.requireDate || ""}
+                          </strong>
                         </p>
                       </div>
                       <div className="col-md-3 p-4">
-                        Experience: {item.experience || ""}
+                        {t("home_exp.home_exp")} {item.experience || ""}
                         <p style={{ marginBottom: 0 }}>
                           <strong className="text-black">
                             {item.jobType || ""}
@@ -363,7 +373,7 @@ const Home = () => {
                         <p>
                           <NavLink to={`/job-detail/${item.jobID}`}>
                             <button className="btn-apply btn--info">
-                              Detail Job
+                              {t("btn_detail.btn_detail")}
                             </button>
                           </NavLink>
                         </p>
@@ -390,10 +400,10 @@ const Home = () => {
                             role="status"
                             aria-hidden="true"
                           />
-                          Loading...
+                          {t("loading.loading")}
                         </div>
                       ) : (
-                        "Job More..."
+                        <div>{t("btn_more.btn_more")}</div>
                       )}
                     </button>
                   )}

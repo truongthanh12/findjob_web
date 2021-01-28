@@ -1,8 +1,11 @@
 import React from 'react'
 import BackTop from './BackTop'
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const About = () => {
-    return (
+  const { t } = useTranslation();
+  return (
       <div>
         <section
           className="home-section section-hero inner-page overlay bg-image"
@@ -13,10 +16,9 @@ const About = () => {
             <div className="row align-items-center justify-content-center">
               <div className="col-md-12">
                 <div className="mb-5 text-center">
-                  <h1 className="text-white font-weight-bold">About Us</h1>
+                  <h1 className="text-white font-weight-bold"> {t("about.about")}</h1>
                   <p>
-                    Find your dream jobs in our powerful career website
-                    .
+                  {t("desc.desc")}
                   </p>
                 </div>
               </div>
@@ -64,7 +66,7 @@ const About = () => {
           <div className="container">
             <div className="row mb-5">
               <div className="col-12 text-center" data-aos="fade">
-                <h2 className="section-title mb-3">Our Team</h2>
+                <h2 className="section-title mb-3">{t("about_us.about_us")}</h2>
               </div>
             </div>
             <div className="row align-items-center block__69944">

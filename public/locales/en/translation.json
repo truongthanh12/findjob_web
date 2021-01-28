@@ -1,0 +1,288 @@
+{
+    "header_menu_home": {
+        "header_menu_home": "Home"
+    },
+    "header_menu_job": {
+        "header_menu_job": "Job Listing"
+    },
+    "header_menu_about": {
+        "header_menu_about": "About"
+    },
+    "login": {
+        "login": "Login"
+    },
+    "logout": {
+        "logout": "Đăng xuất"
+    },
+    "register": {
+        "register": "Register"
+    },
+    "register_employee": {
+        "register_employee": "Employee"
+    },
+    "register_employer": {
+        "register_employer": "Employer"
+    },
+    "button_post_job": {
+        "button_post_job": "Post A Job"
+    },
+    "home_title": {
+        "home_title": "A Powerful Career Website"
+    },
+    "choose": {
+        "choose": "Choose here"
+    },
+    "desc": {
+        "desc": "Find your dream jobs in our powerful career website."
+    },
+    "home_ip-placeholder": {
+        "home_ip-placeholder": "Job title, keywords..."
+    },
+    "home_btn_search": {
+        "home_btn_search": "Search Job"
+    },
+    "btn_apply": {
+        "btn_apply": "Apply Job"
+    },
+    "home_mount_job": {
+        "home_mount_job": " Career Opportunities"
+    },
+    "home_date": {
+        "home_date": "Post Date: "
+    },
+    "home_due_date": {
+        "home_due_date": "Due Date: "
+    },
+    "home_exp": {
+        "home_exp": "Experience: "
+    },
+    "home_btn_detail": {
+        "home_btn_detail": "Detail Job: "
+    },
+    "btn_detail": {
+        "btn_detail": "Detail Job "
+    },
+    "list_job": {
+        "list_job": "List Careers: "
+    },
+    "list_desc": {
+        "list_desc": "You want to have partners to accompany you?: "
+    },
+    "btn_more": {
+        "btn_more": "Job More"
+    },
+    "about": {
+        "about": "About Us"
+    },
+    "about_careers": {
+        "about_careers": "Careers for Your Careers"
+    },
+    "about_us": {
+        "about_us": "Our team"
+    },
+    "copy_right": {
+        "copy_right": "Copyright © All rights reserved | website is built with by "
+    },
+    "copy_right_me": {
+        "copy_right_me": "TruongThanh"
+    },
+    "Post_warning": {
+        "Post_warning": "Please Sign in When posting job"
+    },
+    "btn_login": {
+        "btn_login": "Log In"
+    },
+    "sign_in": {
+        "sign_in": "Sign In"
+    },
+    "sign_in_user": {
+        "sign_in_user": "Username: "
+    },
+    "sign_in_pass": {
+        "sign_in_pass": "Password: "
+    },
+    "sign_in_rem": {
+        "sign_in_rem": "Remember "
+    },
+    "btn_submit": {
+        "btn_submit": "Submit"
+    },
+    "sign_in_hint": {
+        "sign_in_hint": "You don't have account! "
+    },
+    "sign_up": {
+        "sign_up": "Sign Up"
+    },
+    "sign_up_employer": {
+        "sign_up_employer": "Register for Employer"
+    },
+    "sign_up_employer2": {
+        "sign_up_employer2": "For Employee"
+    },
+    "sign_up_employee": {
+        "sign_up_employee": "Register for Employee"
+    },
+    "sign_up_employee2": {
+        "sign_up_employee2": "For Employer"
+    },
+    "sign_up_employer3": {
+        "sign_up_employer3": "Please enter all the field below, the system will save your data when you post a job."
+    },
+    "email": {
+        "email": "Email"
+    },
+    "city": {
+        "city": "City"
+    },
+    "address": {
+        "address": "Address"
+    },
+    "company_name": {
+        "company_name": "Company name"
+    },
+    "about_company": {
+        "about_company": "About Company"
+    },
+    "sign_up_hint": {
+        "sign_up_hint": "You have accounted already! "
+    },
+    "sign_in": {
+        "sign_in": "Sign In"
+    },
+    "profile": {
+        "profile": "Profile Page"
+    },
+    "profile_text": {
+        "profile_text": "Profile"
+    },
+    "profile_about": {
+        "profile_about": "About"
+    },
+    "profile_timeline": {
+        "profile_timeline": "TimeLine"
+    },
+    "profile_edit": {
+        "profile_edit": "Edit Profile"
+    },
+    "profile_work_link": {
+        "profile_work_link": "Work link"
+    },
+    "profile_link": {
+        "profile_link": "Website link"
+    },
+    "profile_id": {
+        "profile_id": "User ID"
+    },
+    "profile_name": {
+        "profile_name": "Name"
+    },
+    "profile_phone": {
+        "profile_phone": "Phone"
+    },
+    "btn_savejob": {
+        "btn_savejob": "Save Job"
+    },
+    "desc_job": {
+        "desc_job": "Job Description"
+    },
+    "desc_comp": {
+        "desc_comp": "Company Description"
+    },
+    "desc_req": {
+        "desc_req": "Job Requirements"
+    },
+    "desc_sum": {
+        "desc_sum": "Job Summary"
+    },
+    "desc_posted": {
+        "desc_posted": "Published on: "
+    },
+    "desc_due": {
+        "desc_due": "Due Date on: "
+    },
+    "desc_vacancy": {
+        "desc_vacancy": "Vacancy: "
+    },
+    "desc_status": {
+        "desc_status": "Employment Status: "
+    },
+    "desc_locate": {
+        "desc_locate": "Job Location: "
+    },
+    "gender": {
+        "gender": "Gender: "
+    },
+    "salary": {
+        "salary": "Salary: "
+    },
+    "any": {
+        "any": "Any"
+    },
+    "desc_deadline": {
+        "desc_deadline": "Application Deadline: "
+    },
+    "share": {
+        "share": "Share"
+    },
+    "contact": {
+        "contact": "Contact"
+    },
+    "alert_sure": {
+        "alert_sure": "Are you sure? "
+    },
+    "alert_scucess": {
+        "alert_scucess": "Success"
+    },
+    "alert_fail": {
+        "alert_fail": "Fail"
+    },
+    "loading": {
+        "loading": "Loading ..."
+    },
+    "btn_cancel": {
+        "btn_cancel": "Cancel"
+    },
+    "des_hiring": {
+        "des_hiring": "We are hiring "
+    },
+    "post": {
+        "post": "Post Your Job"
+    },
+    "post_desc": {
+        "post_desc": "You want to have partners to accompany you?"
+    },
+    "post_job": {
+        "post_job": "Job Name"
+    },
+    "post_type": {
+        "post_type": "Job Type"
+    },
+    "post_empp_type": {
+        "post_empp_type": "Employee Type"
+    },
+    "post_job_req": {
+        "post_job_req": "job Requirements"
+    },
+    "alert_unauthor": {
+        "alert_unauthor": "Unauthorized"
+    },
+    "alert_login_acc": {
+        "alert_login_acc": "Please login with employee account!"
+    },
+    "alert_login_acc_emp": {
+        "alert_login_acc_emp": "Please login with employer account!"
+    },
+    "job_posted": {
+        "job_posted": "Job Posted Page"
+    },
+    "job_posted1": {
+        "job_posted1": "You posted "
+    },
+    "btn_applied": {
+        "btn_applied": "Applied List"
+    },
+    "applied": {
+        "applied": "Job Applied"
+    }
+
+}

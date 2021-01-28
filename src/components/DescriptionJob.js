@@ -7,9 +7,12 @@ import swal from "sweetalert";
 import BackTop from "./BackTop";
 import SkeletonDescription from "./skeleton/SkeletonDescription";
 import { Spinner } from "react-bootstrap";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const DescriptionJob = () => {
   // DescriptionJob
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [skeleton, setSkeleton] = useState(false);
   const history = useHistory();
@@ -218,7 +221,7 @@ const DescriptionJob = () => {
                         onClick={saveJob}
                       >
                         <span className="icon-heart-o mr-2 text-danger"></span>
-                        Save Job
+                        {t("btn_savejob.btn_savejob")}
                       </a>
                     </div>
                     <div className="col-6">
@@ -226,7 +229,7 @@ const DescriptionJob = () => {
                         className="btn btn-block btn-primary btn-md"
                         onClick={LoginToApply}
                       >
-                        Apply Now
+                        {t("btn_apply.btn_apply")}
                       </a>
                     </div>
                   </div>
@@ -241,7 +244,7 @@ const DescriptionJob = () => {
                         onClick={saveJob}
                       >
                         <span className="icon-heart-o mr-2 text-danger"></span>
-                        Save Job
+                        {t("btn_savejob.btn_savejob")}
                       </a>
                     </div>
                     <div className="col-6">
@@ -251,7 +254,7 @@ const DescriptionJob = () => {
                         data-toggle="modal"
                         data-target="#AcceptModal"
                       >
-                        Apply Now
+                        {t("btn_apply.btn_apply")}
                       </a>
                     </div>
                   </div>
@@ -265,7 +268,7 @@ const DescriptionJob = () => {
                         onClick={saveJob}
                       >
                         <span className="icon-heart-o mr-2 text-danger"></span>
-                        Save Job
+                        {t("btn_savejob.btn_savejob")}
                       </a>
                     </div>
                     <div className="col-6">
@@ -274,7 +277,7 @@ const DescriptionJob = () => {
                         className="btn btn-block btn-primary btn-md"
                         onClick={LoginToApply}
                       >
-                        Apply Now
+                        {t("btn_apply.btn_apply")}
                       </a>
                     </div>
                   </div>
@@ -319,14 +322,14 @@ const DescriptionJob = () => {
                   </figure>
                   <h3 className="h5 d-flex align-items-center mb-4 text-primary">
                     <span className="icon-align-left mr-3" />
-                    Job Description
+                        {t("desc_job.desc_job")}
                   </h3>
                   <span className="icon-check_circle mr-2 text-muted" />
                   {jobId.jobDescription}
 
                   <h3 className="h5 d-flex align-items-center my-4 mt-5 text-primary">
                     <span className="icon-turned_in mr-3"></span>
-                    Job Requirements
+                        {t("desc_req.desc_req")}
                   </h3>
                   <span className="icon-check_circle mr-2 text-muted" />
                   <span>{jobId.experience}</span>
@@ -338,54 +341,54 @@ const DescriptionJob = () => {
               <div className="col-lg-5">
                 <div className="bg-light p-3 border rounded mb-4">
                   <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">
-                    Job Summary
+                        {t("desc_sum.desc_sum")}
                   </h3>
                   <ul className="list-unstyled pl-3 mb-0">
                     <li className="mb-2">
-                      <strong className="text-black">Email:</strong>{" "}
+                      <strong className="text-black">{t("email.email")}</strong>{" "}
                       {jobId.email}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Published on:</strong>{" "}
+                      <strong className="text-black">{t("desc_posted.desc_posted")}</strong>{" "}
                       {jobId.postDate}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">DueDate on:</strong>{" "}
+                      <strong className="text-black">{t("desc_due.desc_due")}</strong>{" "}
                       {jobId.requireDate}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Vacancy:</strong>{" "}
+                      <strong className="text-black">{t("desc_vacancy.desc_vacancy")}</strong>{" "}
                       {jobId.jobName}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Employment Status:</strong>{" "}
+                      <strong className="text-black">{t("desc_status.desc_status")}</strong>{" "}
                       {jobId.jobType}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Experience:</strong>{" "}
+                      <strong className="text-black">{t("home_exp.home_exp")}</strong>{" "}
                       {jobId.experience}(s)
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Job Location:</strong>{" "}
+                      <strong className="text-black">{t("desc_locate.desc_locate")}</strong>{" "}
                       {jobId.address}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Salary:</strong>{" "}
+                      <strong className="text-black">{t("salary.salary")}</strong>{" "}
                       {jobId.salary}
                     </li>
                     <li className="mb-2">
-                      <strong className="text-black">Gender:</strong> Any
+                      <strong className="text-black">{t("home_exp.home_exp")}</strong> Any
                     </li>
                     <li className="mb-2">
                       <strong className="text-black">
-                        Application Deadline:
+                      {t("any.any")}
                       </strong>{" "}
                       {jobId.requireDate}
                     </li>
                   </ul>
                 </div>
                 <div className="bg-light p-3 border rounded">
-                  <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
+                  <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">{t("share.share")}</h3>
                   <div className="px-3">
                     <a href="#" className="pt-3 pb-3 pr-3 pl-0">
                       <span className="icon-facebook" />
@@ -518,7 +521,7 @@ const DescriptionJob = () => {
                         role="status"
                         aria-hidden="true"
                       />
-                      Loading...
+                       {t("loading.loading")}
                     </div>
                   ) : (
                     "Accept"
