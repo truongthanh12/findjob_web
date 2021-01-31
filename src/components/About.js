@@ -2,8 +2,10 @@ import React from 'react'
 import BackTop from './BackTop'
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import Oclock from './oclock/Oclock';
+import Drag from './oclock/Drag';
 
-const About = () => {
+const About = (props) => {
   const { t } = useTranslation();
   return (
       <div>
@@ -127,6 +129,7 @@ const About = () => {
           </div>
         </section>
         <BackTop />
+        <Drag />
       </div>
     );
 }

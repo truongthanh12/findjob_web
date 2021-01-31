@@ -19,6 +19,7 @@ import DescriptionJobPosted from "./components/DescriptionJobPosted";
 import JobApplied from "./components/JobApplied";
 import ThemeDark from "./components/themeBg/ThemeDark";
 import LoadingApp from "./components/skeleton/LoadingApp";
+import Oclock from "./components/oclock/Oclock";
 
 function App() {
   const [spinner, setSpinner] = useState(true);
@@ -35,6 +36,7 @@ function App() {
           <Router>
             <Header />
             <ThemeDark />
+            <Oclock timeFormat="24hour" size="300" />
             <Switch>
               <Route path="/" exact component={() => <Home />} />
               <Route path="/about" component={() => <About />} />

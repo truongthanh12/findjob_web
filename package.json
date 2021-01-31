@@ -20,6 +20,7 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.13.1",
+    "react-draggable": "^4.4.3",
     "react-hook-form": "^6.9.2",
     "react-i18next": "^11.8.5",
     "react-loading-skeleton": "^2.1.1",

@@ -1,4 +1,5 @@
 import React from "react";
+import Draggable from "react-draggable";
 
 class Oclock extends React.Component {
   constructor(props) {
@@ -110,57 +111,46 @@ class Oclock extends React.Component {
   }
 
   drawFace(ctx, radius) {
-    if (this.dayTime.dayTime >= 6 && this.dayTime.dayTime < 18) {
-      ctx.beginPath();
-      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = "white";
-      ctx.fill();
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
 
-      const grad = ctx.createRadialGradient(
-        0,
-        0,
-        radius * 0.95,
-        0,
-        0,
-        radius * 1.05
-      );
-      grad.addColorStop(0, "#333");
-      grad.addColorStop(0.5, "white");
-      grad.addColorStop(1, "#333");
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = radius * 0.1;
-      ctx.stroke();
+    const now = new Date();
+    const midDay = new Date().setHours(18, 30);
 
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.05, 0, 2 * Math.PI);
-      ctx.fillStyle = "#333";
-      ctx.fill();
+    let backgroundColor;
+    let textColor;
+
+    if (now > midDay) {
+      backgroundColor = "#333";
+      textColor = "white";
     } else {
-      ctx.beginPath();
-      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = "black";
-      ctx.fill();
-
-      const grad = ctx.createRadialGradient(
-        0,
-        0,
-        radius * 0.95,
-        0,
-        0,
-        radius * 1.05
-      );
-      grad.addColorStop(0, "#fff");
-      grad.addColorStop(0.5, "black");
-      grad.addColorStop(1, "#fff");
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = radius * 0.1;
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.05, 0, 2 * Math.PI);
-      ctx.fillStyle = "#fff";
-      ctx.fill();
+      backgroundColor = "white";
+      textColor = "#333";
     }
+
+    ctx.fillStyle = backgroundColor;
+
+    ctx.fill();
+
+    const grad = ctx.createRadialGradient(
+      0,
+      0,
+      radius * 0.95,
+      0,
+      0,
+      radius * 1.05
+    );
+    grad.addColorStop(0, backgroundColor);
+    grad.addColorStop(0.5, textColor);
+    grad.addColorStop(1, backgroundColor);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = radius * 0.1;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.05, 0, 2 * Math.PI);
+    ctx.fillStyle = textColor;
+    ctx.fill();
   }
 
   drawNumbers(ctx, radius) {
@@ -283,25 +273,20 @@ class Oclock extends React.Component {
 
   render() {
     return (
-      <div id="outerContainer">
-        <div id="container">
-          <div id="item">
-            <div
-              className="Clock"
-              style={{ width: String(this.props.size) + "px" }}
-            >
-              <canvas
-                width={this.props.size}
-                height={this.props.size}
-                ref="clockCanvas"
-              />
-            </div>
+      <Draggable>
+        <div className="drag-drop">
+          <div
+            className="Clock"
+            style={{ width: String(this.props.size) + "px" }}
+          >
+            <canvas
+              width={this.props.size}
+              height={this.props.size}
+              ref="clockCanvas"
+            />
           </div>
         </div>
-        {/* <Helmet>
-          <script src="../../../public/js/main.js" type="text/javascript" />
-        </Helmet> */}
-      </div>
+      </Draggable>
     );
   }
 }

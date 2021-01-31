@@ -2692,6 +2692,10 @@ p.error {
   padding-left: 450px;
   margin-top: 20px;
 }
+.Clock {
+  position: fixed;
+  bottom: 0;
+}
 .time1 {
   font-size: 40px;
 }
@@ -2941,3 +2945,21 @@ p.error {
 .slider.round:before {
   border-radius: 50%;}
 
+.drag-drop {
+  position: fixed;
+  z-index: 129342;
+  cursor: move;
+  color: black;
+  user-select: none;
+  bottom: -150px;
+  opacity: 0.7;
+}
+.drag-drop:hover {
+  opacity: 1;
+}
+.react-draggable-dragged {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+}
