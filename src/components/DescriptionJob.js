@@ -5,10 +5,12 @@ import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import BackTop from "./BackTop";
+import usePageLoader from "./usePageLoader";
 
 const DescriptionJob = () => {
   // DescriptionJob
   const history = useHistory();
+  const [loader, showLoader, hideLoader] = usePageLoader();
 
   const { token, employeeID, accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
@@ -39,6 +41,8 @@ const DescriptionJob = () => {
   // apply job
   const handleSubmit = (e) => {
     e.preventDefault();
+    showLoader()
+
     const { token } = JSON.parse(localStorage.getItem("dataLogged") || "{}");
 
     const new_file = new FormData();
@@ -63,8 +67,10 @@ const DescriptionJob = () => {
         }
       )
       .then((res) => {
+        hideLoader()
         if (res) {
           setApplyForm(!new_file);
+          hideLoader()
           swal({
             title: "Success",
             text: "Applied success! Good luck",
@@ -562,7 +568,7 @@ const DescriptionJob = () => {
           </div>
         </div>
       </div>
-
+{loader}
       <BackTop />
     </div>
   );

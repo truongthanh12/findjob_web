@@ -23,7 +23,7 @@ const About = () => {
             </div>
           </div>
         </section>
-        <section className="site-section pb-0">
+        <section className="site-section pb-0" id="darkTheme">
           <div className="container">
             <div className="row align-items-center">
               <div className="col-lg-6 mb-5 mb-lg-0">

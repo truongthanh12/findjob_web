@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment, useState, useEffect} from "react";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -17,12 +17,23 @@ import Home from "./components/Home";
 import PostedJob from "./components/PostedJob";
 import DescriptionJobPosted from "./components/DescriptionJobPosted";
 import JobApplied from "./components/JobApplied";
+import Loading from "./components/Loading";
+import ToggleTheme from "./components/toggle-theme/ToggleTheme";
 
 function App() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000)
+  }, [])
+
   return (
+    <Fragment>
+    {/* {loading === false ? ( */}
     <div className="site-wrap">
       <Router>
         <Header />
+        {/* <ToggleTheme /> */}
         <Switch>
           <Route path="/" exact component={() => <Home />} />
           <Route path="/about" component={() => <About />} />
@@ -43,6 +54,10 @@ function App() {
         <Footer />
       </Router>
     </div>
+    {/* ) : (
+      <Loading />
+    )} */}
+    </Fragment>
   );
 }
 

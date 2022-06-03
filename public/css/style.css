@@ -833,7 +833,9 @@ h4 {
 .form-group .filter-option.dropup:after {
   display: none;
 }
-
+.form-group.error input{
+  border-bottom: 1px solid red !important;
+}
 .form-group .dropup .dropdown-toggle:after {
   border: none;
   display: inline-block;
@@ -2469,4 +2471,57 @@ h4 {
   background-color: unset;
   color: #fff;
   border-bottom: 1px solid #42617e !important;
+}
+
+.loading{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto !important;
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.loading-text{
+  z-index: 1005;
+  color: #fff;
+  font-size: 25px;
+}
+.darkToggle{
+  position: fixed;
+  top: 15%;
+  right: 0;
+  z-index: 999999999;
+}
+
+.react-toggle-track-check, .react-toggle-track-x{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  text-shadow: 0 0 #fff;
+  font-size: 13px;
+}
+
+.react-toggle-track-check {
+  color: transparent;
+}
+.react-toggle--checked .react-toggle-track {
+  background-color:  #03fcf0 !important;
+}
+
+.dark {
+  background-color: #333;
+}
+
+.dark h2, .dark p, .dark div, .dark span, .dark i, .dark h3, .dark h4, .dark h1, .dark h5, .dark h6, .dark .meta > strong, .dark .text-black {
+  color: #fff !important;
 }

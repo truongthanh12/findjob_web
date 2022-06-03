@@ -4,12 +4,15 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import FormPostJobDetail from "./FormPostJobDetail";
+import { Spinner } from "react-bootstrap";
+import SelectField from "../custom-field/SelectField";
 
-const PostJobForm = () => {
+const PostJobForm = (props) => {
   const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
+  const [loading, setLoading] = useState(false);
   const [cityName, setCityName] = useState([]);
   const [jobType, setJobType] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
@@ -56,6 +59,7 @@ const PostJobForm = () => {
   // post job
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     const { employerID, token } = JSON.parse(
       localStorage.getItem("dataLogged") || "{}"
@@ -103,6 +107,7 @@ const PostJobForm = () => {
           icon: "warning",
           timer: 1500,
         });
+        setLoading(false);
       }
     });
   };
@@ -255,7 +260,7 @@ const PostJobForm = () => {
 
                   <div className="row form-group">
                     <div className="col-md-12">
-                      <label className="text-black" htmlFor="typejob">
+                      {/* <label className="text-black" htmlFor="typejob">
                         Job Type
                       </label>
                       <select
@@ -273,7 +278,8 @@ const PostJobForm = () => {
                             {value}
                           </option>
                         ))}
-                      </select>
+                      </select> */}
+                      <SelectField name={"jobTypeName"} value={postJob.jobTitle} label={"Job Type"} options={jobType} defaultValue={"choose"} />
                     </div>
                   </div>
 
@@ -439,12 +445,23 @@ const PostJobForm = () => {
               <p>{postJob.jobDescription}</p>
               <div className="row form-group">
                 <div className="col-md-12 mt-3 text-center">
-                  <input
+                  <button
                     onClick={handleSubmit}
-                    type="submit"
                     className="btn btn-primary btn-md text-white"
                     style={{ padding: "1rem 3rem" }}
-                  />
+                  >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      >Loading...</Spinner>
+                    ) : (
+                      "Post"
+                    )}
+                  </button>
                 </div>
               </div>
             </form>

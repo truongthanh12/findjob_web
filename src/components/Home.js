@@ -280,7 +280,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="site-section" id="searchResults">
+      <section className="site-section" id="darkTheme">
         <div className="container">
           <div className="row mb-5 justify-content-center">
             <div className="col-md-7 text-center">

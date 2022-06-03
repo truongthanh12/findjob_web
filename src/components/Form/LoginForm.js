@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
+import usePageLoader from "../usePageLoader";
+import Loading from "../Loading";
 
 const LoginForm = () => {
   const [loginForm, setLoginForm] = useState({
@@ -15,8 +17,12 @@ const LoginForm = () => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
+  const [loader, showLoader, hideLoader] = usePageLoader();
+  // const [loading, setLoading] = useState(false)
+
   const onSubmit = (e) => {
     e.preventDefault();
+    // setLoading(true)
 
     const login = {
       accountID: loginForm.accountID,
@@ -46,7 +52,7 @@ const LoginForm = () => {
           });
           setDataLogin([...dataLogin], res.data.data);
           window.location.reload();
-          
+
         } else {
           swal({
             title: "Fail",
@@ -68,6 +74,11 @@ const LoginForm = () => {
         });
       });
   };
+  const onBlurr = (e) => {
+    let classes = "form-group";
+    classes +=  dataLogin.length === 0 ? " error" : ""
+    console.log(123)
+  }
   return (
     <div>
       <section
@@ -86,6 +97,7 @@ const LoginForm = () => {
                   >
                     <div id="login-column" className="col-md-6">
                       <div id="login-box" className="col-md-12">
+                        {/* {loading ?  */}
                         <form
                           id="login-form"
                           className="form"
@@ -108,12 +120,13 @@ const LoginForm = () => {
                               onChange={(value) => handleChange(value)}
                             />
                           </div>
-                          <div className="form-group">
+                          <div className={onBlurr()}>
                             <label htmlFor="password" className="text-info">
                               Password:
                             </label>
                             <br />
                             <input
+                              onBlur ={(e) => onBlurr(e)}
                               type="password"
                               name="password"
                               id="password"
@@ -150,6 +163,7 @@ const LoginForm = () => {
                             </NavLink>
                           </div>
                         </form>
+                      {/* : <Loading />} */}
                       </div>
                     </div>
                   </div>
@@ -159,6 +173,7 @@ const LoginForm = () => {
           </div>
         </div>
       </section>
+      {loader}
     </div>
   );
 };
