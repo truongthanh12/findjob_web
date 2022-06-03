@@ -3,16 +3,30 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+<<<<<<< HEAD
 import FormPostJobDetail from "./FormPostJobDetail";
 import { Spinner } from "react-bootstrap";
 import SelectField from "../custom-field/SelectField";
 
 const PostJobForm = (props) => {
+=======
+import SkeletonPost from "../skeleton/SkeletonPost";
+import { Spinner } from "react-bootstrap";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+
+const PostJobForm = () => {
+  const { t } = useTranslation();
+>>>>>>> 80d86b7f5e39fad20d3971882f87d5e5e918c42b
   const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
+=======
+  const [skeleton, setSkeleton] = useState(false);
+>>>>>>> 80d86b7f5e39fad20d3971882f87d5e5e918c42b
   const [cityName, setCityName] = useState([]);
   const [jobType, setJobType] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
@@ -64,7 +78,7 @@ const PostJobForm = (props) => {
     const { employerID, token } = JSON.parse(
       localStorage.getItem("dataLogged") || "{}"
     );
-
+    setLoading(true);
     const post_job = {
       jobName: dataForm.jobName,
       jobDescription: [dataForm.jobDescription],
@@ -80,7 +94,6 @@ const PostJobForm = (props) => {
       logo: dataForm.logo,
       jobTitle: dataForm.jobTitle,
     };
-
     fetch("https://webjobfinder.azurewebsites.net/api/Job/Add-jobs", {
       method: "POST",
       body: JSON.stringify(post_job),
@@ -109,16 +122,19 @@ const PostJobForm = (props) => {
         });
         setLoading(false);
       }
+      setLoading(false);
     });
   };
 
   // get api select
   useEffect(() => {
     const fetchCity = async () => {
+      setSkeleton(true);
       const result = await axios(
         `https://webjobfinder.azurewebsites.net/api/City/Get-list-city`
       );
       setCityName(result.data.data);
+      setSkeleton(false);
     };
     fetchCity();
   }, []);
@@ -164,99 +180,107 @@ const PostJobForm = (props) => {
   }, []);
   return (
     <div>
-      <section
-        className="home-section section-hero inner-page overlay bg-image"
-        style={{ backgroundImage: 'url("images/hero_1.jpg")' }}
-        id="home-section"
-      >
-        <div className="container">
-          {userType === "Employer" && (
-            <div className="row align-items-center justify-content-center">
-              <div className="col-md-12">
-                <div className="mb-5 text-center">
-                  <h1 className="text-white font-weight-bold">
-                    Post Your Jobs
-                  </h1>
-                  <p>You want to have partners to accompany you?</p>
-                </div>
-              </div>
-            </div>
-          )}
-          {!userType && (
-            <div className="row align-items-center justify-content-center">
-              <div className="col-md-12">
-                <div className="mb-5 text-center">
-                  <h2 className="text-white font-weight-bold">
-                    Please log in when posting job
-                  </h2>
-                  <div className="col-md-12 text-center">
-                    <NavLink to="/login">
-                      <button className="btn-apply btn--apply">Log in</button>
-                    </NavLink>
+      {skeleton ? (
+        <SkeletonPost />
+      ) : (
+        <div>
+          <section
+            className="home-section section-hero inner-page overlay bg-image"
+            style={{ backgroundImage: 'url("images/hero_1.jpg")' }}
+            id="home-section"
+          >
+            <div className="container">
+              {userType === "Employer" && (
+                <div className="row align-items-center justify-content-center">
+                  <div className="col-md-12">
+                    <div className="mb-5 text-center">
+                      <h1 className="text-white font-weight-bold">
+                        {t("post.post")}
+                      </h1>
+                      <p>{t("desc.desc")}</p>
+                    </div>
                   </div>
                 </div>
-                <div></div>
-              </div>
-            </div>
-          )}
-          {userType === "Employee" && (
-            <div className="row align-items-center justify-content-center">
-              <div className="col-md-12">
-                <div className="mb-5 text-center">
-                  <h2 className="text-white font-weight-bold">
-                    Please log in with employer account when posting job
-                  </h2>
-                  <div className="col-md-12 text-center">
-                    <NavLink to="/login">
-                      <button className="btn-apply btn--apply">Log in</button>
-                    </NavLink>
+              )}
+              {!userType && (
+                <div className="row align-items-center justify-content-center">
+                  <div className="col-md-12">
+                    <div className="mb-5 text-center">
+                      <h2 className="text-white font-weight-bold">
+                        {t("Post_warning.Post_warning")}
+                      </h2>
+                      <div className="col-md-12 text-center">
+                        <NavLink to="/login">
+                          <button className="btn-apply btn--apply">
+                            {t("login.login")}
+                          </button>
+                        </NavLink>
+                      </div>
+                    </div>
+                    <div></div>
                   </div>
                 </div>
-                <div></div>
-              </div>
+              )}
+              {userType === "Employee" && (
+                <div className="row align-items-center justify-content-center">
+                  <div className="col-md-12">
+                    <div className="mb-5 text-center">
+                      <h2 className="text-white font-weight-bold">
+                        {t("alert_login_acc_emp.alert_login_acc_emp")}
+                      </h2>
+                      <div className="col-md-12 text-center">
+                        <NavLink to="/login">
+                          <button className="btn-apply btn--apply">
+                            {t("login.login")}
+                          </button>
+                        </NavLink>
+                      </div>
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </section>
+          </section>
 
-      {userType === "Employer" ? (
-        <section className="site-section" id="next-section">
-          <div className="container">
-            <form method="post">
-              <div className="row">
-                <div className="col-lg-6 mb-5 mb-lg-0">
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="lname">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        name="lname"
-                        required
-                        className="form-control"
-                        placeholder="Enter your company name"
-                        value={postJob.jobTitle}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="lname">
-                        Job Name
-                      </label>
-                      <input
-                        type="text"
-                        name="jobName"
-                        required
-                        className="form-control"
-                        placeholder="Enter your Job Name"
-                        value={postJob.jobName}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
+          {userType === "Employer" ? (
+            <section className="site-section" id="next-section">
+              <div className="container">
+                <form method="post">
+                  <div className="row">
+                    <div className="col-lg-6 mb-5 mb-lg-0">
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="lname">
+                            {t("company_name.company_name")}
+                          </label>
+                          <input
+                            type="text"
+                            name="lname"
+                            required
+                            className="form-control"
+                            placeholder="Enter your company name"
+                            value={postJob.jobTitle}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="lname">
+                            {t("post_job.post_job")}
+                          </label>
+                          <input
+                            type="text"
+                            name="jobName"
+                            required
+                            className="form-control"
+                            placeholder="Enter your Job Name"
+                            value={postJob.jobName}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
 
                   <div className="row form-group">
                     <div className="col-md-12">
@@ -283,194 +307,199 @@ const PostJobForm = (props) => {
                     </div>
                   </div>
 
-                  <div className="row form-group">
-                    <div className="col-md-6">
-                      <label className="text-black">Employee Type</label>
-                      <select
-                        className="form-control"
-                        name="titleName"
-                        required
-                        value={postJob.titleName}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose here
-                        </option>
-                        {employeeType.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                      <div className="row form-group">
+                        <div className="col-md-6">
+                          <label className="text-black">
+                            {t("post_empp_type.post_empp_type")}
+                          </label>
+                          <select
+                            className="form-control"
+                            name="titleName"
+                            required
+                            value={postJob.titleName}
+                            onChange={(value) => handleChangeValue(value)}
+                          >
+                            <option selected disabled hidden>
+                              {t("choose.choose")}
+                            </option>
+                            {employeeType.map((value, index) => (
+                              <option value={value} key={index}>
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
 
-                    <div className="col-md-6">
-                      <label className="text-black">Category</label>
-                      <select
-                        className="form-control"
-                        name="jobCategoryName"
-                        required
-                        value={postJob.jobCategoryName}
-                        onChange={(value) => handleChangeValue(value)}
+                        <div className="col-md-6">
+                          <label className="text-black">Category</label>
+                          <select
+                            className="form-control"
+                            name="jobCategoryName"
+                            required
+                            value={postJob.jobCategoryName}
+                            onChange={(value) => handleChangeValue(value)}
+                          >
+                            <option selected disabled hidden>
+                              {t("choose.choose")}
+                            </option>
+                            {position.map((value, index) => (
+                              <option value={value} key={index}>
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="description">
+                            {t("desc_req.desc_req")}
+                          </label>
+                          <textarea
+                            name="jobRequire"
+                            id="jobRequire"
+                            cols={30}
+                            rows={8}
+                            required
+                            className="form-control"
+                            placeholder="Write your description here..."
+                            value={postJob.jobRequire}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="experience">
+                            {t("home_exp.home_exp")}
+                          </label>
+                          <input
+                            type="subject"
+                            name="experience"
+                            className="form-control"
+                            placeholder="2 years...."
+                            value={postJob.experience}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="requireDate">
+                            {t("home_due_date.home_due_date")}
+                          </label>
+                          <input
+                            required
+                            type="date"
+                            name="requireDate"
+                            className="form-control"
+                            placeholder="Date"
+                            value={postJob.requireDate}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="city">
+                            {t("city.city")}
+                          </label>
+                          <select
+                            name="cityName"
+                            className="form-control"
+                            required
+                            value={postJob.cityName}
+                            onChange={(value) => handleChangeValue(value)}
+                          >
+                            <option selected disabled hidden>
+                              {t("choose.choose")}
+                            </option>
+                            {cityName.map((value, index) => (
+                              <option value={value} key={index}>
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="salary">
+                            {t("salary.salary")}
+                          </label>
+                          <select
+                            name="salary"
+                            className="form-control"
+                            required
+                            value={postJob.salary}
+                            onChange={(value) => handleChangeValue(value)}
+                          >
+                            <option selected disabled hidden>
+                              {t("choose.choose")}
+                            </option>
+                            {salary.map((value, index) => (
+                              <option value={value} key={index}>
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="row form-group">
+                        <div className="col-md-12">
+                          <label className="text-black" htmlFor="description">
+                            {t("desc_job.desc_job")}
+                          </label>
+                          <textarea
+                            name="jobDescription"
+                            id="description"
+                            cols={30}
+                            rows={8}
+                            className="form-control"
+                            required
+                            placeholder="Write your description here..."
+                            value={postJob.jobDescription}
+                            onChange={(value) => handleChangeValue(value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p>{postJob.requireDate}</p>
+                  <p>{postJob.jobDescription}</p>
+                  <div className="row form-group">
+                    <div className="col-md-12 mt-3 text-center">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn-apply btn--info"
                       >
-                        <option selected disabled hidden>
-                          Choose position
-                        </option>
-                        {position.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
+                        {loading ? (
+                          <div variant="primary">
+                            <Spinner
+                              as="span"
+                              animation="grow"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {t("loading.loading")}
+                          </div>
+                        ) : (
+                          "Submit"
+                        )}
+                      </button>
                     </div>
                   </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="description">
-                        Job Requirements
-                      </label>
-                      <textarea
-                        name="jobRequire"
-                        id="jobRequire"
-                        cols={30}
-                        rows={8}
-                        required
-                        className="form-control"
-                        placeholder="Write your description here..."
-                        value={postJob.jobRequire}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="experience">
-                        Experience
-                      </label>
-                      <input
-                        type="subject"
-                        name="experience"
-                        className="form-control"
-                        placeholder="2 years...."
-                        value={postJob.experience}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="requireDate">
-                        DueDate
-                      </label>
-                      <input
-                        required
-                        type="date"
-                        name="requireDate"
-                        className="form-control"
-                        placeholder="Date"
-                        value={postJob.requireDate}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="city">
-                        City
-                      </label>
-                      <select
-                        name="cityName"
-                        className="form-control"
-                        required
-                        value={postJob.cityName}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose city
-                        </option>
-                        {cityName.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="salary">
-                        Salary
-                      </label>
-                      <select
-                        name="salary"
-                        className="form-control"
-                        required
-                        value={postJob.salary}
-                        onChange={(value) => handleChangeValue(value)}
-                      >
-                        <option selected disabled hidden>
-                          Choose salary
-                        </option>
-                        {salary.map((value, index) => (
-                          <option value={value} key={index}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row form-group">
-                    <div className="col-md-12">
-                      <label className="text-black" htmlFor="description">
-                        Job Description
-                      </label>
-                      <textarea
-                        name="jobDescription"
-                        id="description"
-                        cols={30}
-                        rows={8}
-                        className="form-control"
-                        required
-                        placeholder="Write your description here..."
-                        value={postJob.jobDescription}
-                        onChange={(value) => handleChangeValue(value)}
-                      />
-                    </div>
-                  </div>
-                </div>
+                </form>
               </div>
-              <p>{postJob.requireDate}</p>
-              <p>{postJob.jobDescription}</p>
-              <div className="row form-group">
-                <div className="col-md-12 mt-3 text-center">
-                  <button
-                    onClick={handleSubmit}
-                    className="btn btn-primary btn-md text-white"
-                    style={{ padding: "1rem 3rem" }}
-                  >
-                    {loading ? (
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      >Loading...</Spinner>
-                    ) : (
-                      "Post"
-                    )}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </section>
-      ) : (
-        <div></div>
+            </section>
+          ) : (
+            <div></div>
+          )}
+        </div>
       )}
-      {/* <FormPostJobDetail /> */}
     </div>
   );
 };

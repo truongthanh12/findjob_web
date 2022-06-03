@@ -1,0 +1,276 @@
+{
+    "header_menu_home": {
+        "header_menu_home": "Trang chủ"
+    },
+    "header_menu_job": {
+        "header_menu_job": "Danh sách công việc"
+    },
+    "header_menu_about": {
+        "header_menu_about": "Chúng tôi"
+    },
+    "login": {
+        "login": "Đăng nhập"
+    },
+    "logout": {
+        "logout": "Đăng xuất"
+    },
+    "register": {
+        "register": "Đăng ký"
+    },
+    "register_employee": {
+        "register_employee": "Thí sinh"
+    },
+    "register_employer": {
+        "register_employer": "Tuyển dụng"
+    },
+    "button_post_job": {
+        "button_post_job": "Tuyển dụng"
+    },
+    "home_title": {
+        "home_title": "Website uy tín chất lượng"
+    },
+    "desc": {
+        "desc": "Website mang tính chất tìm việc (ảo)."
+    },
+    "home_ip-placeholder": {
+        "home_ip-placeholder": "Tên công việc, từ khóa..."
+    },
+    "home_btn_search": {
+        "home_btn_search": "Tìm việc"
+    },
+    "home_mount_job": {
+        "home_mount_job": " Cơ hội việc làm"
+    },
+    "home_date": {
+        "home_date": "Ngày đăng việc: "
+    },
+    "home_due_date": {
+        "home_due_date": "Hạn chót: "
+    },
+    "home_exp": {
+        "home_exp": "Kinh nghiệm: "
+    },
+    "home_btn_detail": {
+        "home_btn_detail": "Chi tiết công việc: "
+    },
+    "desc_comp": {
+        "desc_comp": "Chi tiết công ty"
+    },
+    "any": {
+        "any": "Bất kì"
+    },
+    "btn_apply": {
+        "btn_apply": "Ứng tuyển"
+    },
+    "btn_detail": {
+        "btn_detail": "Chi tiết "
+    },
+    "list_job": {
+        "list_job": "Danh sách công việc: "
+    },
+    "list_desc": {
+        "list_desc": "Bạn sẽ là thành viên trong tổ hợp chúng tôi ? "
+    },
+    "btn_more": {
+        "btn_more": "Xem thêm"
+    },
+    "about": {
+        "about": "Chúng tôi"
+    },
+    "about_careers": {
+        "about_careers": "Những việc dành cho bạn"
+    },
+    "about_us": {
+        "about_us": "Đội ngũ"
+    },
+    "copy_right": {
+        "copy_right": "Copyright © Bản quyền được thực hiện bởi"
+    },
+    "copy_right_me": {
+        "copy_right_me": "TruongThanh"
+    },
+    "Post_warning": {
+        "Post_warning": "Hãy đăng nhập trước khi đăng tuyển"
+    },
+    "btn_login": {
+        "btn_login": "Đăng nhập"
+    },
+    "sign_in": {
+        "sign_in": "Đăng ký"
+    },
+    "sign_in_user": {
+        "sign_in_user": "Tên đăng nhập: "
+    },
+    "sign_in_pass": {
+        "sign_in_pass": "Mật khẩu: "
+    },
+    "sign_in_rem": {
+        "sign_in_rem": "Ghi nhớ mật khẩu "
+    },
+    "btn_submit": {
+        "btn_submit": "Đồng ý"
+    },
+    "sign_in_hint": {
+        "sign_in_hint": "Bạn chưa có tài khoản! "
+    },
+    "sign_up": {
+        "sign_up": "Đăng ký"
+    },
+    "sign_up_employer": {
+        "sign_up_employer": "Đăng ký tư cách nhà tuyển dụng"
+    },
+    "sign_up_employer2": {
+        "sign_up_employer2": "Nhân viên"
+    },
+    "sign_up_employee": {
+        "sign_up_employee": "Đăng ký tư cách nhân viên"
+    },
+    "sign_up_employee2": {
+        "sign_up_employee2": "Nhà tuyển dụng"
+    },
+    "sign_up_employer3": {
+        "sign_up_employer3": "Vui lòng nhập bên dưới, Hệ thống sẽ lưu dữ liệu khi bạn đăng nhập."
+    },
+    "email": {
+        "email": "Email"
+    },
+    "city": {
+        "city": "Thành phố"
+    },
+    "address": {
+        "address": "Địa chỉ"
+    },
+    "company_name": {
+        "company_name": "Tên công ty"
+    },
+    "about_company": {
+        "about_company": "Công ty của bạn"
+    },
+    "sign_up_hint": {
+        "sign_up_hint": "Bạn đã có tài khoản! "
+    },
+    "profile": {
+        "profile": "Thông tin cá nhân"
+    },
+    "profile_timeline": {
+        "profile_timeline": "Dòng thời gian"
+    },
+    "profile_edit": {
+        "profile_edit": "Chỉnh sửa thông tin"
+    },
+    "profile_work_link": {
+        "profile_work_link": "Thông tin công việc"
+    },
+    "profile_link": {
+        "profile_link": "Website link"
+    },
+    "profile_id": {
+        "profile_id": "ID Tài khoản"
+    },
+    "profile_name": {
+        "profile_name": "Họ Tên"
+    },
+    "profile_phone": {
+        "profile_phone": "Số điện thoại"
+    },
+    "btn_savejob": {
+        "btn_savejob": "Lưu việc"
+    },
+    "desc_job": {
+        "desc_job": "Mô tả công việc"
+    },
+    "desc_req": {
+        "desc_req": "Công việc yêu cầu"
+    },
+    "desc_sum": {
+        "desc_sum": "Tổng quan công việc"
+    },
+    "desc_posted": {
+        "desc_posted": "Đã đăng việc: "
+    },
+    "desc_due": {
+        "desc_due": "Hạn chót: "
+    },
+    "desc_vacancy": {
+        "desc_vacancy": "Vị trí tuyển dụng: "
+    },
+    "desc_status": {
+        "desc_status": "Tình trạng việc làm: "
+    },
+    "desc_locate": {
+        "desc_locate": "Địa điểm: "
+    },
+    "gender": {
+        "gender": "Giới tính: "
+    },
+    "salary": {
+        "salary": "Mức lương: "
+    },
+    "desc_deadline": {
+        "desc_deadline": "Thời hạn nộp đơn: "
+    },
+    "share": {
+        "share": "Chia sẻ"
+    },
+    "contact": {
+        "contact": "Liên lạc"
+    },
+    "alert_sure": {
+        "alert_sure": "Bạn có chắc ? "
+    },
+    "alert_scucess": {
+        "alert_scucess": "Thành công"
+    },
+    "alert_fail": {
+        "alert_fail": "Thất bại.."
+    },
+    "loading": {
+        "loading": "Đang tải ..."
+    },
+    "btn_cancel": {
+        "btn_cancel": "Hủy"
+    },
+    "des_hiring": {
+        "des_hiring": "Chúng tôi đang tuyển dụng vị trí "
+    },
+    "post": {
+        "post": "Đăng tuyển"
+    },
+    "post_desc": {
+        "post_desc": "Bạn sẽ là thành viên trong tổ hợp chúng tôi ? "
+    },
+    "post_job": {
+        "post_job": "Tên công việc"
+    },
+    "post_type": {
+        "post_type": "Loại công việc"
+    },
+    "post_empp_type": {
+        "post_empp_type": "Loại nhân viên"
+    },
+    "post_job_req": {
+        "post_job_req": "Yêu cầu công việc"
+    },
+    "alert_unauthor": {
+        "alert_unauthor": "Không được phép"
+    },
+    "alert_login_acc": {
+        "alert_login_acc": "Xin hãy đăng nhập với tài khoản nhân viên!"
+    },
+    "alert_login_acc_emp": {
+        "alert_login_acc_emp": "Xin hãy đăng nhập với tài khoản đăng tuyển việc!"
+    },
+    "job_posted": {
+        "job_posted": "Công việc đã đăng"
+    },
+    "job_posted1": {
+        "job_posted1": "Bạn đã đăng tuyển "
+    },
+    "btn_applied": {
+        "btn_applied": "Danh sách công việc đã ứng tuyển"
+    },
+    "btn_applied1": {
+        "btn_applied1": "Bạn đã ứng tuyển "
+    }
+
+}
