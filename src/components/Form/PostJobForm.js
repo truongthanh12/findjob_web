@@ -1,32 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-<<<<<<< HEAD
-import FormPostJobDetail from "./FormPostJobDetail";
-import { Spinner } from "react-bootstrap";
-import SelectField from "../custom-field/SelectField";
 
-const PostJobForm = (props) => {
-=======
+import { NavLink } from "react-router-dom";
 import SkeletonPost from "../skeleton/SkeletonPost";
 import { Spinner } from "react-bootstrap";
-import i18next from "i18next";
-import { useTranslation } from "react-i18next";
+import SelectField from "../custom-field/SelectField"
 
 const PostJobForm = () => {
   const { t } = useTranslation();
->>>>>>> 80d86b7f5e39fad20d3971882f87d5e5e918c42b
   const { accountName, userType } = JSON.parse(
     localStorage.getItem("dataLogged") || "{}"
   );
 
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
-=======
   const [skeleton, setSkeleton] = useState(false);
->>>>>>> 80d86b7f5e39fad20d3971882f87d5e5e918c42b
   const [cityName, setCityName] = useState([]);
   const [jobType, setJobType] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
